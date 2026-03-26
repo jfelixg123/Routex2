@@ -69,5 +69,5 @@ class Oferta extends Model
     {
         return $this->belongsTo(TipusFluxe::class, 'tipus_fluxe_id');
     }
-    // sd
+    //
 }
