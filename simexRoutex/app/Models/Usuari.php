@@ -15,6 +15,9 @@ class Usuari extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+
+     //Para Buscar Compañia que tiene un usuario
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'company_id');
