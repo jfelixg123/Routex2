@@ -7,14 +7,8 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="bg-gray-100 flex min-h-screen">
-
-        <!-- Sidebar -->
-        @yield('sidebar')
-
         <!-- Main content -->
         <div class="flex-1 flex flex-col">
-
-
             <main >
                 @yield('content')
             </main>

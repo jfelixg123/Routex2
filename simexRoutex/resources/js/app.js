@@ -1,4 +1,5 @@
 import './bootstrap';
+import AppWrapper from './components/AppWrapper.vue';
 
 import HomeDashboard from './components/HomeDashboard.vue';
 import MenuLateralComponent from './components/MenuLateralComponent.vue';
@@ -9,6 +10,7 @@ const app = createApp({});
 // Para añadir los componentes de nuestra web
 app.component('menu-lateral-component', MenuLateralComponent);
 app.component('home-dashboard', HomeDashboard);
+app.component('app-wrapper', AppWrapper);
 
 // Montar los componentes en un sitio
 app.mount('#offers');
