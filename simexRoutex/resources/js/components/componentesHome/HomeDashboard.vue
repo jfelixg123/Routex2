@@ -30,10 +30,10 @@
 import { ref } from 'vue';
 
 import OfertasActivasComponent from './OfertasActivasComponent.vue';
-import CabeceraComponent from './CabeceraComponent.vue';
+import CabeceraComponent from '../componentesCabecera/CabeceraComponent.vue';
 import OfertasRecientesComponent from './OfertasRecientesComponent.vue';
 
-import NuevaOfertaComponent from './NuevaOfertaComponent.vue';
+import NuevaOfertaComponent from '../componentesCrearOferta/NuevaOfertaComponent.vue';
 
 const props = defineProps({
     mostrar: {

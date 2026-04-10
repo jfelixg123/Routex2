@@ -3,7 +3,13 @@
     <div>
       <h2 class="text-xl font-semibold mb-6">SimexRouteX</h2>
       <ul class="space-y-3">
-        <li><a href="#" @click.prevent="$emit('cambiarVista', 'dashboard')" class="flex items-center gap-2 p-2 rounded hover:bg-gray-700">🏠 Dashboard</a></li>
+        <li><a href="#" @click.prevent="$emit('cambiarVista', 'dashboard')"
+            :class="[
+                'flex items-center gap-2 p-2 rounded transition-all duration-200',
+                vistaActual === 'dashboard'
+                ? 'bg-orange-500 text-white shadow-md'
+                : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+            ]">🏠 Dashboard</a></li>
         <li><a href="#" class="flex items-center gap-2 p-2 rounded hover:bg-gray-700">💼 Ofertas</a></li>
         <li><a href="#" class="flex items-center gap-2 p-2 rounded hover:bg-gray-700">📦 Incoterms</a></li>
         <li><a href="#" class="flex items-center gap-2 p-2 rounded hover:bg-gray-700">👥 Usuarios</a></li>
@@ -24,6 +30,12 @@
 
 <script setup>
 const name = 'MenuLateralComponent';
+defineProps({
+  vistaActual: {
+    type: String,
+    default: 'dashboard'
+  }
+});
 </script>
 
 <style scoped>

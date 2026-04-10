@@ -1,7 +1,7 @@
 <template>
     <div class="flex min-h-screen w-full">
         <!-- 1. Menú Lateral: Escuchamos el evento 'cambiarVista' -->
-        <MenuLateralComponent @cambiarVista="actualizarVista" />
+        <MenuLateralComponent :vistaActual="vistaActual" @cambiarVista="actualizarVista" />
 
         <!-- 2. Contenido Principal: Le pasamos la vista actual como Prop -->
         <div class="flex-1 flex flex-col">
