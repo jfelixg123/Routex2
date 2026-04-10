@@ -2,7 +2,7 @@
     <div class="flex-1 flex flex-col">
         <!-- Parte del home -->
         <div class="bg-gray-100">
-            <CabeceraComponent></CabeceraComponent>
+             <CabeceraComponent :vistaActual="mostrar === 'nueva-oferta' ? 'ofertas' : mostrar" />
         </div>
 
         <!-- Controlamos el contenido dinamico en  esta parte ya quer lo vamos a controlar con la props recibida emitida por el propio boton -->
