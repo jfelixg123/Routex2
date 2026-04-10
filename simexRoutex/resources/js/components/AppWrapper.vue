@@ -5,7 +5,7 @@
 
         <!-- 2. Contenido Principal: Le pasamos la vista actual como Prop -->
         <div class="flex-1 flex flex-col">
-        <HomeDashboard :mostrar="vistaActual" />
+        <HomeDashboard :mostrar="vistaActual" @cambiarVista="actualizarVista"  />
         </div>
     </div>
 </template>

@@ -2,7 +2,7 @@
     <div class="flex-1 flex flex-col">
         <!-- Parte del home -->
         <div class="bg-gray-100">
-             <CabeceraComponent :vistaActual="mostrar === 'nueva-oferta' ? 'ofertas' : mostrar" />
+             <CabeceraComponent :vistaActual="mostrar === 'nueva-oferta' ? 'ofertas' : mostrar" :pasoFormulario="pasoActualHijo"/>
         </div>
 
         <!-- Controlamos el contenido dinamico en  esta parte ya quer lo vamos a controlar con la props recibida emitida por el propio boton -->
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div v-if="mostrar === 'nueva-oferta'">
-                <NuevaOfertaComponent></NuevaOfertaComponent>
+                <NuevaOfertaComponent @cambiarVista="$emit('cambiarVista', $event)" @actualizarPasoHeader="sincronizarPaso"></NuevaOfertaComponent>
             </div>
 
 
@@ -34,6 +34,7 @@ import CabeceraComponent from '../componentesCabecera/CabeceraComponent.vue';
 import OfertasRecientesComponent from './OfertasRecientesComponent.vue';
 
 import NuevaOfertaComponent from '../componentesCrearOferta/NuevaOfertaComponent.vue';
+const emit = defineEmits(['cambiarVista'])
 
 const props = defineProps({
     mostrar: {
@@ -41,6 +42,17 @@ const props = defineProps({
         default: 'dashboard' // Por defecto muestra el panel
     }
 });
+
+const pasoActualHijo = ref(1);
+
+const sincronizarPaso = (nuevoPaso) => {
+    const nombres = {
+        1: 'ofertas', // Paso 1 -> ID 'ofertas'
+        2: 'rutas',   // Paso 2 -> ID 'rutas'
+        3: 'envios'   // Paso 3 -> ID 'envios'
+    };
+    pasoActualHijo.value = nombres[nuevoPaso];
+};
 </script>
 
 <style scoped>

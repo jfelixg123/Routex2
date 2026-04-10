@@ -16,14 +16,15 @@
           :key="item.id"
           @click="$emit('navegar', item.id)"
             :class="[
-                'relative pb-2 text-sm font-medium'
+                'relative pb-5 pt-5 text-sm font-medium transition-all',
+                pasoFormulario === item.id ? 'text-gray-900 font-bold' : 'text-gray-400'
             ]"
         >
           {{ item.nombre }}
 
           <!-- Línea naranja inferior activa -->
           <span
-            v-if="vistaActual === item.id"
+            v-if="pasoFormulario === item.id"
             class="absolute bottom-0 left-0 w-full h-0.5 bg-orange-500"
           ></span>
         </button>
@@ -58,12 +59,12 @@
     vistaActual: {
         type: String,
         default: 'nueva-oferta'
-    }
+    },
+    pasoFormulario: String
     });
     const menuItems = [
-        { id: 'dashboard', nombre: 'Dashboard' },
         { id: 'ofertas', nombre: 'Ofertas' },
         { id: 'rutas', nombre: 'Rutas y cargas' },
-        { id: 'envios', nombre: 'Envíos' },
+        { id: 'envios', nombre: 'Envio' },
     ];
 </script>
