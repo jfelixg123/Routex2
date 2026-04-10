@@ -1,8 +1,8 @@
 import './bootstrap';
 import AppWrapper from './components/AppWrapper.vue';
 
-import HomeDashboard from './components/HomeDashboard.vue';
-import MenuLateralComponent from './components/MenuLateralComponent.vue';
+import HomeDashboard from './components/componentesHome/HomeDashboard.vue';
+import MenuLateralComponent from './components/componentesMenu/MenuLateralComponent.vue';
 
 import { createApp } from 'vue/dist/vue.esm-bundler.js';
 const app = createApp({});

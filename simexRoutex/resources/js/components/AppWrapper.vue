@@ -12,8 +12,8 @@
 
 <script setup>
     import { ref } from 'vue';
-    import MenuLateralComponent from './MenuLateralComponent.vue';
-    import HomeDashboard from './HomeDashboard.vue';
+    import MenuLateralComponent from './componentesMenu/MenuLateralComponent.vue';
+    import HomeDashboard from './componentesHome/HomeDashboard.vue';
 
     // Estado que controla qué se ve en pantalla
     const vistaActual = ref('dashboard');
