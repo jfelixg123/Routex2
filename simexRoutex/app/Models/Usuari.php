@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+
 use \Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Usuari extends Model
@@ -21,5 +22,10 @@ class Usuari extends Model
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    public function rol(): BelongsTo
+    {
+        return $this->belongsTo(Rol::class, 'company_id');
     }
 }

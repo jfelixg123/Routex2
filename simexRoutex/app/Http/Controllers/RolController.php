@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Clases\Utilitat;
-use App\Http\Resources\UsuariResource;
-use App\Models\Usuari;
-use Illuminate\Database\QueryException;
+use App\Models\Rol;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Resources\RolResource;
+use Illuminate\Database\QueryException;
+use App\Clases\Utilitat;
 
-class UsuariController extends Controller
+class RolController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $usuaris = Usuari::with(['company', 'rol'])->get();
-        return UsuariResource::collection($usuaris);
+        $rols = Rol::with(['usuaris'])->get();
+        return RolResource::collection($rols);
     }
 
     /**
@@ -24,17 +25,12 @@ class UsuariController extends Controller
      */
     public function store(Request $request)
     {
-        $usuari = new Usuari();
-        $usuari->correu = $request->input('correu');
-        $usuari->contrasenya = $request->input('contrasenya');
-        $usuari->nom = $request->input('nom');
-        $usuari->cognoms = $request->input('cognoms');
-        $usuari->rol_id = $request->input('rol_id');
-        $usuari->company_id = $request->input('company_id');
+        $rol = new Rol();
+        $rol->rol = $request->input('rol');
 
         try{
-            $usuari->save();
-            $response = (new UsuariResource($usuari))
+            $rol->save();
+            $response = (new RolResource($rol))
             ->response()
             ->setStatusCode(201);
         }catch(QueryException $e){
@@ -50,10 +46,10 @@ class UsuariController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Usuari $usuari)
+    public function show(Rol $rol)
     {
-        $usuari = Usuari::with(['company', 'rol'])->find($usuari->id);
-        return new UsuariResource($usuari);
+        $rol = Rol::with(['usuaris'])->find($rol->id);
+        return new RolResource($rol);
     }
 
     /**
@@ -61,22 +57,17 @@ class UsuariController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $usuari = Usuari::find($id);
-            if(!$usuari){
+        $rol = Rol::find($id);
+            if(!$rol){
                 $response = response()->json([
                     'error' => 'Usuari no trobat',
                 ], 404);
             }else{
-                $usuari->correu = $request->input('correu');
-                $usuari->contrasenya = $request->input('contrasenya');
-                $usuari->nom = $request->input('nom');
-                $usuari->cognoms = $request->input('cognoms');
-                $usuari->rol_id = $request->input('rol_id');
-                $usuari->company_id = $request->input('company_id');
+                $rol->rol = $request->input('rol');
 
                 try{
-                    $usuari->save();
-                    $response = (new UsuariResource($usuari))
+                    $rol->save();
+                    $response = (new RolResource($rol))
                     ->response()
                     ->setStatusCode(201);
                 }catch(QueryException $e){
@@ -92,17 +83,17 @@ class UsuariController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(RolController $id)
     {
         try{
-            $usuari = Usuari::find($id);
+            $usuari = Rol::find($id);
             if(!$usuari){
                 $response = response()->json([
                     'error' => 'Usuari no trobat',
                 ], 404);
             }else{
                 $usuari->delete();
-                $response = (new UsuariResource($usuari))
+                $response = (new RolResource($usuari))
                 ->response()
                 ->setStatusCode(200);
             }
