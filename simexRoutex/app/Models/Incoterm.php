@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use \Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Incoterm extends Model
 {
@@ -29,5 +30,10 @@ class Incoterm extends Model
     public function tiposIncoterm(): BelongsTo
     {
         return $this->belongsTo(TipoIncoterm::class, 'tipus_inconterm_id');
+    }
+
+    public function ofertas(): HasMany
+    {
+        return $this->hasMany(Oferta::class, 'incoterm_id');
     }
 }

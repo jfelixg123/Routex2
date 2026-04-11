@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use \Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Aeroport extends Model
 {
@@ -19,5 +20,15 @@ class Aeroport extends Model
     public function ciutat(): BelongsTo
     {
         return $this->belongsTo(Ciutat::class, 'id_ciutat');
+    }
+
+    public function ofertasOrigen(): HasMany
+    {
+        return $this->hasMany(Oferta::class, 'aeroport_origen_id');
+    }
+
+    public function ofertasDestino(): HasMany
+    {
+        return $this->hasMany(Oferta::class, 'aeroport_desti_id');
     }
 }

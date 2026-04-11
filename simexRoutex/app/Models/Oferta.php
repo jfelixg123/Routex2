@@ -70,4 +70,39 @@ class Oferta extends Model
         return $this->belongsTo(TipusFluxe::class, 'tipus_fluxe_id');
     }
     //
+
+    public function incoterm(): BelongsTo
+    {
+        return $this->belongsTo(Incoterm::class, 'incoterm_id');
+    }
+
+    public function transportista(): BelongsTo
+    {
+        return $this->belongsTo(Transportista::class, 'transportista_id');
+    }
+
+    public function portOrigen(): BelongsTo
+    {
+        return $this->belongsTo(Port::class, 'port_origen_id');
+    }
+
+    public function portDesti(): BelongsTo
+    {
+        return $this->belongsTo(Port::class, 'port_desti_id');
+    }
+
+    public function linia(): BelongsTo
+    {
+        return $this->belongsTo(LineTransMar::class, 'linia_transport_maritim_id');
+    }
+
+    public function aeroportOrigen(): BelongsTo
+    {
+        return $this->belongsTo(Port::class, 'aeroport_origen_id');
+    }
+
+    public function aeroportDesti(): BelongsTo
+    {
+        return $this->belongsTo(Port::class, 'aeroport_desti_id');
+    }
 }
