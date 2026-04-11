@@ -27,6 +27,11 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::post('/login', [UsuariController::class, 'login']);
+Route::post('/logout', [UsuariController::class, 'logout'])
+    ->middleware('auth:sanctum');
+
+
 Route::apiResource('aeroports',         AeroportController::class);
 Route::apiResource('ciutats',           CiutatController::class);
 Route::apiResource('company',           CompanyController::class);

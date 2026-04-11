@@ -9,6 +9,6 @@
     <div class="flex-1 flex flex-col min-h-screen overflow-hidden">
         <home-dashboard></home-dashboard>
     </div>-->
-    <app-wrapper></app-wrapper>
-</div
+    {{-- <app-wrapper></app-wrapper> --}}
+</div>
 @endsection
