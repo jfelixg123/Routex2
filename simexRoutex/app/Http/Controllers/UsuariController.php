@@ -191,5 +191,6 @@ class UsuariController extends Controller
     return response()->json([
         'message' => 'Logout correcto'
     ]);
+
 }
 }
