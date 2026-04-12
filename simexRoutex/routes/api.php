@@ -8,10 +8,13 @@ use App\Http\Controllers\EstatsOfertesController;
 use App\Http\Controllers\IncotermController;
 use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\LineTransMarController;
+use App\Http\Controllers\NotificacionController;
+use App\Http\Controllers\NotificacionDestinatarioController;
 use App\Http\Controllers\OfertaController;
 use App\Http\Controllers\PaissosController;
 use App\Http\Controllers\PortController;
 use App\Http\Controllers\RolController;
+use App\Http\Controllers\TipoController;
 use App\Http\Controllers\TipoIncotermController;
 use App\Http\Controllers\TipusCarregaController;
 use App\Http\Controllers\TipusContenedorsController;
@@ -43,12 +46,18 @@ Route::apiResource('estats',            EstatsOfertesController::class);
 Route::apiResource('incoterms',         IncotermController::class);
 Route::apiResource('industries',        IndustryController::class);
 Route::apiResource('lines',             LineTransMarController::class);
+Route::apiResource('notificaciones',    NotificacionController::class);
+Route::apiResource('notificaciones-destinatarios', NotificacionDestinatarioController::class);
+Route::get('/notis/buscar',             [NotificacionDestinatarioController::class, 'mostrarPorUsuario']);
+
 Route::apiResource('ofertas',           OfertaController::class);
 Route::apiResource('paises',            PaissosController::class);
 Route::apiResource('ports',             PortController::class);
 Route::get('/port/buscar',              [PortController::class, 'buscarPuertos']);
 
 Route::apiResource('rols',              RolController::class);
+Route::apiResource('tipos',             TipoController::class);
+
 Route::apiResource('tipoIncoterm',      TipoIncotermController::class);
 Route::apiResource('tipoCarga',         TipusCarregaController::class);
 Route::apiResource('tipoContenedor',    TipusContenedorsController::class);
