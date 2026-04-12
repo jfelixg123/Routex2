@@ -14,13 +14,23 @@
                 <OfertasActivasComponent />
                 <div class="pt-6 space-y-6">
                     <!-- otras cosas -->
-                    <OfertasRecientesComponent />
+                    <OfertasRecientesComponent :key="mostrar" @verDetalle="$emit('verDetalle', $event)"/>
                 </div>
             </div>
+
             <div v-if="mostrar === 'nueva-oferta'">
                 <NuevaOfertaComponent @cambiarVista="$emit('cambiarVista', $event)" @actualizarPasoHeader="sincronizarPaso"></NuevaOfertaComponent>
             </div>
+            <div v-if="mostrar === 'ver-oferta'">
+                <NuevaOfertaComponent
+                    :ofertaAEditar="ofertaSeleccionada"
+                    @cambiarVista="$emit('cambiarVista', $event)"
+                />
+            </div>
 
+            <div v-if="mostrar === 'incoterms'">
+                <IncotermsComponent></IncotermsComponent>
+            </div>
 
         </div>
     </div>
@@ -32,15 +42,17 @@ import { ref } from 'vue';
 import OfertasActivasComponent from './OfertasActivasComponent.vue';
 import CabeceraComponent from '../componentesCabecera/CabeceraComponent.vue';
 import OfertasRecientesComponent from './OfertasRecientesComponent.vue';
+import IncotermsComponent from '../componentesIncoterms/IncotermsComponent.vue';
 
 import NuevaOfertaComponent from '../componentesCrearOferta/NuevaOfertaComponent.vue';
-const emit = defineEmits(['cambiarVista'])
+const emit = defineEmits(['cambiarVista', 'verDetalle', 'actualizarPasoHeader'])
 
 const props = defineProps({
     mostrar: {
         type: String,
         default: 'dashboard' // Por defecto muestra el panel
-    }
+    },
+    ofertaSeleccionada: Object
 });
 
 const pasoActualHijo = ref(1);

@@ -7,7 +7,7 @@ use \Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TipusFluxe extends Model
 {
-    protected $table = 'tipus_fluxe';
+    protected $table = 'tipus_fluxes';
     public $timestamps = false;
 
     /**

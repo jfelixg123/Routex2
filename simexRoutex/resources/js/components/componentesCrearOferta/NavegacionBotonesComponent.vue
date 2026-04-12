@@ -4,7 +4,7 @@
             <span v-if="paso === 1">✕ Cancelar </span>
             <span v-else>← Anterior</span>
         </button>
-        <button @click="paso >= 3 ? $emit('volverHome') : $emit('siguiente')" class="px-8 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-bold transition flex items-center gap-2">
+        <button @click="paso >= 3 ? $emit('siguiente') : $emit('siguiente')" class="px-8 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 font-bold transition flex items-center gap-2">
             <span v-if="paso < 3">Siguiente →</span>
             <span v-if="paso >= 3">Guardar</span>
         </button>

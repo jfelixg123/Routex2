@@ -7,10 +7,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
 use \Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Usuari extends Authenticatable
 {
     use HasApiTokens;
+    protected $connection = 'sqlsrv';
     protected $table = 'usuaris';
     public $timestamps = false;
 
@@ -29,6 +31,23 @@ class Usuari extends Authenticatable
 
     public function rol(): BelongsTo
     {
-        return $this->belongsTo(Rol::class, 'company_id');
+        return $this->belongsTo(Rol::class, 'rol_id');
+    }
+
+    /**
+     * Ofertas donde este usuario es el CLIENTE
+     */
+    public function ofertesComClient(): HasMany
+    {
+        // El segundo parámetro es la clave foránea en la tabla 'ofertes'
+        return $this->hasMany(Oferta::class, 'client_id');
+    }
+
+    /**
+     * Ofertas donde este usuario es el VENDEDOR (Agent Comercial)
+     */
+    public function ofertesComComercial(): HasMany
+    {
+        return $this->hasMany(Oferta::class, 'agent_comercial_id');
     }
 }

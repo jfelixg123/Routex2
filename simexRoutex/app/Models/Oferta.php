@@ -98,11 +98,29 @@ class Oferta extends Model
 
     public function aeroportOrigen(): BelongsTo
     {
-        return $this->belongsTo(Port::class, 'aeroport_origen_id');
+        return $this->belongsTo(Aeroport::class, 'aeroport_origen_id');
     }
 
     public function aeroportDesti(): BelongsTo
     {
-        return $this->belongsTo(Port::class, 'aeroport_desti_id');
+        return $this->belongsTo(Aeroport::class, 'aeroport_desti_id');
+    }
+
+    public function divisa(): BelongsTo
+    {
+        return $this->belongsTo(Divisas::class, 'divisas_id');
+    }
+
+    public function usuari(): BelongsTo
+    {
+        // Usamos Usuari::class y la columna client_id que sale en tu JSON
+        return $this->belongsTo(Usuari::class, 'client_id');
+    }
+
+    // Relación para el Vendedor (Sales Rep)
+    public function agentComercial(): BelongsTo
+    {
+        // Usamos Usuari::class y la columna agent_comercial_id
+        return $this->belongsTo(Usuari::class, 'agent_comercial_id');
     }
 }

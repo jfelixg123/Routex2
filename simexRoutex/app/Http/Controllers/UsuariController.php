@@ -8,6 +8,7 @@ use App\Models\Usuari;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Pail\ValueObjects\Origin\Console;
 
 class UsuariController extends Controller
 {
@@ -16,7 +17,7 @@ class UsuariController extends Controller
      */
     public function index()
     {
-        $usuaris = Usuari::with(['company', 'rol'])->get();
+        $usuaris = Usuari::with(['company', 'rol', 'ofertesComClient', 'ofertesComComercial'])->get();
         return UsuariResource::collection($usuaris);
     }
 
@@ -74,7 +75,7 @@ class UsuariController extends Controller
      */
     public function show(Usuari $usuari)
     {
-        $usuari = Usuari::with(['company', 'rol'])->find($usuari->id);
+        $usuari = Usuari::with(['company', 'rol', 'ofertesComClient', 'ofertesComComercial'])->find($usuari->id);
         return new UsuariResource($usuari);
     }
 
@@ -133,6 +134,51 @@ class UsuariController extends Controller
             $response = response()->json([
                 'error' => $missatge
             ], 400);
+        }
+
+        return $response;
+    }
+
+    public function buscarClientes(Request $request) {
+        try{
+            $buscador = $request->query('q');
+            $usuaris = ([]);
+
+            if (!$buscador){
+                $usuaris = ([]);
+            }else{
+                $usuaris = Usuari::where('nom', 'LIKE', "%{$buscador}%")
+                            ->limit(100)
+                            ->get();
+            }
+
+            $response = response()->json($usuaris);
+        }catch(\Exception $e){
+            $response = response()->json(['error' => $e->getMessage()], 500);
+        }
+
+        return $response;
+    }
+
+    public function buscarComercial(Request $request) {
+        try{
+            $buscador = $request->query('q');
+            $usuaris = ([]);
+
+            if (!$buscador){
+                $usuaris = ([]);
+            }else{
+                $usuaris = Usuari::where('nom', 'LIKE', "%{$buscador}%")
+                            ->whereHas('rol', function($query){
+                                $query->where('id', 2);
+                            })
+                            ->limit(100)
+                            ->get();
+            }
+
+            $response = response()->json($usuaris);
+        }catch(\Exception $e){
+            $response = response()->json(['error' => $e->getMessage()], 500);
         }
 
         return $response;

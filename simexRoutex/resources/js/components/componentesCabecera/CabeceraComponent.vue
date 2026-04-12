@@ -60,7 +60,7 @@
         type: String,
         default: 'nueva-oferta'
     },
-    pasoFormulario: String
+    pasoFormulario: [String, Number]
     });
     const menuItems = [
         { id: 'ofertas', nombre: 'Ofertas' },

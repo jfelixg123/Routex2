@@ -6,6 +6,7 @@ use App\Clases\Utilitat;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\IncotermsResource;
 use App\Models\Incoterm;
+use App\Models\TipoIncoterm;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -25,11 +26,14 @@ class IncotermController extends Controller
      */
     public function store(Request $request)
     {
-        $incoterm = new Incoterm();
-        $incoterm->tipus_inconterm_id = $request->input('tipus_inconterm_id');
-        $incoterm->tracking_steps_id = $request->input('tracking_steps_id');
-
         try{
+            $tipo = new TipoIncoterm();
+            $tipo->codi = strtoupper($request->codi);
+            $tipo->nom = $request->nom;
+            $tipo->save();
+            $incoterm = new Incoterm();
+            $incoterm->tipus_inconterm_id = $tipo->id;
+            $incoterm->tracking_steps_id = $request->tracking_steps_id;
             $incoterm->save();
             $response = (new IncotermsResource($incoterm))
             ->response()
@@ -64,11 +68,16 @@ class IncotermController extends Controller
                     'error' => 'Tipu incoterm no trobat',
                 ], 404);
             }else{
-                $incoterm->tipus_inconterm_id = $request->input('tipus_inconterm_id');
-                $incoterm->tracking_steps_id = $request->input('tracking_steps_id');
-
                 try{
+                    $tipo = TipoIncoterm::find($incoterm->tipus_inconterm_id);
+                    if ($tipo) {
+                        $tipo->codi = strtoupper($request->codi);
+                        $tipo->nom = $request->nom;
+                        $tipo->save();
+                    }
+                    $incoterm->tracking_steps_id = $request->tracking_steps_id;
                     $incoterm->save();
+
                     $response = (new IncotermsResource($incoterm))
                     ->response()
                     ->setStatusCode(201);

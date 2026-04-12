@@ -110,4 +110,25 @@ class AeroportController extends Controller
 
         return $response;
     }
+
+    public function buscarAeropuertos(Request $request) {
+        try{
+            $buscador = $request->query('q');
+            $aeropuertos = ([]);
+
+            if (!$buscador){
+                $aeropuertos = ([]);
+            }else{
+                $aeropuertos = Aeroport::where('nom', 'LIKE', "%{$buscador}%")
+                            ->limit(100)
+                            ->get();
+            }
+
+            $response = response()->json($aeropuertos);
+        }catch(\Exception $e){
+            $response = response()->json(['error' => $e->getMessage()], 500);
+        }
+
+        return $response;
+    }
 }

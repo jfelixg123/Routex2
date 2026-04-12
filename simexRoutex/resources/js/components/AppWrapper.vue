@@ -5,7 +5,11 @@
 
         <!-- 2. Contenido Principal: Le pasamos la vista actual como Prop -->
         <div class="flex-1 flex flex-col">
-        <HomeDashboard :mostrar="vistaActual" @cambiarVista="actualizarVista"  />
+            <HomeDashboard
+                v-if="vistaActual === 'dashboard' || vistaActual === 'nueva-oferta' || vistaActual === 'ver-oferta'"
+                :mostrar="vistaActual" :key="dashboardKey" @cambiarVista="actualizarVista" :ofertaSeleccionada="ofertaSeleccionada" @verDetalle="abrirDetalle" />
+
+            <IncotermsComponent v-if="vistaActual === 'incoterms'"></IncotermsComponent>
         </div>
     </div>
 </template>
@@ -14,14 +18,28 @@
     import { ref } from 'vue';
     import MenuLateralComponent from './componentesMenu/MenuLateralComponent.vue';
     import HomeDashboard from './componentesHome/HomeDashboard.vue';
+    import IncotermsComponent from './componentesIncoterms/IncotermsComponent.vue';
 
     // Estado que controla qué se ve en pantalla
     const vistaActual = ref('dashboard');
 
+    const dashboardKey = ref(0);
     // Función para cambiar la vista
     const actualizarVista = (nuevaVista) => {
-    vistaActual.value = nuevaVista;
+        vistaActual.value = nuevaVista;
+
+        if (nuevaVista === 'dashboard') {
+            dashboardKey.value++;
+        }
     };
+
+    const ofertaSeleccionada = ref(null);
+
+    const abrirDetalle = (oferta) => {
+        ofertaSeleccionada.value = oferta; // Guardamos los datos de la oferta clicada
+        vistaActual.value = 'ver-oferta'; // Cambiamos la vista
+    };
+
 </script>
 
 <style lang="scss" scoped>

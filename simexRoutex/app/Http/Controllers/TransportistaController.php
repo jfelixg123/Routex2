@@ -16,7 +16,7 @@ class TransportistaController extends Controller
      */
     public function index()
     {
-        $transportista = Transportista::with(['pais', 'aeroports', 'transportistas', 'liniasTransporteMaritimo', 'ports', 'ofertas'])->get();
+        $transportista = Transportista::with(['ciutat', 'ofertas'])->get();
         return TransportistaResource::collection($transportista);
     }
 
@@ -49,7 +49,7 @@ class TransportistaController extends Controller
      */
     public function show(Transportista $transportista)
     {
-        $transportista = Transportista::with(['ofertas'])->find($transportista->id);
+        $transportista = Transportista::with(['ciutat', 'ofertas'])->find($transportista->id);
         return new TransportistaResource($transportista);
     }
 
@@ -104,6 +104,27 @@ class TransportistaController extends Controller
             $response = response()->json([
                 'error' =>  $missatge
             ], 400);
+        }
+
+        return $response;
+    }
+
+    public function buscarTransportista(Request $request) {
+        try{
+            $buscador = $request->query('q');
+            $transportistas = ([]);
+
+            if (!$buscador){
+                $transportistas = ([]);
+            }else{
+                $transportistas = Transportista::where('nom', 'LIKE', "%{$buscador}%")
+                            ->limit(100)
+                            ->get();
+            }
+
+            $response = response()->json($transportistas);
+        }catch(\Exception $e){
+            $response = response()->json(['error' => $e->getMessage()], 500);
         }
 
         return $response;

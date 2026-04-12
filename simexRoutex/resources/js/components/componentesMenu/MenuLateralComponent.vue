@@ -10,8 +10,20 @@
                 ? 'bg-orange-500 text-white shadow-md'
                 : 'text-gray-400 hover:bg-gray-700 hover:text-white'
             ]">🏠 Dashboard</a></li>
-        <li><a href="#" class="flex items-center gap-2 p-2 rounded hover:bg-gray-700">💼 Ofertas</a></li>
-        <li><a href="#" class="flex items-center gap-2 p-2 rounded hover:bg-gray-700">📦 Incoterms</a></li>
+        <li><a href="#" @click.prevent="$emit('cambiarVista', 'ofertas')"
+            :class="[
+                'flex items-center gap-2 p-2 rounded transition-all duration-200',
+                vistaActual === 'ofertas'
+                ? 'bg-orange-500 text-white shadow-md'
+                : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+            ]">💼 Ofertas</a></li>
+        <li><a href="#" @click.prevent="$emit('cambiarVista', 'incoterms')"
+            :class="[
+                'flex items-center gap-2 p-2 rounded transition-all duration-200',
+                vistaActual === 'incoterms'
+                ? 'bg-orange-500 text-white shadow-md'
+                : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+            ]">📦 Incoterms</a></li>
         <li><a href="#" class="flex items-center gap-2 p-2 rounded hover:bg-gray-700">👥 Usuarios</a></li>
         <li><a href="#" class="flex items-center gap-2 p-2 rounded hover:bg-gray-700">📢 Comunicaciones</a></li>
         <li><a href="#" class="flex items-center gap-2 p-2 rounded hover:bg-gray-700">⚠️ Incidencias</a></li>

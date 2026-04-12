@@ -16,7 +16,7 @@ class OfertaController extends Controller
      */
     public function index()
     {
-        $ofertas = Oferta::with(['estatsOfertes', 'tipusValidacions', 'tipusContenidors', 'tipusCarrega', 'tipusTransport', 'tipusFluxe', 'incoterm', 'transportista', 'portOrigen', 'portDesti', 'linia', 'aeroportOrigen', 'aeroportDesti'])->get();
+        $ofertas = Oferta::with(['estatsOfertes', 'tipusValidacions', 'tipusContenidors', 'tipusCarrega', 'tipusTransport', 'tipusFluxe', 'incoterm', 'transportista', 'portOrigen', 'portDesti', 'linia', 'aeroportOrigen', 'aeroportDesti', 'divisa', 'usuari', 'agentComercial'])->get();
         return OfertaResource::collection($ofertas);
     }
 
@@ -25,30 +25,40 @@ class OfertaController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'concepto' => 'required',
+        ]);
+
         $oferta = new Oferta();
-        $oferta->tipus_transport_id = $request->input('tipus_transport_id');
-        $oferta->tipus_fluxe_id = $request->input('tipus_fluxe_id');
-        $oferta->tipus_carrega_id = $request->input('tipus_carrega_id');
-        $oferta->incoterm_id = $request->input('incoterm_id');
-        $oferta->client_id = $request->input('client_id');
-        $oferta->comentaris = $request->input('comentaris');
-        $oferta->agent_comercial_id = $request->input('agent_comercial_id');
-        $oferta->transportista_id = $request->input('transportista_id');
-        $oferta->pes_brut = $request->input('pes_brut');
-        $oferta->volum = $request->input('volum');
-        $oferta->tipus_validacio_id = $request->input('tipus_validacio_id');
-        $oferta->port_origen_id = $request->input('port_origen_id');
-        $oferta->port_desti_id = $request->input('port_desti_id');
-        $oferta->aeroport_origen_id = $request->input('aeroport_origen_id');
-        $oferta->aeroport_desti_id = $request->input('aeroport_desti_id');
-        $oferta->linia_transport_maritim_id = $request->input('linia_transport_maritim_id');
-        $oferta->estat_oferta_id = $request->input('estat_oferta_id');
-        $oferta->operador_id = $request->input('operador_id');
-        $oferta->data_creacio = $request->input('data_creacio');
-        $oferta->data_validessa_inicial = $request->input('data_validessa_inicial');
-        $oferta->data_validessa_fina = $request->input('data_validessa_fina');
-        $oferta->rao_rebuig = $request->input('rao_rebuig');
-        $oferta->tipus_contenidor_id = $request->input('tipus_contenidor_id');
+        $oferta->tipus_transport_id = $request->transporte_id;
+        $oferta->tipus_fluxe_id = $request->flujos_id;
+        $oferta->tipus_carrega_id = $request->cargas_id;
+        $oferta->incoterm_id = $request->incoterm_id;
+        $oferta->client_id = $request->cliente_id;
+        $oferta->descrip_mercancia = $request->descripcion;
+        $oferta->agent_comercial_id = $request->vendedor_id;
+        $oferta->transportista_id = $request->transporte_id;
+        $oferta->pes_brut = $request->peso;
+        $oferta->volum = $request->volumen;
+        $oferta->tipus_validacio_id = 1;
+        $oferta->port_origen_id = $request->puerto_id;
+        $oferta->port_desti_id = $request->puerto_destino_id;
+        $oferta->aeroport_origen_id = $request->aeropuerto_id;
+        $oferta->aeroport_desti_id = $request->aeropuerto_destino_id;
+        $oferta->linia_transport_maritim_id = $request->lineaTransporte_id;
+        $oferta->estat_oferta_id = $request->estat_oferta_id;
+        $oferta->operador_id = 1;
+        $oferta->data_creacio = $request->data_creacio;
+        $oferta->data_validessa_inicial = $request->valid_desde;
+        $oferta->data_validessa_fina = $request->valid_fins;
+        $oferta->rao_rebuig = "";
+        $oferta->tipus_contenidor_id = 1;
+        $oferta->divisas_id = $request->divisas_id;
+        $oferta->concepto = $request->concepto;
+        $oferta->bultos = $request->bultos;
+        $oferta->valor = $request->valor;
+        $oferta->comentarios_internos = $request->comentarios_internos;
+        $oferta->comentarios_imprimir = $request->comentarios_imprimir;
 
         try{
             $oferta->save();
@@ -70,7 +80,7 @@ class OfertaController extends Controller
      */
     public function show(Oferta $oferta)
     {
-        $oferta = Oferta::with(['estatsOfertes', 'tipusValidacions', 'tipusContenidors', 'tipusCarrega', 'tipusTransport', 'tipusFluxe', 'incoterm', 'transportista', 'portOrigen', 'portDesti', 'linia', 'aeroportOrigen', 'aeroportDesti'])->find($oferta->id);
+        $oferta = Oferta::with(['estatsOfertes', 'tipusValidacions', 'tipusContenidors', 'tipusCarrega', 'tipusTransport', 'tipusFluxe', 'incoterm', 'transportista', 'portOrigen', 'portDesti', 'linia', 'aeroportOrigen', 'aeroportDesti', 'divisa', 'usuari', 'agentComercial'])->find($oferta->id);
         return new OfertaResource($oferta);
     }
 
@@ -85,29 +95,31 @@ class OfertaController extends Controller
                     'error' => 'Tipu de oferta no trobada',
                 ], 404);
             }else{
-                $oferta->tipus_transport_id = $request->input('tipus_transport_id');
-                $oferta->tipus_fluxe_id = $request->input('tipus_fluxe_id');
-                $oferta->tipus_carrega_id = $request->input('tipus_carrega_id');
-                $oferta->incoterm_id = $request->input('incoterm_id');
-                $oferta->client_id = $request->input('client_id');
-                $oferta->comentaris = $request->input('comentaris');
-                $oferta->agent_comercial_id = $request->input('agent_comercial_id');
-                $oferta->transportista_id = $request->input('transportista_id');
-                $oferta->pes_brut = $request->input('pes_brut');
-                $oferta->volum = $request->input('volum');
-                $oferta->tipus_validacio_id = $request->input('tipus_validacio_id');
-                $oferta->port_origen_id = $request->input('port_origen_id');
-                $oferta->port_desti_id = $request->input('port_desti_id');
-                $oferta->aeroport_origen_id = $request->input('aeroport_origen_id');
-                $oferta->aeroport_desti_id = $request->input('aeroport_desti_id');
-                $oferta->linia_transport_maritim_id = $request->input('linia_transport_maritim_id');
-                $oferta->estat_oferta_id = $request->input('estat_oferta_id');
-                $oferta->operador_id = $request->input('operador_id');
-                $oferta->data_creacio = $request->input('data_creacio');
-                $oferta->data_validessa_inicial = $request->input('data_validessa_inicial');
-                $oferta->data_validessa_fina = $request->input('data_validessa_fina');
-                $oferta->rao_rebuig = $request->input('rao_rebuig');
-                $oferta->tipus_contenidor_id = $request->input('tipus_contenidor_id');
+                $oferta->tipus_transport_id = $request->transporte_id;
+                $oferta->tipus_fluxe_id = $request->flujos_id;
+                $oferta->tipus_carrega_id = $request->cargas_id;
+                $oferta->incoterm_id = $request->incoterm_id;
+                $oferta->client_id = $request->cliente_id;
+                $oferta->descrip_mercancia = $request->descripcion;
+                $oferta->agent_comercial_id = $request->vendedor_id;
+                $oferta->transportista_id = $request->transportista_id; // Corregido: antes tenías transporte_id aquí
+                $oferta->pes_brut = $request->peso;
+                $oferta->volum = $request->volumen;
+                $oferta->port_origen_id = $request->puerto_id;
+                $oferta->port_desti_id = $request->puerto_destino_id;
+                $oferta->aeroport_origen_id = $request->aeropuerto_id;
+                $oferta->aeroport_desti_id = $request->aeropuerto_destino_id;
+                $oferta->linia_transport_maritim_id = $request->lineaTransporte_id;
+                $oferta->estat_oferta_id = $request->estat_oferta_id;
+                $oferta->data_creacio = $request->data_creacio;
+                $oferta->data_validessa_inicial = $request->valid_desde;
+                $oferta->data_validessa_fina = $request->valid_fins;
+                $oferta->divisas_id = $request->divisas_id;
+                $oferta->concepto = $request->concepto;
+                $oferta->bultos = $request->bultos;
+                $oferta->valor = $request->valor;
+                $oferta->comentarios_internos = $request->comentarios_internos;
+                $oferta->comentarios_imprimir = $request->comentarios_imprimir;
 
                 try{
                     $oferta->save();
@@ -115,9 +127,8 @@ class OfertaController extends Controller
                     ->response()
                     ->setStatusCode(201);
                 }catch(QueryException $e){
-                    $missatge = Utilitat::errorMessage($e);
-                    $response = response()->json([
-                        'error' =>  $missatge
+                    return response()->json([
+                        'error' => 'Error de BD: ' . $e->getMessage()
                     ], 400);
                 }
             }

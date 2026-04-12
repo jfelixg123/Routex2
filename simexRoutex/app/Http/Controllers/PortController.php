@@ -17,7 +17,7 @@ class PortController extends Controller
      */
     public function index()
     {
-        $port = Port::with(['pais', 'ofertasOrigen', 'ofertasDestino'])->get();
+        $port = Port::with(['ciutat', 'ofertasOrigen', 'ofertasDestino'])->get();
         return PortResource::collection($port);
     }
 
@@ -50,7 +50,7 @@ class PortController extends Controller
      */
     public function show(Port $port)
     {
-        $port = Port::with(['pais', 'ofertasOrigen', 'ofertasDestino'])->find($port->id);
+        $port = Port::with(['ciutat', 'ofertasOrigen', 'ofertasDestino'])->find($port->id);
         return new PortResource($port);
     }
 
@@ -105,6 +105,27 @@ class PortController extends Controller
             $response = response()->json([
                 'error' =>  $missatge
             ], 400);
+        }
+
+        return $response;
+    }
+
+    public function buscarPuertos(Request $request) {
+        try{
+            $buscador = $request->query('q');
+            $puertos = ([]);
+
+            if (!$buscador){
+                $puertos = ([]);
+            }else{
+                $puertos = Port::where('nom', 'LIKE', "%{$buscador}%")
+                            ->limit(100)
+                            ->get();
+            }
+
+            $response = response()->json($puertos);
+        }catch(\Exception $e){
+            $response = response()->json(['error' => $e->getMessage()], 500);
         }
 
         return $response;

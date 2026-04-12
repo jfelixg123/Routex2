@@ -5,140 +5,297 @@
             <p class="text-sm text-gray-500">Defina el trayecto y la tipología de mercancía para el cálculo de fletes.</p>
         </div>
 
-        <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-            <div class="flex items-center gap-2 mb-4 text-orange-600 font-bold">
-                <span class="text-lg">ⓘ</span> Información General
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-bold text-gray-400">Modo Transporte</label>
+                <select v-model="form.transporte_id" class="border rounded-lg p-2 outline-none">
+                    <option v-for="e in transportes" :key="e.id" :value="e.id">{{ e.tipus }}</option>
+                </select>
+            </div>
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-bold text-gray-400">Flujo (Flow)</label>
+                <select v-model="form.flujos_id" class="border rounded-lg p-2 outline-none">
+                    <option v-for="e in flujos" :key="e.id" :value="e.id">{{ e.tipus }}</option>
+                </select>
+            </div>
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-bold text-gray-400">Tipo Carga</label>
+                <select v-model="form.cargas_id" class="border rounded-lg p-2 outline-none">
+                    <option v-for="e in cargas" :key="e.id" :value="e.id">{{ e.tipus }}</option>
+                </select>
+            </div>
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-bold text-gray-400">Customer Ref.</label>
+                <input v-model="form.customerRef" type="text" class="border rounded-lg p-2 text-sm outline-none" placeholder="Referencia interna">
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <template v-if="form.transporte_id == 1">
                 <div class="flex flex-col gap-1">
-                    <label class="text-xs font-semibold text-gray-500">Currency</label>
-                    <select class="border rounded-lg p-2 text-sm outline-none focus:ring-2 focus:ring-orange-400">
-                        <option>EUR - Euro</option>
-                        <option>LB - Libras</option>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Puerto Origen</label>
+                    <input
+                        list="puertosList"
+                        v-model="form.puerto_nombre"
+                        @input="buscarPuerto"
+                        class="border p-2 rounded-lg outline-none">
+                    <datalist id="puertosList">
+                        <option v-for="c in puertosFiltrados" :key="c.id" :value="c.nom"></option>
+                    </datalist>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label class="text-xs font-bold text-gray-500 uppercase">Puerto Destino</label>
+                    <input
+                        list="puertosListDes"
+                        v-model="form.puerto_nombre_destino"
+                        @input="buscarPuertoDestino"
+                        class="border p-2 rounded-lg outline-none">
+                    <datalist id="puertosListDes">
+                        <option v-for="c in puertosFiltradosDestino" :key="c.id" :value="c.nom"></option>
+                    </datalist>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label class="text-xs font-bold text-gray-400">Línea Transporte</label>
+                    <select v-model="form.lineaTransporte_id" class="border rounded-lg p-2 outline-none">
+                        <option v-for="e in lines" :key="e.id" :value="e.id">{{ e.nom }}</option>
                     </select>
                 </div>
+            </template>
 
+            <template v-else-if="form.transporte_id == 2">
                 <div class="flex flex-col gap-1">
-                    <label class="text-xs font-semibold text-gray-500">Sales Representative</label>
-                    <input type="text" placeholder="Assign representative" class="border rounded-lg p-2 text-sm outline-none focus:ring-2 focus:ring-orange-400">
+                    <label class="text-xs font-bold text-gray-500 uppercase">Aeropuerto Origen</label>
+                    <input
+                        list="aeropuertosList"
+                        v-model="form.aeropuerto_nombre"
+                        @input="buscarAeropuerto"
+                        class="border p-2 rounded-lg outline-none">
+                    <datalist id="aeropuertosList">
+                        <option v-for="c in aeropuertosFiltrados" :key="c.id" :value="c.nom"></option>
+                    </datalist>
                 </div>
-
                 <div class="flex flex-col gap-1">
-                    <label class="text-xs font-semibold text-gray-500">Incoterm</label>
-                    <select class="border rounded-lg p-2 text-sm outline-none focus:ring-2 focus:ring-orange-400">
-                        <option>EXW - Ex Works</option>
-                    </select>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Aeropuerto Destino</label>
+                    <input
+                        list="aeropuertosDestinoList"
+                        v-model="form.aeropuerto_nombre_destino"
+                        @input="buscarAeropuertoDestino"
+                        class="border p-2 rounded-lg outline-none">
+                    <datalist id="aeropuertosDestinoList">
+                        <option v-for="c in aeropuertosFiltradosDestino" :key="c.id" :value="c.nom"></option>
+                    </datalist>
                 </div>
+            </template>
 
+            <template v-else-if="form.transporte_id == 3">
                 <div class="flex flex-col gap-1">
-                    <label class="text-xs font-semibold text-gray-500">Pricer</label>
-                    <input type="text" value="System Admin" class="border rounded-lg p-2 text-sm bg-gray-50" readonly>
+                    <label class="text-xs font-bold text-gray-500 uppercase">Transportista</label>
+                    <input
+                        list="transportistaList"
+                        v-model="form.transportista_nombre"
+                        @input="buscrTransportistas"
+                        class="border p-2 rounded-lg outline-none">
+                    <datalist id="transportistaList">
+                        <option v-for="c in tranportistasFiltrados" :key="c.id" :value="c.nom"></option>
+                    </datalist>
+                </div>
+            </template>
+
+        </div>
+
+            <!-- Especificaciones de Mercancía -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            <div class="flex flex-col gap-1">
+                <label class="text-xs font-bold text-gray-400 uppercase">Descripción de la mercancía</label>
+                <textarea v-model="form.descripcion" rows="4" class="border rounded-lg p-3 text-sm outline-none bg-gray-50 focus:bg-white"></textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex flex-col gap-1">
+                    <label class="text-xs font-bold text-gray-400 uppercase">Peso Bruto (kg)</label>
+                    <input v-model="form.peso" type="number" class="border rounded-lg p-2 outline-none">
+                </div>
+                    <div class="flex flex-col gap-1">
+                    <label class="text-xs font-bold text-gray-400 uppercase">Volumen (CBM)</label>
+                    <input v-model="form.volumen" type="number" class="border rounded-lg p-2 outline-none">
+                </div>
+                    <div class="flex flex-col gap-1">
+                    <label class="text-xs font-bold text-gray-400 uppercase">Bultos (Packages)</label>
+                    <input v-model="form.bultos" type="number" class="border rounded-lg p-2 outline-none">
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label class="text-xs font-bold text-gray-400 uppercase">Valor Mercancía</label>
+                    <input v-model="form.valor" type="number" class="border rounded-lg p-2 outline-none">
                 </div>
             </div>
         </div>
 
-        <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-            <div class="flex items-center gap-2 mb-4 text-orange-600 font-bold">
-                <span class="text-lg">📦</span> Detalles de Mercancía
-            </div>
-
-            <!--Primera seccion-->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div class="flex flex-col gap-1">
-                <label class="text-xs font-semibold text-gray-500">Customer Reference</label>
-                <input type="text" placeholder="Ref: 2024-X-99" class="border rounded-lg p-2 text-sm outline-none">
-                </div>
-                <div class="flex flex-col gap-1">
-                <label class="text-xs font-semibold text-gray-500">Destination free days</label>
-                <input type="number" value="7" class="border rounded-lg p-2 text-sm outline-none">
-                </div>
-                <div class="flex flex-col gap-1">
-                <label class="text-xs font-semibold text-gray-500">Value of goods</label>
-                <input type="text" placeholder="€ 0.00" class="border rounded-lg p-2 text-sm outline-none">
-                </div>
-            </div>
-
-            <!--Segunda seccion-->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div class="flex flex-col gap-1">
-                <label class="text-xs font-semibold text-gray-500">Description of goods</label>
-                <input type="text" placeholder="General Cargo / Industrial parts" class="border rounded-lg p-2 text-sm outline-none">
-                </div>
-                <div class="flex flex-col gap-1">
-                <label class="text-xs font-semibold text-gray-500">Gross Weight (kg)</label>
-                <input type="number" value="0" class="border rounded-lg p-2 text-sm outline-none">
-                </div>
-                <div class="flex flex-col gap-1">
-                <label class="text-xs font-semibold text-gray-500">Taxable weight (kg)</label>
-                <input type="number" value="0" class="border rounded-lg p-2 text-sm outline-none">
-                </div>
-            </div>
-
-            <!--Tercera seccion-->
-            <div class="border-t pt-4">
-                <div class="flex justify-between items-center mb-3">
-                    <h4 class="text-sm font-bold text-gray-700">Medidas (Measures)</h4>
-                    <button @click="resetearMedidas" class="text-xs text-orange-500 font-bold hover:underline italic">RESET</button>
-                </div>
-
-                <div v-for="(item, index) in medidas" :key="index" class="grid grid-cols-7 gap-2">
-                    <input v-model="item.cantidad" type="number" class="border rounded p-2 text-xs outline-none focus:border-orange-400" placeholder="1">
-                    <input v-model="item.largo" type="text" class="border rounded p-2 text-xs outline-none" placeholder="0">
-                    <input v-model="item.ancho" type="text" class="border rounded p-2 text-xs outline-none" placeholder="0">
-                    <input v-model="item.alto" type="text" class="border rounded p-2 text-xs outline-none" placeholder="0">
-                    <input v-model="item.peso" type="text" class="border rounded p-2 text-xs outline-none" placeholder="0">
-                    <select v-model="item.tipo" class="border rounded p-2 text-xs outline-none">
-                        <option>Palet</option>
-                        <option>Caja</option>
-                        <option>Contenedor</option>
-                    </select>
-
-                    <!-- Botón para añadir solo en la última fila, o uno de borrar -->
-                    <button
-                        v-if="index === medidas.length - 1"
-                        @click="agregarFila"
-                        class="bg-orange-500 text-white rounded font-bold hover:bg-orange-600 transition"
-                    >+</button>
-                    <button
-                        v-else
-                        @click="medidas.splice(index, 1)"
-                        class="text-gray-300 hover:text-red-500 text-xs"
-                    >✕</button>
-                </div>
-
-
-            </div>
-        </div>
+        <MeasurasComponent v-if="form.transporte_id == 2" :form="form"/>
 
     </div>
 </template>
 
 <script setup>
-    import { ref, reactive } from 'vue';
+    import MeasurasComponent from './MesurasComponent.vue';
+    import { reactive, ref } from 'vue';
 
-    // Definimos la estructura de una fila vacía
-    const nuevaFila = () => ({
-    cantidad: 1,
-    largo: '',
-    ancho: '',
-    alto: '',
-    peso: '',
-    tipo: 'Palet'
-    });
+    const props = defineProps(['form', 'transportes', 'flujos', 'cargas', 'lines']);
 
-    // Iniciamos con una fila por defecto
-    const medidas = ref([nuevaFila()]);
+    const puertosFiltrados = ref([]);
+    const puertosFiltradosDestino = ref([]);
+    const aeropuertosFiltrados = ref([]);
+    const aeropuertosFiltradosDestino = ref([]);
+    const tranportistasFiltrados = ref([]);
 
-    // Función para añadir
-    const agregarFila = () => {
-    medidas.value.push(nuevaFila());
+    let timeoutBusqueda = null;
+
+    const buscarPuerto = async () => {
+        clearTimeout(timeoutBusqueda);
+
+        if (props.form.puerto_nombre.length >= 3) {
+            timeoutBusqueda = setTimeout(async () => {
+                try{
+                    const res = await axios.get('port/buscar', {
+                        params: { q: props.form.puerto_nombre }
+                    });
+
+                    puertosFiltrados.value = res.data;
+
+                    const puertoSeleccionado = puertosFiltrados.value.find(c => c.nom === props.form.puerto_nombre);
+
+                    if (puertoSeleccionado) {
+                        props.form.puerto_id = puertoSeleccionado.id;
+                        console.log("ID del cliente guardado:", props.form.puerto_id);
+                    } else {
+                        props.form.puerto_id = null;
+                    }
+
+                }catch(error){
+                    console.error("Error real:", error.response?.data);
+                }
+            }, 500);
+        }else{
+            puertosFiltrados.value = [];
+        }
     };
 
-    // Función para resetear
-    const resetearMedidas = () => {
-    medidas.value = [nuevaFila()];
-};
+    const buscarPuertoDestino = async () => {
+        clearTimeout(timeoutBusqueda);
+
+        if (props.form.puerto_nombre_destino.length >= 3) {
+            timeoutBusqueda = setTimeout(async () => {
+                try{
+                    const res = await axios.get('port/buscar', {
+                        params: { q: props.form.puerto_nombre_destino }
+                    });
+
+                    puertosFiltradosDestino.value = res.data;
+
+                    const puertoSeleccionado = puertosFiltradosDestino.value.find(c => c.nom === props.form.puerto_nombre_destino);
+
+                    if (puertoSeleccionado) {
+                        props.form.puerto_destino_id = puertoSeleccionado.id;
+                        console.log("ID del cliente guardado:", props.form.puerto_destino_id);
+                    } else {
+                        props.form.puerto_destino_id = null;
+                    }
+
+                }catch(error){
+                    console.error("Error real:", error.response?.data);
+                }
+            }, 500);
+        }else{
+            puertosFiltradosDestino.value = [];
+        }
+    };
+
+    const buscarAeropuerto = async () => {
+        clearTimeout(timeoutBusqueda);
+
+        if (props.form.aeropuerto_nombre.length >= 3) {
+            timeoutBusqueda = setTimeout(async () => {
+                try{
+                    const res = await axios.get('aeropuerto/buscar', {
+                        params: { q: props.form.aeropuerto_nombre }
+                    });
+
+                    aeropuertosFiltrados.value = res.data;
+
+                    const aeropuertoSeleccionado = aeropuertosFiltrados.value.find(c => c.nom === props.form.aeropuerto_nombre);
+
+                    if (aeropuertoSeleccionado) {
+                        props.form.aeropuerto_id = aeropuertoSeleccionado.id;
+                        console.log("ID del cliente guardado:", props.form.aeropuerto_id);
+                    } else {
+                        props.form.aeropuerto_id = null;
+                    }
+
+                }catch(error){
+                    console.error("Error real:", error.response?.data);
+                }
+            }, 500);
+        }else{
+            aeropuertosFiltrados.value = [];
+        }
+    };
+
+    const buscarAeropuertoDestino = async () => {
+        clearTimeout(timeoutBusqueda);
+
+        if (props.form.aeropuerto_nombre_destino.length >= 3) {
+            timeoutBusqueda = setTimeout(async () => {
+                try{
+                    const res = await axios.get('aeropuerto/buscar', {
+                        params: { q: props.form.aeropuerto_nombre_destino }
+                    });
+
+                    aeropuertosFiltradosDestino.value = res.data;
+
+                    const aeropuertoDestinoSeleccionado = aeropuertosFiltradosDestino.value.find(c => c.nom === props.form.aeropuerto_nombre_destino);
+
+                    if (aeropuertoDestinoSeleccionado) {
+                        props.form.aeropuerto_destino_id = aeropuertoDestinoSeleccionado.id;
+                        console.log("ID del cliente guardado:", props.form.aeropuerto_destino_id);
+                    } else {
+                        props.form.aeropuerto_destino_id = null;
+                    }
+
+                }catch(error){
+                    console.error("Error real:", error.response?.data);
+                }
+            }, 500);
+        }else{
+            aeropuertosFiltradosDestino.value = [];
+        }
+    };
+
+    const buscrTransportistas = async () => {
+        clearTimeout(timeoutBusqueda);
+
+        if (props.form.transportista_nombre.length >= 3) {
+            timeoutBusqueda = setTimeout(async () => {
+                try{
+                    const res = await axios.get('transportista/buscar', {
+                        params: { q: props.form.transportista_nombre }
+                    });
+
+                    tranportistasFiltrados.value = res.data;
+
+                    const transportistaSeleccionado = tranportistasFiltrados.value.find(c => c.nom === props.form.transportista_nombre);
+
+                    if (transportistaSeleccionado) {
+                        props.form.transportista_id = transportistaSeleccionado.id;
+                        console.log("ID del cliente guardado:", props.form.transportista_id);
+                    } else {
+                        props.form.transportista_id = null;
+                    }
+
+                }catch(error){
+                    console.error("Error real:", error.response?.data);
+                }
+            }, 500);
+        }else{
+            tranportistasFiltrados.value = [];
+        }
+    };
 </script>
 
 <style lang="scss" scoped>
