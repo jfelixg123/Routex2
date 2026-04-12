@@ -48,12 +48,13 @@ class UsuariController extends Controller
     public function store(Request $request)
     {
         $usuari = new Usuari();
-        $usuari->correu = $request->input('correu');
-        $usuari->contrasenya = $request->input('contrasenya');
-        $usuari->nom = $request->input('nom');
-        $usuari->cognoms = $request->input('cognoms');
-        $usuari->rol_id = $request->input('rol_id');
-        $usuari->company_id = $request->input('company_id');
+        $usuari->correu = $request->correu;
+        $usuari->contrasenya = bcrypt($request->contrasenya);
+        $usuari->nom = $request->nom;
+        $usuari->cognoms = $request->cognoms;
+        $usuari->rol_id = $request->rol_id;
+        $usuari->company_id = $request->company_id;
+        $usuari->status = 2;
 
         try {
             $usuari->save();
@@ -90,12 +91,12 @@ class UsuariController extends Controller
                 'error' => 'Usuari no trobat',
             ], 404);
         } else {
-            $usuari->correu = $request->input('correu');
-            $usuari->contrasenya = $request->input('contrasenya');
-            $usuari->nom = $request->input('nom');
-            $usuari->cognoms = $request->input('cognoms');
-            $usuari->rol_id = $request->input('rol_id');
-            $usuari->company_id = $request->input('company_id');
+            $usuari->correu = $request->correu;
+            $usuari->contrasenya = bcrypt($request->contrasenya);
+            $usuari->nom = $request->nom;
+            $usuari->cognoms = $request->cognoms;
+            $usuari->rol_id = $request->rol_id;
+            $usuari->company_id = $request->company_id;
 
             try {
                 $usuari->save();

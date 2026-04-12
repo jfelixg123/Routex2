@@ -10,6 +10,7 @@
                 :mostrar="vistaActual" :key="dashboardKey" @cambiarVista="actualizarVista" :ofertaSeleccionada="ofertaSeleccionada" @verDetalle="abrirDetalle" />
 
             <IncotermsComponent v-if="vistaActual === 'incoterms'"></IncotermsComponent>
+            <UsuariosComponent v-if="vistaActual === 'usuaris'"></UsuariosComponent>
         </div>
     </div>
 </template>
@@ -19,6 +20,7 @@
     import MenuLateralComponent from './componentesMenu/MenuLateralComponent.vue';
     import HomeDashboard from './componentesHome/HomeDashboard.vue';
     import IncotermsComponent from './componentesIncoterms/IncotermsComponent.vue';
+    import UsuariosComponent from './usuariosComponent/UsuariosComponent.vue';
 
     // Estado que controla qué se ve en pantalla
     const vistaActual = ref('dashboard');
