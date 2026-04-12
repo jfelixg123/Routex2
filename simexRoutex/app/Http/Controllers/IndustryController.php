@@ -26,7 +26,7 @@ class IndustryController extends Controller
     public function store(Request $request)
     {
         $industry = new Industry();
-        $industry->categoria = $request->input('categoria');
+        $industry->categoria = $request->categoria;
 
         try{
             $industry->save();
@@ -63,7 +63,7 @@ class IndustryController extends Controller
                     'error' => 'Industria no trobada',
                 ], 404);
             }else{
-                $industry->categoria = $request->input('categoria');
+                $industry->categoria = $request->categoria;
 
                 try{
                     $industry->save();

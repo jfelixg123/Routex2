@@ -30,7 +30,7 @@
             {{ tab }}
           </button>
         </div>
-        <button @click="abrirNuevo" class="text-sm font-bold text-slate-700 hover:text-orange-500 flex items-center gap-2">
+        <button @click="abrirNuevo" class="bg-orange-100 text-orange-600 px-3 py-1 rounded-lg text-xs font-bold hover:bg-orange-200 transition">
           <span class="text-xl">+</span> Crear Usuario
         </button>
       </div>
@@ -104,6 +104,7 @@
         @cerrar="mostrarModal = false"
         @actualizado="cargarUsuarios"
     />
+    <ConfiguracionEmpresasComponent></ConfiguracionEmpresasComponent>
   </div>
 </template>
 
@@ -111,6 +112,7 @@
     import { ref, onMounted, computed } from 'vue';
     import axios from 'axios';
     import ModalUsuarioComponent from './ModalUsuarioComponent.vue';
+    import ConfiguracionEmpresasComponent from '../componentesEmpresas/ConfiguracionEmpresasComponent.vue';
 
     const usuarios = ref([]);
     const filtroActual = ref('Todos los usuarios');

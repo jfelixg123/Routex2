@@ -26,8 +26,8 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         $company = new Company();
-        $company->company_name = $request->input('company_name');
-        $company->industris_id = $request->input('industris_id');
+        $company->company_name = $request->company_name;
+        $company->industria_id = $request->industria_id;
 
         try{
             $company->save();
@@ -64,8 +64,8 @@ class CompanyController extends Controller
                     'error' => 'Compañia no trobada',
                 ], 404);
             }else{
-                $company->company_name = $request->input('company_name');
-                $company->industris_id = $request->input('industris_id');
+                $company->company_name = $request->company_name;
+                $company->industria_id = $request->industria_id;
 
                 try{
                     $company->save();
