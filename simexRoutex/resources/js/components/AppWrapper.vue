@@ -7,7 +7,7 @@
         <div class="flex-1 flex flex-col">
             <HomeDashboard
                 v-if="vistaActual === 'dashboard' || vistaActual === 'nueva-oferta' || vistaActual === 'ver-oferta'"
-                :mostrar="vistaActual" :key="dashboardKey" @cambiarVista="actualizarVista" :ofertaSeleccionada="ofertaSeleccionada" @verDetalle="abrirDetalle" />
+                :mostrar="vistaActual" :key="dashboardKey" @cambiarVista="actualizarVista" :ofertaSeleccionada="ofertaSeleccionada" @verDetalle="abrirDetalle" :rol="user?.rol.id" />
 
             <IncotermsComponent v-if="vistaActual === 'incoterms'"></IncotermsComponent>
             <UsuariosComponent v-if="vistaActual === 'usuaris'"></UsuariosComponent>

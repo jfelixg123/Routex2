@@ -2,7 +2,8 @@
     <div class="flex-1 flex flex-col">
         <!-- Parte del home -->
         <div class="bg-gray-100">
-             <CabeceraComponent :vistaActual="mostrar === 'nueva-oferta' ? 'ofertas' : mostrar" :pasoFormulario="pasoActualHijo"/>
+            <CabeceraComponent :vistaActual="mostrar === 'nueva-oferta' ? 'ofertas' : mostrar"
+                :pasoFormulario="pasoActualHijo" />
         </div>
 
         <!-- Controlamos el contenido dinamico en  esta parte ya quer lo vamos a controlar con la props recibida emitida por el propio boton -->
@@ -10,26 +11,42 @@
 
             <!-- Primera vista -->
             <div v-if="mostrar === 'dashboard'">
-                <h2 class="text-2xl font-semibold mb-4">Ofertas Activas</h2>
-                <OfertasActivasComponent />
-                <div class="pt-6 space-y-6">
-                    <!-- otras cosas -->
-                    <OfertasRecientesComponent :key="mostrar" @verDetalle="$emit('verDetalle', $event)"/>
+
+
+                <div v-if="rol === 1">
+                    <h2 class="text-2xl font-semibold mb-4">Ofertas Activas</h2>
+                    <OfertasActivasComponent />
+
+                    <div class="pt-6 space-y-6">
+                        <OfertasRecientesComponent @verDetalle="$emit('verDetalle', $event)" />
+                    </div>
+
+                    <div v-if="mostrar === 'nueva-oferta'">
+                        <NuevaOfertaComponent @cambiarVista="$emit('cambiarVista', $event)"
+                            @actualizarPasoHeader="sincronizarPaso"></NuevaOfertaComponent>
+                    </div>
+                    <div v-if="mostrar === 'ver-oferta'">
+                        <NuevaOfertaComponent :ofertaAEditar="ofertaSeleccionada"
+                            @cambiarVista="$emit('cambiarVista', $event)" />
+                    </div>
+
+                    <div v-if="mostrar === 'incoterms'">
+                        <IncotermsComponent></IncotermsComponent>
+                    </div>
                 </div>
-            </div>
 
-            <div v-if="mostrar === 'nueva-oferta'">
-                <NuevaOfertaComponent @cambiarVista="$emit('cambiarVista', $event)" @actualizarPasoHeader="sincronizarPaso"></NuevaOfertaComponent>
-            </div>
-            <div v-if="mostrar === 'ver-oferta'">
-                <NuevaOfertaComponent
-                    :ofertaAEditar="ofertaSeleccionada"
-                    @cambiarVista="$emit('cambiarVista', $event)"
-                />
-            </div>
+                <div v-else>
+                    <h2 class="text-2xl font-semibold mb-4">New Offers</h2>
 
-            <div v-if="mostrar === 'incoterms'">
-                <IncotermsComponent></IncotermsComponent>
+                    <div>
+                        <p>Dashboard cliente aquí</p>
+                    </div>
+
+                    <div>
+                        <p></p>
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -50,7 +67,9 @@ const emit = defineEmits(['cambiarVista', 'verDetalle', 'actualizarPasoHeader'])
 const props = defineProps({
     mostrar: {
         type: String,
-        default: 'dashboard' // Por defecto muestra el panel
+        default: 'dashboard', // Por defecto muestra el panel
+        rol: Number
+
     },
     ofertaSeleccionada: Object
 });
@@ -67,5 +86,4 @@ const sincronizarPaso = (nuevoPaso) => {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

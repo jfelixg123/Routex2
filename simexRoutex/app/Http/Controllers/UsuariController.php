@@ -31,6 +31,7 @@ class UsuariController extends Controller
             $response = response()->json([
                 'usuari' => new UsuariResource($user),
                 'token' => $token,
+                'user' => $user
             ], 200);
 
         } else {
