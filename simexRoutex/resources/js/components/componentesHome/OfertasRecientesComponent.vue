@@ -23,7 +23,14 @@
         <!-- INFO -->
         <div class="flex items-center gap-4">
           <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
-            {{ Number(oferta.tipus_transport_id) === 1 ? '🚢' : '✈️' }}
+            {{
+            {
+                1: '🚢',
+                2: '✈️',
+                3: '🚚',
+                4: '📦💨',
+                5: '🚂'
+            }[Number(oferta.tipus_transport_id)] || '❓'}}
           </div>
 
           <div>

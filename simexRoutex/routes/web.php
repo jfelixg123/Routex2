@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+//Toda la app usara esta porque toda la app son componentes.
 Route::get('/', function () {
     return view('layouts.home');
 })->name('home');
