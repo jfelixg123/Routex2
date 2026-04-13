@@ -12,6 +12,7 @@
             <IncotermsComponent v-if="vistaActual === 'incoterms'"></IncotermsComponent>
             <UsuariosComponent v-if="vistaActual === 'usuaris'"></UsuariosComponent>
             <ComunicacionesComponent v-if="vistaActual === 'comunicaciones'"></ComunicacionesComponent>
+            <SeguimientoController v-if="vistaActual === 'seguimiento'"></SeguimientoController>
         </div>
     </div>
 </template>
@@ -23,6 +24,7 @@
     import IncotermsComponent from './componentesIncoterms/IncotermsComponent.vue';
     import UsuariosComponent from './usuariosComponent/UsuariosComponent.vue';
     import ComunicacionesComponent from './componentesComunicacion/ComunicacionesComponent.vue';
+    import SeguimientoController from './componentesTracks/SeguimientoController.vue';
 
     // Estado que controla qué se ve en pantalla
     const vistaActual = ref('dashboard');

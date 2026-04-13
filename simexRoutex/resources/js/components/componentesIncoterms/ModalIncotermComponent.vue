@@ -1,25 +1,19 @@
 <template>
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-
     <!-- Contenedor del Modal -->
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
 
       <!-- Cabecera -->
       <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
         <div>
-          <h3 class="text-xl font-bold text-slate-800">Nuevo Incoterm</h3>
+          <h3 class="text-xl font-bold text-slate-800">{{ nuevoInco.id ? 'Editar Incoterm' : 'Nuevo Incoterm' }}</h3>
           <p class="text-xs text-gray-400">Configuración de términos comerciales</p>
         </div>
-        <button @click="$emit('cerrar')" class="text-gray-400 hover:text-gray-600 transition-colors">
-          <svg xmlns="http://w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+        <button @click="$emit('cerrar')" class="text-gray-400 hover:text-gray-600 transition-colors text-2xl">&times;</button>
       </div>
 
       <!-- Formulario -->
-      <div class="p-8 space-y-6">
-
+      <div class="p-8 space-y-6 max-h-[70vh] overflow-y-auto">
         <!-- BLOQUE 1: IDENTIDAD -->
         <div class="grid grid-cols-3 gap-4">
           <div class="col-span-1 flex flex-col gap-1">
@@ -34,13 +28,13 @@
           </div>
         </div>
 
-        <!-- BLOQUE 2: OPERATIVA (Tabla Azul) -->
+        <!-- BLOQUE 2: OPERATIVA -->
         <div class="flex flex-col gap-1">
-          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Paso de Seguimiento Inicial</label>
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Paso de Seguimiento Inicial (Responsabilidad)</label>
           <div class="relative">
             <select v-model="nuevoInco.tracking_steps_id" class="w-full border border-gray-200 rounded-xl p-3 outline-none focus:ring-2 focus:ring-orange-400 bg-gray-50 appearance-none">
               <option value="">Selecciona un paso...</option>
-              <option v-for="p in pasos" :key="p.id" :value="p.id">
+              <option v-for="p in pasosMaestros" :key="p.id" :value="p.id">
                 {{ p.nom }} (Orden: {{ p.ordre }})
               </option>
             </select>
@@ -48,17 +42,31 @@
           </div>
         </div>
 
+        <!-- NUEVO: CONFIGURAR HOJA DE RUTA COMPLETA -->
+        <div class="mt-6 border-t pt-4">
+            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">Configurar Hoja de Ruta (Varios pasos)</label>
+            <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto p-2 bg-gray-50 rounded-xl border">
+                <div v-for="p in pasosMaestros" :key="p.id"
+                    @click="gestionarPaso(p.id)"
+                    :class="nuevoInco.pasosSeleccionados.includes(p.id) ? 'bg-orange-500 text-white border-orange-600' : 'bg-white text-slate-600 border-gray-200'"
+                    class="p-2 rounded-lg border text-[10px] font-bold cursor-pointer transition-all flex justify-between items-center shadow-sm">
+                    {{ p.nom }}
+                    <span v-if="nuevoInco.pasosSeleccionados.includes(p.id)">✓</span>
+                </div>
+            </div>
+            <p class="text-[9px] text-gray-400 mt-2 italic">* Los pasos se guardarán para el seguimiento de las ofertas.</p>
+        </div>
       </div>
 
       <!-- Footer / Botones -->
-      <div class="p-6 bg-gray-50 flex gap-3">
+      <div class="p-6 bg-gray-50 flex gap-3 border-t">
         <button @click="$emit('cerrar')" class="flex-1 px-4 py-3 text-gray-500 font-bold hover:bg-gray-100 rounded-2xl transition">
           Cancelar
         </button>
         <button @click="guardar"
                 :disabled="!nuevoInco.codi || !nuevoInco.tracking_steps_id"
                 class="flex-1 px-4 py-3 bg-orange-500 text-white font-bold rounded-2xl hover:bg-orange-600 transition shadow-lg shadow-orange-200 disabled:opacity-50 disabled:shadow-none">
-          Guardar Incoterm
+          {{ nuevoInco.id ? 'Actualizar' : 'Guardar' }} Incoterm
         </button>
       </div>
     </div>
@@ -72,30 +80,28 @@
     const emit = defineEmits(['cerrar', 'creado']);
     const props = defineProps(['incotermExistente']);
 
-    // Datos Maestros
-    const pasos = ref([]);
-    const transportes = ref([]);
+    const pasosMaestros = ref([]);
 
-    // Estado del formulario
     const nuevoInco = reactive({
-    codi: '',
-    nom: '',
-    tracking_steps_id: '',
+        id: null,
+        codi: '',
+        nom: '',
+        tipus_inconterm_id: null,
+        tracking_steps_id: '',
+        pasosSeleccionados: []
     });
 
     const cargarMaestros = async () => {
-    try {
-        const [resPasos] = await Promise.all([
-        axios.get('trackingSteps'),
-        ]);
-        pasos.value = resPasos.data;
-        transportes.value = resTrans.data;
-    } catch (error) {
-        console.error("Error cargando datos maestros:", error);
-    }
+        try {
+            // Asegúrate de que el endpoint sea 'trackingSteps' como en tus rutas
+            const res = await axios.get('trackingSteps');
+            pasosMaestros.value = res.data;
+        } catch (error) {
+            console.error("Error cargando pasos maestros:", error);
+        }
     };
 
-    onMounted(async() =>{
+    onMounted(async () => {
         await cargarMaestros();
 
         if (props.incotermExistente) {
@@ -105,30 +111,37 @@
             nuevoInco.nom = i.tipos_incoterm?.nom || '';
             nuevoInco.tracking_steps_id = i.tracking_steps_id;
             nuevoInco.tipus_inconterm_id = i.tipus_inconterm_id;
+            // Si ya tiene pasos asociados en la intermedia, deberías cargarlos aquí
+            // nuevoInco.pasosSeleccionados = i.pasos_asociados.map(p => p.tracking_step_id);
         }
     });
 
+    const gestionarPaso = (pasoId) => {
+        const index = nuevoInco.pasosSeleccionados.indexOf(pasoId);
+        if (index > -1) {
+            nuevoInco.pasosSeleccionados.splice(index, 1);
+        } else {
+            nuevoInco.pasosSeleccionados.push(pasoId);
+        }
+    };
+
     const guardar = async () => {
-        console.log("Datos a enviar:", nuevoInco);
-    try {
-        if (nuevoInco.id) {
-            const res = await axios.put(`incoterms/${nuevoInco.id}`, nuevoInco);
-            if (res.status === 201 || res.status === 200) {
-                emit('creado');
-                emit('cerrar');
-            }
-        }else{
-            const res = await axios.post('incoterms', nuevoInco);
-            if (res.status === 201 || res.status === 200) {
-                emit('creado');
-                emit('cerrar');
+        try {
+            let res;
+            if (nuevoInco.id) {
+                res = await axios.put(`incoterms/${nuevoInco.id}`, nuevoInco);
+            } else {
+                res = await axios.post('incoterms', nuevoInco);
             }
 
+            if (res.status === 201 || res.status === 200) {
+                emit('creado');
+                emit('cerrar');
+            }
+        } catch (error) {
+            console.error("Error al guardar:", error);
+            alert("Error al procesar la solicitud. Revisa la consola.");
         }
-    } catch (error) {
-        console.error("Error al guardar:", error);
-        alert("No se pudo guardar el Incoterm. Revisa los datos.");
-    }
     };
 </script>
 

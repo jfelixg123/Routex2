@@ -36,4 +36,8 @@ class Incoterm extends Model
     {
         return $this->hasMany(Oferta::class, 'incoterm_id');
     }
+
+    public function pasosAsociados(): HasMany {
+        return $this->hasMany(IncotermPaso::class, 'incoterm_id')->orderBy('orden');
+    }
 }

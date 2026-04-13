@@ -12,6 +12,7 @@ use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\NotificacionDestinatarioController;
 use App\Http\Controllers\OfertaController;
 use App\Http\Controllers\PaissosController;
+use App\Http\Controllers\PasosController;
 use App\Http\Controllers\PortController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\TipoController;
@@ -52,6 +53,10 @@ Route::get('/notis/buscar',             [NotificacionDestinatarioController::cla
 
 Route::apiResource('ofertas',           OfertaController::class);
 Route::apiResource('paises',            PaissosController::class);
+Route::apiResource('trafico',             PasosController::class);
+Route::get('trafico/{id}/pasos',        [PasosController::class, 'getPasos']);
+Route::post('trafico/check/{id}',       [PasosController::class, 'checkPaso']);
+
 Route::apiResource('ports',             PortController::class);
 Route::get('/port/buscar',              [PortController::class, 'buscarPuertos']);
 

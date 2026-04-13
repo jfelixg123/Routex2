@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Clases\Utilitat;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OfertaResource;
+use App\Models\Incoterm;
 use App\Models\Oferta;
+use App\Models\OfertaSeguimiento;
+use App\Models\TrackingSteps;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -62,6 +65,20 @@ class OfertaController extends Controller
 
         try{
             $oferta->save();
+
+            $incoterm = Incoterm::with('pasosAsociados')->find($oferta->incoterm_id);
+
+            if ($incoterm && $incoterm->pasosAsociados) {
+                foreach ($incoterm->pasosAsociados as $item) {
+                    $seguimiento = new OfertaSeguimiento();
+                    $seguimiento->oferta_id = $oferta->id;
+                    $seguimiento->tracking_step_id = $item->tracking_step_id;
+                    $seguimiento->orden = $item->orden;
+                    $seguimiento->esta_completado = 0;
+                    $seguimiento->save();
+                }
+            }
+
             $response = (new OfertaResource($oferta))
             ->response()
             ->setStatusCode(201);

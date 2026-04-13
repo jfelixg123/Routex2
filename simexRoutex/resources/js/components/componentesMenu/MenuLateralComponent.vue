@@ -38,7 +38,13 @@
                 ? 'bg-orange-500 text-white shadow-md'
                 : 'text-gray-400 hover:bg-gray-700 hover:text-white'
             ]">📢 Comunicaciones</a></li>
-        <li><a href="#" class="flex items-center gap-2 p-2 rounded hover:bg-gray-700">⚠️ Incidencias</a></li>
+        <li><a href="#" @click.prevent="$emit('cambiarVista', 'seguimiento')"
+            :class="[
+                'flex items-center gap-2 p-2 rounded transition-all duration-200',
+                vistaActual === 'seguimiento'
+                ? 'bg-orange-500 text-white shadow-md'
+                : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+            ]">⚠️ Seguimiento</a></li>
         <li><a href="#" class="flex items-center gap-2 p-2 rounded hover:bg-gray-700">⚙️ Configuración</a></li>
       </ul>
     </div>

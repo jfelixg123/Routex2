@@ -6,6 +6,7 @@ use App\Clases\Utilitat;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\IncotermsResource;
 use App\Models\Incoterm;
+use App\Models\IncotermPaso;
 use App\Models\TipoIncoterm;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -31,10 +32,23 @@ class IncotermController extends Controller
             $tipo->codi = strtoupper($request->codi);
             $tipo->nom = $request->nom;
             $tipo->save();
+
             $incoterm = new Incoterm();
             $incoterm->tipus_inconterm_id = $tipo->id;
             $incoterm->tracking_steps_id = $request->tracking_steps_id;
             $incoterm->save();
+
+            //Control de si llegan los pasos
+            if ($request->has('pasosSeleccionados') && is_array($request->pasosSeleccionados)) {
+                foreach ($request->pasosSeleccionados as $key => $stepId) {
+                    $intermedia = new IncotermPaso();
+                    $intermedia->incoterm_id = $incoterm->id;
+                    $intermedia->tracking_step_id = $stepId;
+                    $intermedia->orden = $key + 1;
+                    $intermedia->save();
+                }
+            }
+
             $response = (new IncotermsResource($incoterm))
             ->response()
             ->setStatusCode(201);
