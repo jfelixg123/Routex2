@@ -48,7 +48,7 @@
         <li><a href="#" class="flex items-center gap-2 p-2 rounded hover:bg-gray-700">⚙️ Configuración</a></li>
       </ul>
     </div>
-    <div>
+    <div v-if="props.vistaActual !== 'nueva-oferta'">
       <button
       @click="$emit('cambiarVista', 'nueva-oferta')"
       class="w-full px-4 py-2 bg-orange-500 text-white font-semibold rounded hover:bg-orange-600 transition">
@@ -59,8 +59,9 @@
 </template>
 
 <script setup>
+
 const name = 'MenuLateralComponent';
-defineProps({
+const props = defineProps({
   vistaActual: {
     type: String,
     default: 'dashboard'
