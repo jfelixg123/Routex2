@@ -27,12 +27,13 @@
     import SeguimientoController from './componentesTracks/SeguimientoController.vue';
 
     // Estado que controla qué se ve en pantalla
-    const vistaActual = ref('dashboard');
+    const vistaActual = ref(localStorage.getItem('ultimaVista') || 'dashboard');
 
     const dashboardKey = ref(0);
     // Función para cambiar la vista
     const actualizarVista = (nuevaVista) => {
         vistaActual.value = nuevaVista;
+         localStorage.setItem('ultimaVista', nuevaVista);
 
         if (nuevaVista === 'dashboard') {
             dashboardKey.value++;
