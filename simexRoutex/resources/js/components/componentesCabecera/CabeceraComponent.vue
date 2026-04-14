@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white shadow-sm px-8 flex items-center justify-between border-b">
 
-    <!-- IZQUIERDA: LOGO Y MENÚ -->
+    <!-- IZQUIERDA: LLOGO Y MENÚ -->
     <div class="flex items-center gap-10">
       <!-- Logo -->
       <div class="flex items-center gap-2">
