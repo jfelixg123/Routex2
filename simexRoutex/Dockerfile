@@ -1,5 +1,5 @@
 # -------------------------------
-# ETAPA 1: Build frontend (Node)
+# ETAPA 1: Build frontend  (Node)
 # -------------------------------
 FROM node:20 AS build-stage
 WORKDIR /app

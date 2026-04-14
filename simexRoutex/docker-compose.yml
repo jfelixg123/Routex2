@@ -39,6 +39,8 @@ services:
       - ollama_data:/root/.ollama
     networks:
       - simex-network
+    entrypoint: /bin/sh
+    command: -c "ollama serve & sleep 10 && ollama pull llama3.1 && wait"
 
   # N8N
   n8n:
