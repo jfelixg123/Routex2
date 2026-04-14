@@ -74,3 +74,6 @@ docker exec -it simex-n8n ping app
 docker-compose down -v  
 
 
+docker-compose up -d --build
+docker exec -it simex-ollama ollama pull llama3.1
+docker exec -it simex-app npm run build
