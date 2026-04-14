@@ -69,7 +69,8 @@ http://localhost:5678 --
 opcional
 docker exec -it simex-app php artisan storage:link
 
-docker-compose up -d --build          
+docker-compose up -d --build    
+docker exec -it simex-ollama ollama list      
 docker exec -it simex-n8n ping app  
 docker-compose down -v  
 
