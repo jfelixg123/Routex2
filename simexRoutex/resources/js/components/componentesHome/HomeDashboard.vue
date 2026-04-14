@@ -12,8 +12,9 @@
             <!-- Primera vista -->
             <div v-if="mostrar === 'dashboard'">
 
+                <!-- DASHBOARD DE OPERADOR -->
 
-                <div v-if="rol === 1">
+                <div v-if="props.rol === 1">
                     <h2 class="text-2xl font-semibold mb-4">Ofertas Activas</h2>
                     <OfertasActivasComponent />
 
@@ -34,6 +35,8 @@
                         <IncotermsComponent></IncotermsComponent>
                     </div>
                 </div>
+
+                <!-- DASHBOARD DE CLIENTE -->
 
                 <div v-else>
                     <h2 class="text-2xl font-semibold mb-4">New Offers</h2>
