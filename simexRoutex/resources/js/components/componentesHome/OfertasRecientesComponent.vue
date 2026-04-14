@@ -12,7 +12,7 @@
     </div>
 
     <!-- LISTA -->
-    <div class="space-y-4 max-h-[500px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300">
+    <div class="space-y-4 max-h-[430px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300">
 
       <div
         v-for="oferta in ofertas"
@@ -36,6 +36,7 @@
             </p>
           </div>
         </div>
+
 
         <!-- ESTADO -->
         <span

@@ -11,6 +11,7 @@ services:
       - .:/var/www
       - /var/www/node_modules
       - build_data:/var/www/public/build
+      - ./storage/app/public:/var/www/storage/app/public
     networks:
       - simex-network
 
