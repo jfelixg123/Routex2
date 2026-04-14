@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h2 class="text-xl font-semibold mb-4">New Offers</h2>
-
     <div class="grid grid-cols-3 gap-6">
       <div v-for="offer in offers" :key="offer.id" class="bg-white rounded-xl shadow p-4">
 

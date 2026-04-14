@@ -72,12 +72,10 @@ export default {
     methods: {
         async login() {
             try {
-                const res = await axios.post('/login', {
+                await axios.post('/login', {
                     correu: this.email,
                     contrasenya: this.password
                 });
-
-                localStorage.setItem('token', res.data.token);
 
                 this.$router.push('/dashboard');
 
