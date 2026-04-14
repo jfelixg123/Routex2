@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Oferta;
 use App\Models\OfertaSeguimiento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PasosController extends Controller
 {
@@ -75,5 +76,33 @@ class PasosController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function subirDocumento(Request $request, $id)
+    {
+        $request->validate([
+            'documento' => 'required|file|max:20480',
+        ]);
+
+        $seguimiento = OfertaSeguimiento::findOrFail($id);
+
+        if ($request->hasFile('documento')) {
+            // --- LOGICA DE BORRADO ---
+            if ($seguimiento->documento_path) {
+                // Borramos el archivo físico del disco 'public'
+                Storage::disk('public')->delete($seguimiento->documento_path);
+            }
+
+            // --- GUARDAR NUEVO ---
+            $nombre = "oferta_" . $seguimiento->oferta_id . "_h_". $id . "_" . time() . "." . $request->documento->extension();
+            $path = $request->file('documento')->storeAs('documentos', $nombre, 'public');
+
+            $seguimiento->documento_path = $path;
+            $seguimiento->save();
+
+            return response()->json(['path' => $path], 200);
+        }
+
+        return response()->json(['error' => 'No hay archivo'], 400);
     }
 }
