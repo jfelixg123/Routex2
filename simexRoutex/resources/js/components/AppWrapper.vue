@@ -1,13 +1,13 @@
 <template>
     <div class="flex min-h-screen w-full">
         <!-- 1. Menú Lateral: Escuchamos el evento 'cambiarVista' -->
-        <MenuLateralComponent :vistaActual="vistaActual" @cambiarVista="actualizarVista" />
+        <MenuLateralComponent :vistaActual="vistaActual" @cambiarVista="actualizarVista"  />
 
         <!-- 2. Contenido Principal: Le pasamos la vista actual como Prop -->
         <div class="flex-1 flex flex-col">
             <HomeDashboard
                 v-if="vistaActual === 'dashboard' || vistaActual === 'nueva-oferta' || vistaActual === 'ver-oferta'"
-                :mostrar="vistaActual" :key="dashboardKey" @cambiarVista="actualizarVista" :ofertaSeleccionada="ofertaSeleccionada" @verDetalle="abrirDetalle" />
+                :mostrar="vistaActual" :key="dashboardKey" @cambiarVista="actualizarVista" :ofertaSeleccionada="ofertaSeleccionada" @verDetalle="abrirDetalle" :rol="user?.value?.rol_id" />
 
             <IncotermsComponent v-if="vistaActual === 'incoterms'"></IncotermsComponent>
             <UsuariosComponent v-if="vistaActual === 'usuaris'"></UsuariosComponent>
@@ -28,6 +28,8 @@
 
     // Estado que controla qué se ve en pantalla
     const vistaActual = ref(localStorage.getItem('ultimaVista') || 'dashboard');
+
+    const user = JSON.parse(localStorage.getItem('user'));
 
     const dashboardKey = ref(0);
     // Función para cambiar la vista
