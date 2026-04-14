@@ -72,3 +72,5 @@ docker exec -it simex-app php artisan storage:link
 docker-compose up -d --build          
 docker exec -it simex-n8n ping app  
 docker-compose down -v  
+
+
