@@ -15,7 +15,7 @@ jobs:
       - name: Login a Docker Hub
         uses: docker/login-action@v4
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: jfelixg123
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build y Push
@@ -23,4 +23,4 @@ jobs:
         with:
           context: ./simexRoutex
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/routex_image:latest
+          tags: jfelixg123/routex_image:latest
