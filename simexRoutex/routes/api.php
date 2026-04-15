@@ -32,6 +32,12 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+// Route::middleware('auth:sanctum')->get('/superset-token', function (Request $request) {
+//     return [
+//         "token" => generarTokenSuperset($request->user())
+//     ];
+// });
+
 Route::put('/perfil', [UsuariController::class, 'updatePerfil'])
     ->middleware('auth:sanctum');
 

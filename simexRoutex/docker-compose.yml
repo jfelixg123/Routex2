@@ -16,6 +16,33 @@ services:
     networks:
       - simex-network
 
+  spark:
+    image: apache/spark:3.5.1
+    environment:
+      - SPARK_MODE=master
+    volumes:
+      - ./datos:/opt/spark/datos
+      - ./spark-warehouse:/opt/spark/spark-warehouse
+    ports:
+      - "10000:10000" # Thrift Server (SQL para Superset)
+      - "8080:8080" # Spark Master UI
+    command: /bin/bash -c "/opt/spark/sbin/start-thriftserver.sh --master local[*] --conf spark.sql.warehouse.dir=/opt/spark/spark-warehouse; tail -f /opt/spark/logs/*.out"
+
+  superset:
+    build:
+      context: .
+      dockerfile: Dockerfile.superset
+    ports:
+      - "8088:8088"
+    environment:
+      - SUPERSET_SECRET_KEY=clase_datos_2024
+    depends_on:
+      - spark
+    volumes:
+      - ./superset_home:/app/superset_home
+    command: >
+      /bin/bash -c "mkdir -p /app/superset_home && superset db upgrade && superset fab create-admin --username admin --firstname admin --lastname admin --email admin@admin.com --password admin && superset init && /usr/bin/run-server.sh --host 0.0.0.0 --port 8088"
+
   # El servidor web Nginx
   nginx:
     image: nginx:alpine
