@@ -64,7 +64,8 @@ networks:
     driver: bridge
 
 volumes:
-  build_data:
+  #build_data:
+  storage_public:
   ollama_data:
   n8n_data:
 
