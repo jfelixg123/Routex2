@@ -8,11 +8,10 @@ services:
     restart: unless-stopped
     working_dir: /var/www
     volumes:
-      - storage_public:/var/www/storage/app/public
-      #- .:/var/www
-      #- /var/www/node_modules
-      #- build_data:/var/www/public/build
-      #- ./storage/app/public:/var/www/storage/app/public
+      - .:/var/www
+      - /var/www/node_modules
+      - build_data:/var/www/public/build
+      - ./storage/app/public:/var/www/storage/app/public
     networks:
       - simex-network
 
@@ -22,12 +21,11 @@ services:
     container_name: simex-nginx
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
-      #- .:/var/www
-      #- build_data:/var/www/public/build
-      #- ./docker/nginx/conf.d:/etc/nginx/conf.d
-      - ./simexRoutex/docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      - .:/var/www
+      - build_data:/var/www/public/build
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
     networks:
       - simex-network
     depends_on:
@@ -67,8 +65,6 @@ networks:
     driver: bridge
 
 volumes:
-  #build_data:
-  storage_public:
+  build_data:
   ollama_data:
   n8n_data:
-
