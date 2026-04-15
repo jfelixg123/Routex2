@@ -3,7 +3,7 @@
         <!-- Parte del home -->
         <div class="bg-gray-100">
             <CabeceraComponent :vistaActual="mostrar === 'nueva-oferta' ? 'ofertas' : mostrar"
-                :pasoFormulario="pasoActualHijo" />
+                :pasoFormulario="pasoActualHijo" :user="user" />
         </div>
 
         <!-- Controlamos el contenido dinamico en  esta parte ya quer lo vamos a controlar con la props recibida emitida por el propio boton -->
@@ -12,24 +12,13 @@
             <!-- Primera vista -->
             <div v-if="mostrar === 'dashboard'">
 
+                <h2 class="text-2xl font-semibold mb-4">Welcome {{ user?.nom }}</h2>
+
                 <!-- DASHBOARD DE OPERADOR -->
 
-                <div v-if="props.rol === 1">
+                <div v-if="esOperador">
                     <h2 class="text-2xl font-semibold mb-4">Ofertas Activas</h2>
                     <OfertasActivasComponent />
-
-                    <div class="pt-6 space-y-6">
-                        <OfertasRecientesComponent @verDetalle="$emit('verDetalle', $event)" />
-                    </div>
-
-                    <div v-if="mostrar === 'nueva-oferta'">
-                        <NuevaOfertaComponent @cambiarVista="$emit('cambiarVista', $event)"
-                            @actualizarPasoHeader="sincronizarPaso"></NuevaOfertaComponent>
-                    </div>
-                    <div v-if="mostrar === 'ver-oferta'">
-                        <NuevaOfertaComponent :ofertaAEditar="ofertaSeleccionada"
-                            @cambiarVista="$emit('cambiarVista', $event)" />
-                    </div>
 
                     <div v-if="mostrar === 'incoterms'">
                         <IncotermsComponent></IncotermsComponent>
@@ -39,25 +28,32 @@
                 <!-- DASHBOARD DE CLIENTE -->
 
                 <div v-else>
-                    <h2 class="text-2xl font-semibold mb-4">New Offers</h2>
+                    <h2 class="text-2xl font-semibold mb-4">Nuevas Ofertas</h2>
+                        <NuevasOfertasClienteCards :ofertas="ofertas"></NuevasOfertasClienteCards>
+                </div>
 
-                    <div>
-                        <p>Dashboard cliente aquí</p>
-                    </div>
-
-                    <div>
-                        <p></p>
-                    </div>
+                <div class="pt-6 space-y-6">
+                    <OfertasRecientesComponent @verDetalle="$emit('verDetalle', $event)" />
                 </div>
 
             </div>
+
+                <div v-if="mostrar === 'nueva-oferta'">
+                        <NuevaOfertaComponent @cambiarVista="$emit('cambiarVista', $event)"
+                            @actualizarPasoHeader="sincronizarPaso"></NuevaOfertaComponent>
+                </div>
+
+                <div v-if="mostrar === 'nueva-peticion'">
+                        <NuevaPeticionComponente @cambiarVista="$emit('cambiarVista', $event)" />
+                    </div>
 
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import axios from 'axios';
 
 import OfertasActivasComponent from './OfertasActivasComponent.vue';
 import CabeceraComponent from '../componentesCabecera/CabeceraComponent.vue';
@@ -65,17 +61,35 @@ import OfertasRecientesComponent from './OfertasRecientesComponent.vue';
 import IncotermsComponent from '../componentesIncoterms/IncotermsComponent.vue';
 
 import NuevaOfertaComponent from '../componentesCrearOferta/NuevaOfertaComponent.vue';
+import NuevasOfertasClienteCards from './NuevasOfertasClienteCards.vue';
+import NuevaPeticionComponente from '../componenteCrearPeticion/NuevaPeticionComponente.vue';
 const emit = defineEmits(['cambiarVista', 'verDetalle', 'actualizarPasoHeader'])
 
 const props = defineProps({
+    user: Object,
     mostrar: {
         type: String,
         default: 'dashboard', // Por defecto muestra el panel
-        rol: Number
 
     },
     ofertaSeleccionada: Object
 });
+
+const ofertas = ref([]);
+
+const getOfertas = async () => {
+    try {
+        const res = await axios.get('/ofertas');
+
+        ofertas.value = res.data;
+
+        console.log('OFERTAS GUARDADAS:', ofertas.value);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const esOperador = computed(() => Number(props.user?.rol_id) === 1);
 
 const pasoActualHijo = ref(1);
 
@@ -87,6 +101,10 @@ const sincronizarPaso = (nuevoPaso) => {
     };
     pasoActualHijo.value = nombres[nuevoPaso];
 };
+
+onMounted(() => {
+    getOfertas();
+});
 </script>
 
 <style scoped></style>

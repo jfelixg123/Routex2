@@ -1,0 +1,23 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish_images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: push image to docker hub
+        run: echo "${{ secrets.P_DOCK }}" | docker login -u josepguiusilles --password-stdin
+
+      - name: build image
+        run: docker build -t josepguiusilles/routex_image:latest ./simexRoutex
+
+      - name: Push image
+        run: docker push josepguiusilles/routex_image:latest
+        

@@ -8,7 +8,7 @@ use App\Models\Usuari;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Pail\ValueObjects\Origin\Console;
+use Illuminate\Support\Facades\Auth;
 
 class UsuariController extends Controller
 {
@@ -31,7 +31,6 @@ class UsuariController extends Controller
             $response = response()->json([
                 'usuari' => new UsuariResource($user),
                 'token' => $token,
-                'user' => $user
             ], 200);
 
         } else {
@@ -114,6 +113,91 @@ class UsuariController extends Controller
         return $response;
     }
 
+
+
+    public function updatePerfil(Request $request)
+    {
+        $usuari = $request->user();
+
+        if (!$usuari) {
+            return response()->json([
+                'error' => 'Usuari no autenticat'
+            ], 401);
+        }
+
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'cognoms' => 'required|string|max:255',
+            'correu' => 'required|email|max:255',
+            'tlfn' => 'nullable|string|max:20',
+        ]);
+
+        $usuari->nom = $request->nom;
+        $usuari->cognoms = $request->cognoms;
+        $usuari->correu = $request->correu;
+        $usuari->tlfn = $request->tlfn;
+
+        try {
+            $usuari->save();
+
+            return response()->json([
+                'message' => 'Perfil actualizado correctamente',
+                'user' => $usuari
+            ], 200);
+
+        } catch (QueryException $e) {
+
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 400);
+        }
+    }
+
+    /**
+     * Cambia la contraseña del cliente
+     */
+
+    public function changePassword(Request $request)
+    {
+        $usuari = $request->user();
+
+        if (!$usuari) {
+            return response()->json([
+                'error' => 'Usuari no autenticat'
+            ], 401);
+        }
+
+        // Validación
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed'
+        ]);
+
+        // Comprobar contraseña actual
+        if (!Hash::check($request->current_password, $usuari->contrasenya)) {
+            return response()->json([
+                'error' => 'Contraseña actual incorrecta'
+            ], 400);
+        }
+
+        // Asignación manual (igual que tu estilo)
+        $usuari->contrasenya = bcrypt($request->new_password);
+
+        try {
+            $usuari->save();
+
+            return response()->json([
+                'message' => 'Contraseña actualizada correctamente'
+            ], 200);
+
+        } catch (QueryException $e) {
+
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 400);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -141,45 +225,47 @@ class UsuariController extends Controller
         return $response;
     }
 
-    public function buscarClientes(Request $request) {
-        try{
+    public function buscarClientes(Request $request)
+    {
+        try {
             $buscador = $request->query('q');
             $usuaris = ([]);
 
-            if (!$buscador){
+            if (!$buscador) {
                 $usuaris = ([]);
-            }else{
+            } else {
                 $usuaris = Usuari::where('nom', 'LIKE', "%{$buscador}%")
-                            ->limit(100)
-                            ->get();
+                    ->limit(100)
+                    ->get();
             }
 
             $response = response()->json($usuaris);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $response = response()->json(['error' => $e->getMessage()], 500);
         }
 
         return $response;
     }
 
-    public function buscarComercial(Request $request) {
-        try{
+    public function buscarComercial(Request $request)
+    {
+        try {
             $buscador = $request->query('q');
             $usuaris = ([]);
 
-            if (!$buscador){
+            if (!$buscador) {
                 $usuaris = ([]);
-            }else{
+            } else {
                 $usuaris = Usuari::where('nom', 'LIKE', "%{$buscador}%")
-                            ->whereHas('rol', function($query){
-                                $query->where('id', 2);
-                            })
-                            ->limit(100)
-                            ->get();
+                    ->whereHas('rol', function ($query) {
+                        $query->where('id', 2);
+                    })
+                    ->limit(100)
+                    ->get();
             }
 
             $response = response()->json($usuaris);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $response = response()->json(['error' => $e->getMessage()], 500);
         }
 
@@ -187,12 +273,12 @@ class UsuariController extends Controller
     }
 
     public function logout(Request $request)
-{
-    $request->user()->currentAccessToken()->delete();
+    {
+        $request->user()->currentAccessToken()->delete();
 
-    return response()->json([
-        'message' => 'Logout correcto'
-    ]);
+        return response()->json([
+            'message' => 'Logout correcto',
+        ]);
 
-}
+    }
 }

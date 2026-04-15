@@ -32,9 +32,15 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('/login', [UsuariController::class, 'login']);
-Route::post('/logout', [UsuariController::class, 'logout'])
+Route::put('/perfil', [UsuariController::class, 'updatePerfil'])
     ->middleware('auth:sanctum');
+
+Route::post('/change-password', [UsuariController::class, 'changePassword'])
+    ->middleware('auth:sanctum');
+
+Route::post('/login', [UsuariController::class, 'login']);
+
+Route::post('/logout', [UsuariController::class, 'logout']);
 
 
 Route::apiResource('aeroports',         AeroportController::class);

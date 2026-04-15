@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 //Toda la app usara esta porque toda la app son componentes.
 Route::get('/', function () {
     return view('layouts.home');
@@ -10,4 +11,3 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('auth.login');
 });
-

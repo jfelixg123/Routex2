@@ -21,8 +21,6 @@ services:
     image: nginx:alpine
     container_name: simex-nginx
     restart: unless-stopped
-    ports:
-      - "8080:80"
     volumes:
       - .:/var/www
       - build_data:/var/www/public/build
@@ -69,3 +67,4 @@ volumes:
   build_data:
   ollama_data:
   n8n_data:
+
