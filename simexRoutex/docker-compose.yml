@@ -14,6 +14,7 @@ services:
       - ./storage/app/public:/var/www/storage/app/public
     networks:
       - simex-network
+    command: sh -c "composer install && php artisan storage:link && php-fpm"
 
   # El servidor web Nginx
   nginx:
