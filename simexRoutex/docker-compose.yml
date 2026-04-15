@@ -52,12 +52,13 @@ services:
       - N8N_HOST=localhost
       - N8N_PORT=5678
       - N8N_PROTOCOL=http
+    depends_on:
+      ollama:
+        condition: service_started
     volumes:
-      - n8n_data:/home/node/.n8n
+      - ./n8n_data:/home/node/.n8n
     networks:
       - simex-network
-    depends_on:
-      - ollama
 
 networks:
   simex-network:

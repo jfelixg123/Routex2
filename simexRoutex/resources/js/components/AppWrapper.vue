@@ -14,6 +14,7 @@
             <ComunicacionesComponent v-if="vistaActual === 'comunicaciones'"></ComunicacionesComponent>
             <SeguimientoController v-if="vistaActual === 'seguimiento'"></SeguimientoController>
         </div>
+        <ChatBotComponent />
     </div>
 </template>
 
@@ -25,6 +26,7 @@
     import UsuariosComponent from './usuariosComponent/UsuariosComponent.vue';
     import ComunicacionesComponent from './componentesComunicacion/ComunicacionesComponent.vue';
     import SeguimientoController from './componentesTracks/SeguimientoController.vue';
+    import ChatBotComponent from './componentesChatBot/ChatBotComponent.vue';
 
     // Estado que controla qué se ve en pantalla
     const vistaActual = ref(localStorage.getItem('ultimaVista') || 'dashboard');
