@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: push image to docker hub
-        run: echo "${{ secrets.P_DOCK }}" | docker login -u jeanfg --password-stdin
+        run: echo "${{ secrets.P_DOCK }}" | docker login -u josepguiusilles --password-stdin
 
       - name: build image
         run: docker build -t jeanfg/routex_image:latest .
