@@ -21,10 +21,13 @@ services:
     image: nginx:alpine
     container_name: simex-nginx
     restart: unless-stopped
+    ports:
+      - "80:80"
     volumes:
-      - .:/var/www
-      - build_data:/var/www/public/build
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      #- .:/var/www
+      #- build_data:/var/www/public/build
+      #- ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./simexRoutex/docker/nginx/conf.d:/etc/nginx/conf.d:ro
     networks:
       - simex-network
     depends_on:
