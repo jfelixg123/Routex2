@@ -4,3 +4,4 @@ vendor
 storage/*.log
 .dockerignore
 Dockerfile
+public/storage
