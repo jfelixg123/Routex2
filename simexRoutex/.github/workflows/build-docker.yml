@@ -1,8 +1,10 @@
 name: Build and Push Docker Image
 
+name: Build and Push Docker Image
+
 on:
   push:
-    branches: [main]
+    branches: [main] # Se ejecutará cada vez que subas cambios a 'main'
 
 jobs:
   build:
@@ -21,6 +23,8 @@ jobs:
       - name: Build y Push
         uses: docker/build-push-action@v6
         with:
-          context: .
+          # IMPORTANTE: Pon la ruta donde está tu Dockerfile
+          context: ./simexRoutex
           push: true
+          # Usará tus secretos para ponerle nombre a la imagen
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/routex_image:latest
