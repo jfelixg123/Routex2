@@ -3,7 +3,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main
+      - conex-api-steam
 
 jobs:
   publish_images:
@@ -13,11 +13,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: push image to docker hub
-        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u jeanfg --password-stdin
+        run: echo "${{ secrets.P_DOCK }}" | docker login -u josepguiusilles --password-stdin
 
       - name: build image
-        run: docker build -t jeanfg/devops-qr-code-backend:latest .
+        run: docker build -t josepguiusilles/devops-qr-code-backend:latest .
 
       - name: Push image
-        run: docker push jeanfg/devops-qr-code-backend:latest
+        run: docker push josepguiusilles/devops-qr-code-backend:latest
         
