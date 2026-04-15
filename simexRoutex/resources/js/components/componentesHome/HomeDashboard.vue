@@ -29,7 +29,7 @@
 
                 <div v-else>
                     <h2 class="text-2xl font-semibold mb-4">Nuevas Ofertas</h2>
-                        <NuevasOfertasClienteCards />
+                        <NuevasOfertasClienteCards :ofertas="ofertas"></NuevasOfertasClienteCards>
                 </div>
 
                 <div class="pt-6 space-y-6">
@@ -52,7 +52,8 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import axios from 'axios';
 
 import OfertasActivasComponent from './OfertasActivasComponent.vue';
 import CabeceraComponent from '../componentesCabecera/CabeceraComponent.vue';
@@ -74,6 +75,20 @@ const props = defineProps({
     ofertaSeleccionada: Object
 });
 
+const ofertas = ref([]);
+
+const getOfertas = async () => {
+    try {
+        const res = await axios.get('/ofertas');
+
+        ofertas.value = res.data;
+
+        console.log('OFERTAS GUARDADAS:', ofertas.value);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 const esOperador = computed(() => Number(props.user?.rol_id) === 1);
 
 const pasoActualHijo = ref(1);
@@ -86,6 +101,10 @@ const sincronizarPaso = (nuevoPaso) => {
     };
     pasoActualHijo.value = nombres[nuevoPaso];
 };
+
+onMounted(() => {
+    getOfertas();
+});
 </script>
 
 <style scoped></style>

@@ -7,8 +7,13 @@ const url = import.meta.env.VITE_APP_URL;
 
 window.axios.defaults.baseURL = `${url}/api/`;
 
-const token = localStorage.getItem('token');
 
-if (token) {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-}
+axios.interceptors.request.use(config => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+});
