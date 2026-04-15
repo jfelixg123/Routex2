@@ -16,8 +16,8 @@ jobs:
         run: echo "${{ secrets.P_DOCK }}" | docker login -u josepguiusilles --password-stdin
 
       - name: build image
-        run: docker build -t jeanfg/routex_image:latest .
+        run: docker build -t josepguiusilles/routex_image:latest .
 
       - name: Push image
-        run: docker push jeanfg/routex_image:latest
+        run: docker push josepguiusilles/routex_image:latest
         
