@@ -2,15 +2,15 @@
   <div class="bg-white p-4 rounded shadow flex justify-between items-center">
 
     <div>
-      <p class="font-bold">#{{ oferta.codigo }}</p>
+      <p class="font-bold">#{{ oferta.nombre }}</p>
       <p class="text-sm text-gray-500">
-        {{ oferta.origen }} → {{ oferta.destino }}
+        {{ oferta.port_desti_id }} → {{ oferta.destino }}
       </p>
     </div>
 
     <div class="text-right">
-      <p class="font-bold">{{ oferta.precio }} €</p>
-      <p class="text-sm">{{ oferta.fecha }}</p>
+      <p class="font-bold">{{ oferta.valor }} €</p>
+      <p class="text-sm">{{ oferta.data_validessa_inicial }}</p>
     </div>
 
     <!-- ESTADO -->

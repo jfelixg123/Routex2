@@ -31,7 +31,8 @@ import SeguimientoController from './componentesTracks/SeguimientoController.vue
 import PerfilUsuarioComponent from './usuariosComponent/PerfilUsuarioComponent.vue';
 import HistorialOfertasComponent from './componentesHome/HistorialOfertas.vue';
 
-const user = ref(null);
+
+const user = ref(JSON.parse(localStorage.getItem('user')));
 
 // Estado que controla qué se ve en pantalla
 const vistaActual = ref(localStorage.getItem('ultimaVista') || 'dashboard');
@@ -53,21 +54,6 @@ const abrirDetalle = (oferta) => {
     ofertaSeleccionada.value = oferta; // Guardamos los datos de la oferta clicada
     vistaActual.value = 'ver-oferta'; // Cambiamos la vista
 };
-
-//OBTENEMOS USUARIOS DESDE LA API
-
-const getUser = async () => {
-    try {
-        const res = await axios.get('/user');
-
-        user.value = res.data;
-
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-onMounted(getUser);
 
 </script>
 
