@@ -3,7 +3,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - conex-api-steam
+      - main
 
 jobs:
   publish_images:
@@ -13,10 +13,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: push image to docker hub
-        run: echo "${{ secrets.P_DOCK }}" | docker login -u josepguiusilles --password-stdin
+        run: echo "${{ secrets.P_DOCK }}" | docker login -u jeanfg --password-stdin
 
       - name: build image
-        run: docker build -t josepguiusilles/routex_image:latest .
+        run: docker build -t jeanfg/routex_image:latest .
 
       - name: Push image
-        run: docker push josepguiusilles/routex_image:latest
+        run: docker push jeanfg/routex_image:latest
+        
