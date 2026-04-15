@@ -16,7 +16,7 @@ jobs:
         run: echo "${{ secrets.P_DOCK }}" | docker login -u josepguiusilles --password-stdin
 
       - name: build image
-        run: docker build -t josepguiusilles/routex_image:latest .
+        run: docker build -t josepguiusilles/routex_image:latest ./simexRoutex
 
       - name: Push image
         run: docker push josepguiusilles/routex_image:latest
