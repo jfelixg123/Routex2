@@ -43,7 +43,7 @@
         <span class="absolute left-3 top-2 text-gray-400">🔍</span>
       </div>
       <div class="text-right">
-        <p class="text-sm font-bold text-gray-800 leading-tight">Admin User</p>
+        <p class="text-sm font-bold text-gray-800 leading-tight">{{ user?.nom }}</p>
         <p class="text-xs text-gray-400">Logistics Manager</p>
       </div>
       <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white">
@@ -56,6 +56,7 @@
 
 <script setup>
     defineProps({
+        user: Object,
     vistaActual: {
         type: String,
         default: 'nueva-oferta'
