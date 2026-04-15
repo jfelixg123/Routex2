@@ -4,7 +4,9 @@
 set -e
 
 # Crear el enlace simbólico de Laravel (storage -> public)
-
+if [ -L "public/storage" ]; then
+    rm public/storage
+fi
 # Usamos --force para que no falle si ya existe
 echo "Cerrando brechas: Creando enlace simbólico de storage..."
 php artisan storage:link --force

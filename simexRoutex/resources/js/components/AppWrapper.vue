@@ -17,6 +17,7 @@
             <PerfilUsuarioComponent v-if="vistaActual === 'perfil'" :user="user" @actualizarUser="user = $event"/>
             <HistorialOfertasComponent v-if="vistaActual === 'historico'" />
         </div>
+        <ChatBotComponent />
     </div>
 </template>
 
@@ -30,6 +31,8 @@ import ComunicacionesComponent from './componentesComunicacion/ComunicacionesCom
 import SeguimientoController from './componentesTracks/SeguimientoController.vue';
 import PerfilUsuarioComponent from './usuariosComponent/PerfilUsuarioComponent.vue';
 import HistorialOfertasComponent from './componentesHome/HistorialOfertas.vue';
+import ChatBotComponent from './componentesChatBot/ChatBotComponent.vue';
+
 
 
 const user = ref(JSON.parse(localStorage.getItem('user')));
