@@ -116,6 +116,8 @@ return [
                 // Esta línea es la que el Driver 18 lee sí o sí
                 'TrustServerCertificate' => true,
             ],
+            'encrypt' => 'no', // o false
+            'trust_server_certificate' => 'true',
         ],
 
     ],
