@@ -32,7 +32,7 @@ services:
       - app
 
 
-  # N8N
+  # N8N Servicio
   n8n:
     image: n8nio/n8n:latest
     container_name: simex-n8n
