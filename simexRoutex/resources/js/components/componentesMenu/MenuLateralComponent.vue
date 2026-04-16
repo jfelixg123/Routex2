@@ -1,7 +1,10 @@
 <template>
     <div class="w-64 bg-gray-800 text-white flex flex-col justify-between min-h-screen p-6">
         <div>
-            <h2 class="text-xl font-semibold mb-6">SimexRouteX</h2>
+            <div class="flex items-center gap-2 mb-6">
+                <div class="bg-orange-500 text-white w-8 h-8 flex items-center justify-center rounded-lg font-bold">R</div>
+                <span class="text-xl font-bold text-white">Route<span class="text-orange-500">X</span></span>
+            </div>
 
             <!-- MENU LATERAL OPERADOR -->
 
