@@ -62,7 +62,7 @@
             </span>
           </div>
 
-          <!--Parte de Documentos-->
+          <!--Parte de Documentos modifico para que se pueda mergear-->
           <div class="mt-3 bg-gray-50/50 border border-dashed border-gray-200 rounded-xl p-3 w-full max-w-[240px]">
             <!-- Si hay archivo -->
             <div v-if="p.documento_path" class="flex items-center justify-between gap-2 mb-2">
