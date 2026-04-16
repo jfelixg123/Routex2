@@ -1,7 +1,4 @@
 <template>
-    <div class="bg-black text-yellow-400 p-2 text-xs">
-    DEBUG CABECERA: La prop 'vistaActual' vale -> {{ vistaActual }}
-</div>
   <div class="bg-white shadow-sm px-8 flex items-center justify-between border-b">
 
     <!-- Página Y MENÚ -->

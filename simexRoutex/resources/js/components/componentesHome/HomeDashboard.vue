@@ -6,9 +6,6 @@
                 :pasoFormulario="pasoActualHijo"
                 :user="user"
             />
-            <div class="bg-black text-green-400 p-2 text-xs">
-    DEBUG HOME: La variable 'mostrar' vale -> {{ mostrar }}
-</div>
         </div>
 
         <div class="flex-1 p-6 bg-gray-100">
