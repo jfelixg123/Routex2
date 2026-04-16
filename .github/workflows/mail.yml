@@ -1,0 +1,25 @@
+on:
+  push:
+    branches: ["*"]
+
+jobs:
+
+  notify-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar correo
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ://gmail.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          
+          subject: "Nuevo Push en la rama ${{ github.ref_name }}"
+          to: jguius2021@cepnet.net
+          from: GitHub Actions
+          body: |
+            Se ha realizado un push en el repositorio: ${{ github.repository }}
+            Rama: ${{ github.ref_name }}
+            Autor: ${{ github.actor }}
+            Mensaje: ${{ github.event.head_commit.message }}
