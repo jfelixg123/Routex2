@@ -36,14 +36,14 @@
       </table>
     </div>
 
-    <!-- PANEL LATERAL DE PASOS (ORQUESTADOR) -->
+    <!-- PANEL LATERAL DE PASOS -->
     <div v-if="ofertaSeleccionada" class="w-96 bg-white rounded-3xl shadow-2xl border border-orange-100 p-6 animate-in slide-in-from-right duration-300">
       <div class="flex justify-between items-center mb-8">
         <h3 class="font-bold text-slate-800">Seguimiento #{{ ofertaSeleccionada.id }}</h3>
         <button @click="ofertaSeleccionada = null" class="text-gray-400 text-2xl">&times;</button>
       </div>
 
-      <!-- LINEA DE TIEMPO (STEPPER) -->
+      <!-- LINEA DE TIEMPO -->
       <div class="relative space-y-8 before:absolute before:inset-0 before:ml-4 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-orange-500 before:via-gray-200 before:to-gray-100">
         <div v-for="p in pasos" :key="p.id" class="relative flex items-center gap-4">
           <!-- Checkbox Naranja -->
