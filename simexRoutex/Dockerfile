@@ -48,7 +48,7 @@ COPY --from=build-stage /app/public/build ./public/build
 RUN composer install --no-dev --optimize-autoloader
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# 1. Script entry
+# 1. Script entry - no se si funcionara en el server
 COPY docker/app/entrypoint.sh /usr/local/bin/entrypoint.sh
 # 2. Le damos permisos de ejecución
 RUN chmod +x /usr/local/bin/entrypoint.sh

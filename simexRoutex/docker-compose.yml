@@ -42,7 +42,7 @@ services:
     entrypoint: /bin/sh
     command: -c "ollama serve & sleep 10 && ollama pull llama3.1 && wait"
 
-  # N8N
+  # N8N Servicio
   n8n:
     image: n8nio/n8n:latest
     container_name: simex-n8n

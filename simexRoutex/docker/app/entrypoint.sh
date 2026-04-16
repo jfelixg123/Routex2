@@ -3,7 +3,7 @@
 # Salir inmediatamente si un comando falla
 set -e
 
-# Crear el enlace simbólico de Laravel (storage -> public)
+# Crear el enlace simbólico de Laravel (storage -> public )
 
 # Usamos --force para que no falle si ya existe
 echo "Cerrando brechas: Creando enlace simbólico de storage..."
