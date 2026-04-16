@@ -81,7 +81,7 @@
             </ul>
         </div>
 
-        <!-- CAMBIOS DE BOTONES DEPENDIENDO EL ROL QUE TENGA -->
+        <!-- CAMBIOS DE BOTONES DEPENDIENDO EL ROL QUE TENGA cdc-->
 
         <div v-if="props.vistaActual !== 'nueva-oferta'">
             <button v-if="esOperador" @click="$emit('cambiarVista', 'nueva-oferta')"
