@@ -16,7 +16,7 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           
           subject: "Nuevo Push en la rama ${{ github.ref_name }}"
-          to: jguius2021@cepnet.net
+          to: jguius2021@cepnet.net,jfelixg2324@politecnics.barcelona
           from: GitHub Actions
           body: |
             Se ha realizado un push en el repositorio: ${{ github.repository }}
