@@ -42,7 +42,7 @@
                 <li><a href="#" class="flex items-center gap-2 p-2 rounded hover:bg-gray-700">⚙️ Configuración</a></li>
             </ul>
 
-            <!-- MENU LATERAL CLIENTE -->
+            <!-- MENU LATERAL CLIENTE Solo cliente Jean?¿ to do-->
 
             <ul v-else class="space-y-3">
 
