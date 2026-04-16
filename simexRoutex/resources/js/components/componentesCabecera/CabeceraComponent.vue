@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white shadow-sm px-8 flex items-center justify-between border-b">
 
-    <!-- IZQUIERDA: LLOGO Y MENÚ -->
+    <!-- LLOGO Y MENÚ -->
     <div class="flex items-center gap-10">
       <!-- Logo -->
       <div class="flex items-center gap-2">
@@ -9,7 +9,7 @@
         <span class="text-xl font-bold text-gray-800">Route<span class="text-orange-500">X</span> Transports</span>
       </div>
 
-      <!-- Navegación estilo Pestañas -->
+      <!-- Navegación pestañas -->
       <nav v-if="vistaActual === 'ofertas'" class="flex gap-8">
         <button
           v-for="item in menuItems"

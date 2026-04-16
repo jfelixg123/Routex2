@@ -19,7 +19,7 @@
                 </select>
             </div>
 
-            <!-- Select de Empresas (Cargado de la BD) -->
+            <!-- Select de Empresas -->
             <div v-if="form.target_type === 'empresa'" class="flex flex-col gap-2 animate-in slide-in-from-left duration-200">
                 <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Seleccionar Empresa</label>
                 <select v-model="form.company_id" class="border border-gray-200 rounded-xl p-3 outline-none focus:ring-2 focus:ring-orange-400">
@@ -27,7 +27,7 @@
                 </select>
             </div>
 
-            <!-- Select de Usuarios (Cargado de la BD) -->
+            <!-- Select de Usuarios -->
             <div v-if="form.target_type === 'usuario'" class="flex flex-col gap-2 animate-in slide-in-from-left duration-200">
                 <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Seleccionar Usuario</label>
                 <select v-model="form.user_id" class="border border-gray-200 rounded-xl p-3 outline-none focus:ring-2 focus:ring-orange-400">
@@ -36,7 +36,7 @@
             </div>
             </div>
 
-            <!-- TIPO DE ALERTA (Iconos de la imagen) -->
+            <!-- TIPO DE ALERTA -->
             <div class="flex flex-col gap-2">
             <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Prioridad / Tipo</label>
             <div class="grid grid-cols-3 gap-3">
@@ -142,11 +142,11 @@
 
     const prepararEdicion = (notificacion) => {
         modoEdicion.value = true;
-        form.id = notificacion.id; // Asegúrate de añadir 'id' al reactive 'form'
+        form.id = notificacion.id;
         form.titulo = notificacion.titulo;
         form.mensaje = notificacion.mensaje;
         form.tipo_id = notificacion.tipo_id;
-        // En edición solemos bloquear el cambio de destinatarios para no complicar la lógica
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
