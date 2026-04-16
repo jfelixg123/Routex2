@@ -27,16 +27,14 @@ use App\Http\Controllers\TransportistaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuariController;
+use App\Http\Controllers\SupersetController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// Route::middleware('auth:sanctum')->get('/superset-token', function (Request $request) {
-//     return [
-//         "token" => generarTokenSuperset($request->user())
-//     ];
-// });
+Route::get('/superset/token', [SupersetController::class, 'getToken']);
 
 Route::put('/perfil', [UsuariController::class, 'updatePerfil'])
     ->middleware('auth:sanctum');

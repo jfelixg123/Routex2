@@ -5,6 +5,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: simex-app
+    ports:
+      - "8000:8000"
     restart: unless-stopped
     working_dir: /var/www
     volumes:
@@ -20,6 +22,8 @@ services:
   nginx:
     image: nginx:alpine
     container_name: simex-nginx
+    ports:
+      - "80:80"
     restart: unless-stopped
     volumes:
       - .:/var/www

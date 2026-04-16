@@ -29,3 +29,18 @@ exit
 echo "from superset.config import *" > /app/pythonpath/superset_config.py
 echo "FEATURE_FLAGS = {'ENABLE_TEMPLATE_PROCESSING': True}" >> /app/pythonpath/superset_config.py
 exit
+FEATURE_FLAGS = {
+    "EMBEDDED_SUPERSET": True,
+}
+GUEST_ROLE_NAME = "Public"
+TALISMAN_ENABLED = False
+nano /app/pythonpath/superset_config.py
+apt update && apt install nano -y
+nano /app/pythonpath/superset_config.py
+nano /app/pythonpath/superset_config.py
+vi /app/pythonpath/superset_config.py
+apt update && apt install nano -y
+nano /app/pythonpath/superset_config.py
+nano /app/pythonpath/superset_config.py
+cat /app/pythonpath/superset_config.py
+nano /app/pythonpath/superset_config.py

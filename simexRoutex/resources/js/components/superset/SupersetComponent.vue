@@ -1,5 +1,5 @@
 <template>
-  <div id="superset-container" style="height: 100%; width: 100%;" />
+  <div id="superset-container" style="height: 100%; width: 100%;"></div>/>
 </template>
 
 <style scoped>
