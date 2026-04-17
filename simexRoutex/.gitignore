@@ -25,3 +25,5 @@ Thumbs.db
 datos
 superset_home
 spark-warehouse
+n8n_data
+config/database.php
