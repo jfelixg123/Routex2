@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import MenuLateralComponent from './componentesMenu/MenuLateralComponent.vue';
 import HomeDashboard from './componentesHome/HomeDashboard.vue';
 import IncotermsComponent from './componentesIncoterms/IncotermsComponent.vue';

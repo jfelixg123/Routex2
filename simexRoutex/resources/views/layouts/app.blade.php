@@ -7,6 +7,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="bg-gray-100 flex ">
+        
         <!-- Main content -->
         <div class="flex-1 flex flex-col">
             <main >
