@@ -1,5 +1,7 @@
 FROM apache/superset:latest
-
 USER root
 RUN apt-get update && apt-get install -y build-essential python3-dev libsasl2-dev libsasl2-modules-gssapi-mit
-RUN pip install --target=/app/.venv/lib/python3.10/site-packages pyhive thrift thrift-sasl sasla
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN pip install pyhive thrift thrift-sasl sasl
+
+USER superset
