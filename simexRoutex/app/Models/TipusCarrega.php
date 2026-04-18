@@ -11,7 +11,7 @@ class TipusCarrega extends Model
     public $timestamps = false;
 
     /**
-     * Get all of the ofertas for the TipusCarrega
+     * Get all of the ofertas for the TipusCarrega Example
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

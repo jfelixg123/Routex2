@@ -17,4 +17,5 @@ chown -R www-data:www-data /var/www/storage /var/www/public/storage
 
 # Ejecutar el proceso principal del contenedor (PHP-FPM)
 echo "Arrancando orquesta: PHP-FPM listo."
-exec php-fpm
+
+exec "$@"

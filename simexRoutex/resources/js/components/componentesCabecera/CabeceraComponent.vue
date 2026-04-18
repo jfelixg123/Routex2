@@ -1,16 +1,25 @@
 <template>
   <div class="bg-white shadow-sm px-8 flex items-center justify-between border-b">
 
-    <!-- IZQUIERDA: LLOGO Y MENÚ -->
+    <!-- Página Y MENÚ -->
     <div class="flex items-center gap-10">
       <!-- Logo -->
-      <div class="flex items-center gap-2">
-        <div class="bg-orange-500 text-white w-8 h-8 flex items-center justify-center rounded-lg font-bold">R</div>
-        <span class="text-xl font-bold text-gray-800">Route<span class="text-orange-500">X</span> Transports</span>
-      </div>
+      <div class="flex items-center gap-2 h-8">
+            <div v-if="vistaActual2" class="bg-orange-500 w-8 h-8 flex items-center justify-center rounded-lg font-bold text-white">
+                     {{ String(vistaActual2).charAt(0) }}
+            </div>
+                <span class="text-xl font-bold">
+                <template v-if="vistaActual2 === 'RouteX'">
+                    Route<span class="text-orange-500">X</span>
+                </template>
+                <template v-else>
+                    {{ vistaActual2 }}
+                </template>
+            </span>
+        </div>
 
-      <!-- Navegación estilo Pestañas -->
-      <nav v-if="vistaActual === 'ofertas'" class="flex gap-8">
+      <!-- Navegación pestañas -->
+      <nav v-if="vistaActual === 'nueva-oferta' || vistaActual === 'ofertas'" class="flex gap-8">
         <button
           v-for="item in menuItems"
           :key="item.id"
@@ -55,17 +64,32 @@
 </template>
 
 <script setup>
-    defineProps({
+import { computed } from 'vue';
+    const props =defineProps({
         user: Object,
-    vistaActual: {
-        type: String,
-        default: 'nueva-oferta'
-    },
-    pasoFormulario: [String, Number]
+        vistaActual: {
+            type: String,
+            default: 'nueva-oferta'
+        },
+        pasoFormulario: [String, Number]
     });
     const menuItems = [
         { id: 'ofertas', nombre: 'Ofertas' },
         { id: 'rutas', nombre: 'Rutas y cargas' },
         { id: 'envios', nombre: 'Envio' },
     ];
+
+    const vistaActual2 = computed(() => {
+        const titulos = {
+            'dashboard': 'Dashboard',
+            'incoterms': 'Incoterms',
+            'comunicaciones': 'Comunicaciones',
+            'seguimiento': 'Seguimiento',
+            'ofertas': 'Nueva Oferta',
+            'nueva-peticion': 'Petición',
+            'usuaris': 'Usuarios'
+        };
+
+        return titulos[props.vistaActual] || 'RouteX';
+    });
 </script>

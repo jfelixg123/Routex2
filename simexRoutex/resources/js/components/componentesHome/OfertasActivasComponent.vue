@@ -1,6 +1,5 @@
 <template>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-    <!-- Tarjeta 1: Datos de tu API -->
     <OfertasCard
       titulo="Ofertas Activas"
       :valor="totalOfertas"
@@ -10,7 +9,6 @@
       subtitulo="vs. mes anterior"
     />
 
-    <!-- Tarjeta 2: Estática por ahora -->
     <OfertasCard
       titulo="Envíos Pendientes"
       valor="12"
@@ -20,7 +18,6 @@
       subtitulo="promedio 1.2h"
     />
 
-    <!-- Tarjeta 3: Estática por ahora -->
     <OfertasCard
       titulo="Tasa de Cierre"
       valor="84%"

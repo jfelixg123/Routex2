@@ -1,51 +1,51 @@
 <template>
-    <div class="flex-1 flex flex-col">
-        <!-- Parte del home -->
+     <div class="flex-1 flex flex-col">
         <div class="bg-gray-100">
-            <CabeceraComponent :vistaActual="mostrar === 'nueva-oferta' ? 'ofertas' : mostrar"
-                :pasoFormulario="pasoActualHijo" :user="user" />
+            <CabeceraComponent
+                :vistaActual="mostrar"
+                :pasoFormulario="pasoActualHijo"
+                :user="user"
+            />
         </div>
 
-        <!-- Controlamos el contenido dinamico en  esta parte ya quer lo vamos a controlar con la props recibida emitida por el propio boton -->
         <div class="flex-1 p-6 bg-gray-100">
 
-            <!-- Primera vista -->
+            <!-- VISTA: DASHBOARD -->
             <div v-if="mostrar === 'dashboard'">
-
                 <h2 class="text-2xl font-semibold mb-4">Welcome {{ user?.nom }}</h2>
 
-                <!-- DASHBOARD DE OPERADOR -->
-
+                <!-- Contenido específico por ROL -->
                 <div v-if="esOperador">
                     <h2 class="text-2xl font-semibold mb-4">Ofertas Activas</h2>
                     <OfertasActivasComponent />
-
-                    <div v-if="mostrar === 'incoterms'">
-                        <IncotermsComponent></IncotermsComponent>
-                    </div>
                 </div>
-
-                <!-- DASHBOARD DE CLIENTE -->
 
                 <div v-else>
                     <h2 class="text-2xl font-semibold mb-4">Nuevas Ofertas</h2>
-                        <NuevasOfertasClienteCards :ofertas="ofertas"></NuevasOfertasClienteCards>
+                    <NuevasOfertasClienteCards :ofertas="ofertas" />
                 </div>
 
                 <div class="pt-6 space-y-6">
                     <OfertasRecientesComponent @verDetalle="$emit('verDetalle', $event)" />
                 </div>
-
             </div>
 
-                <div v-if="mostrar === 'nueva-oferta'">
-                        <NuevaOfertaComponent @cambiarVista="$emit('cambiarVista', $event)"
-                            @actualizarPasoHeader="sincronizarPaso"></NuevaOfertaComponent>
-                </div>
+            <div v-if="mostrar === 'incoterms'" :key="mostrar">
+                <IncotermsComponent />
+            </div>
 
-                <div v-if="mostrar === 'nueva-peticion'">
-                        <NuevaPeticionComponente @cambiarVista="$emit('cambiarVista', $event)" />
-                    </div>
+            <!-- VISTA: NUEVA OFERTA -->
+            <div v-if="mostrar === 'nueva-oferta'">
+                <NuevaOfertaComponent
+                    @cambiarVista="$emit('cambiarVista', $event)"
+                    @actualizarPasoHeader="sincronizarPaso"
+                />
+            </div>
+
+            <!-- VISTA: NUEVA PETICIÓN -->
+            <div v-if="mostrar === 'nueva-peticion'">
+                <NuevaPeticionComponente @cambiarVista="$emit('cambiarVista', $event)" />
+            </div>
 
         </div>
     </div>

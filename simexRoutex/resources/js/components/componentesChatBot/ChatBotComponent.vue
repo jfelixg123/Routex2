@@ -74,9 +74,9 @@
         scrollToBottom();
 
         try {
-            // RECUERDA: Cambia esta URL por tu Webhook de n8n (Production URL si está en Active)
+            const user = ref(JSON.parse(localStorage.getItem('user')))
             const response = await axios.post('http://localhost:5678/webhook/ba85909a-9bae-4ee9-b8dc-0bd6e099146f/chat', {
-                sessionId: 2,
+                sessionId: user.id,
                 chatInput: text
             });
 

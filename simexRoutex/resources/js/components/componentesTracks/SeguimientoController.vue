@@ -36,14 +36,14 @@
       </table>
     </div>
 
-    <!-- PANEL LATERAL DE PASOS (ORQUESTADOR) -->
+    <!-- PANEL LATERAL DE PASOS -->
     <div v-if="ofertaSeleccionada" class="w-96 bg-white rounded-3xl shadow-2xl border border-orange-100 p-6 animate-in slide-in-from-right duration-300">
       <div class="flex justify-between items-center mb-8">
         <h3 class="font-bold text-slate-800">Seguimiento #{{ ofertaSeleccionada.id }}</h3>
         <button @click="ofertaSeleccionada = null" class="text-gray-400 text-2xl">&times;</button>
       </div>
 
-      <!-- LINEA DE TIEMPO (STEPPER) -->
+      <!-- LINEA DE TIEMPO -->
       <div class="relative space-y-8 before:absolute before:inset-0 before:ml-4 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-orange-500 before:via-gray-200 before:to-gray-100">
         <div v-for="p in pasos" :key="p.id" class="relative flex items-center gap-4">
           <!-- Checkbox Naranja -->
@@ -61,10 +61,36 @@
               {{ new Date(p.fecha_completado).toLocaleString() }}
             </span>
           </div>
+
+          <!--Parte de Documentos modifico para que se pueda mergear-->
+          <div class="mt-3 bg-gray-50/50 border border-dashed border-gray-200 rounded-xl p-3 w-full max-w-[240px]">
+            <!-- Si hay archivo -->
+            <div v-if="p.documento_path" class="flex items-center justify-between gap-2 mb-2">
+            <div class="flex items-center gap-2 overflow-hidden">
+                <span class="text-orange-500 text-xs">📎</span>
+                <span class="text-[9px] font-bold text-slate-500 truncate italic">
+                {{ p.documento_path.split('/').pop() }}
+                </span>
+            </div>
+            <a :href="'http://localhost:8080/storage/' + p.documento_path"
+                target="_blank"
+                class="text-[9px] font-black text-blue-500 hover:text-blue-700 bg-blue-50 px-2 py-0.5 rounded uppercase">
+                Ver
+            </a>
+            </div>
+
+            <!-- Botón de acción -->
+            <label class="cursor-pointer flex items-center justify-center gap-2 bg-white border border-gray-100 py-1.5 rounded-lg shadow-sm hover:shadow-md hover:border-orange-200 transition-all group">
+            <span class="text-[9px] font-bold text-gray-400 group-hover:text-orange-500 uppercase tracking-tighter">
+                {{ p.documento_path ? 'Reemplazar Documento' : 'Subir Documento' }}
+            </span>
+            <input type="file" class="hidden" @change="subeArchivo($event, p.id)">
+            </label>
         </div>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script setup>
@@ -97,6 +123,26 @@
     } catch (e) {
         paso.esta_completado = !paso.esta_completado; // Revertir si falla
     }
+    };
+
+    const subeArchivo = async (event, seguimientoId) => {
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('documento', file);
+
+        try {
+            await axios.post(`trafico/subir-doc/${seguimientoId}`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            // En lugar de resetear todo, solo actualizamos los datos de los pasos
+            const res = await axios.get(`trafico/${ofertaSeleccionada.value.id}/pasos`);
+            pasos.value = res.data;
+
+            alert("Documento actualizado correctamente");
+        } catch (e) {
+            console.error(e.response.data.errors);
+            alert("Error al subir");
+        }
     };
 
     onMounted(cargarOfertasActivas);

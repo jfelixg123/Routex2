@@ -83,7 +83,7 @@
       </table>
     </div>
 
-    <!-- 4. Stats Footer (Resumen inferior) -->
+    <!-- 4. (Resumen inferior) -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
         <div v-for="stat in stats" :key="stat.label" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ stat.label }}</p>
