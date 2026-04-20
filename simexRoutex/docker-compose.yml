@@ -25,19 +25,13 @@ services:
     ports:
       - "8080:80"
     volumes:
-      #- .:/var/www
-      - build_data:/var/www/public/build
+      - .:/var/www:ro
+      - build_data:/var/www/public/build:ro
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
     networks:
       - simex-network
     depends_on:
       - app
 
-
-networks:
-  simex-network:
-    driver: bridge
-
 volumes:
   build_data:
-  ollama_data:
