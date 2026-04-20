@@ -8,6 +8,8 @@ services:
     container_name: simex-app
     restart: unless-stopped
     working_dir: /var/www
+    volumes:
+      - app-data:/var/www
     networks:
       - simex-network
 
@@ -16,12 +18,16 @@ services:
     container_name: simex-nginx
     restart: unless-stopped
     volumes:
+      - app-data:/var/www
       - ./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
-    networks:
-      - simex-network
     depends_on:
       - app
+    networks:
+      - simex-network
 
 networks:
   simex-network:
     driver: bridge
+
+volumes:
+  app-data:

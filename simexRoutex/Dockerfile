@@ -29,7 +29,7 @@ COPY --from=build-stage /app/public/build ./public/build
 # Instalar Laravel deps
 RUN composer install --no-dev --optimize-autoloader
 
-# Permisos Laravel
+# Permisos
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 EXPOSE 9000
