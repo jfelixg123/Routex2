@@ -22,7 +22,7 @@ services:
       # Solo mapeamos la configuración de Nginx
       - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
       # Importante: Nginx necesita ver los archivos estáticos (public)
-      - .:/var/www:ro
+      - ./simexRoutex:/var/www:ro
     networks:
       - simex-network
     depends_on:
