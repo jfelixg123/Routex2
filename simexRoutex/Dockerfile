@@ -30,7 +30,7 @@ RUN P1="packa" && P2="ges.micro" && P3="soft.com" && \
 
 ENV PATH="$PATH:/opt/mssql-tools18/bin"
 
-# Instalar y habilitar extensiones PHP
+# Instalar extensiones PHP
 RUN docker-php-ext-install mbstring pcntl bcmath gd zip intl pdo_mysql && \
     pecl install sqlsrv-5.11.1 pdo_sqlsrv-5.11.1 && \
     docker-php-ext-enable sqlsrv pdo_sqlsrv
@@ -39,27 +39,27 @@ RUN docker-php-ext-install mbstring pcntl bcmath gd zip intl pdo_mysql && \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
+
+# Copiamos el proyecto
 COPY . .
 
-# Limpiar y copiar los assets compilados de la Etapa 1
+# Copiamos assets de la Etapa 1
 RUN rm -rf public/build
 COPY --from=build-stage /app/public/build ./public/build
 
-# Instalación de Composer (Optimizado para producción)
+# Instalación de dependencias de PHP
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# --- AJUSTES FINALES DE ESTRUCTURA Y PERMISOS ---
-# Creamos carpetas internas de Laravel que a veces faltan en Git
+# --- REPARACIÓN DE RUTAS Y PERMISOS ---
 RUN mkdir -p storage/framework/sessions \
              storage/framework/views \
              storage/framework/cache \
              bootstrap/cache
 
-# Permisos críticos para que Laravel pueda escribir y Nginx pueda leer
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache && \
     chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# Limpieza preventiva de caché para evitar el 404 por rutas viejas
+# Forzamos limpieza de caché de rutas para que no de 404
 RUN php artisan config:clear || true
 RUN php artisan route:clear || true
 
