@@ -1,7 +1,7 @@
 <template>
     <div class="grid grid-cols-3 gap-6">
 
-        <div v-for="oferta in ofertas" :key="oferta.id" class="bg-white rounded-2xl shadow-md overflow-hidden">
+        <div v-for="oferta in ofertasRecientes" :key="oferta.id" class="bg-white rounded-2xl shadow-md overflow-hidden">
 
             <!-- IMAGEN -->
             <div class="relative">
@@ -9,10 +9,8 @@
                 <img :src="getImagen(oferta.tipus_transport_id)" class="w-full h-65 select-none pointer-events-none"
                     draggable="false" />
 
-
-                <!-- PRECIO (fake por ahora) -->
                 <span class="absolute top-2 right-2 bg-slate-800 text-white text-xs px-3 py-1 rounded-lg">
-                    €{{ oferta.valor || '---' }}
+                    {{ oferta.valor}} €
                 </span>
             </div>
 
@@ -46,7 +44,9 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue';
+
+const props = defineProps({
     ofertas: Array
 });
 
@@ -56,6 +56,10 @@ const getRuta = (o) => {
     const destino = o.port_desti?.nom || o.aeroport_desti?.nom || 'Destino';
     return `${origen} → ${destino}`;
 };
+
+const ofertasRecientes = computed(() =>
+  props.ofertas?.slice().sort((a, b) => new Date(b.data_creacio) - new Date(a.data_creacio)).slice(0, 3)
+);
 
 const getImagen = (tipo) => {
     const iconos = {

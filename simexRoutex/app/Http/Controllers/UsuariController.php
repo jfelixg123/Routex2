@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Clases\Utilitat;
+use App\Classes\Utilitat;
 use App\Http\Resources\UsuariResource;
 use App\Models\Usuari;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 
 class UsuariController extends Controller
 {

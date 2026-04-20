@@ -61,7 +61,17 @@ Route::apiResource('notificaciones',    NotificacionController::class);
 Route::apiResource('notificaciones-destinatarios', NotificacionDestinatarioController::class);
 Route::get('/notis/buscar',             [NotificacionDestinatarioController::class, 'mostrarPorUsuario']);
 
+
+Route::get('/ofertas/historial', [OfertaController::class, 'historial'])
+    ->middleware('auth:sanctum');
+
 Route::apiResource('ofertas',           OfertaController::class);
+
+Route::post('/ofertas/usuario', [OfertaController::class, 'store'])
+    ->middleware('auth:sanctum');
+
+
+
 Route::apiResource('paises',            PaissosController::class);
 Route::apiResource('trafico',             PasosController::class);
 Route::get('trafico/{id}/pasos',        [PasosController::class, 'getPasos']);
