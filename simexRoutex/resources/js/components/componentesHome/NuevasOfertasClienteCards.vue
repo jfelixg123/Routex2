@@ -59,7 +59,8 @@ const getRuta = (o) => {
 };
 
 const ofertasRecientes = computed(() =>
-    props.ofertas?.slice().sort((a, b) => new Date(b.data_creacio) - new Date(a.data_creacio)).slice(0, 3)
+    // props.ofertas?.slice().sort((a, b) => new Date(b.data_creacio) - new Date(a.data_creacio)).slice(0, 3)
+    props.ofertas?.slice().sort().slice(0, 3)
 );
 
 const getImagen = (tipo) => {
