@@ -10,8 +10,7 @@
 import { onMounted } from 'vue'
 import mapboxgl from 'mapbox-gl'
 
-
-mapboxgl.accessToken = 'pk.eyJ1IjoiamVhbjEyMzIxIiwiYSI6ImNtbTUzZzhqYTAyMjYycHA5YzQ3amtqdWcifQ.VfYxLlWimvLzoBwsQu7SuA'
+mapboxgl.accessToken = 'TU_TOKEN_AQUI'
 
 onMounted(() => {
   const origen = { lat: 31.2304, lng: 121.4737 } // Shanghai
