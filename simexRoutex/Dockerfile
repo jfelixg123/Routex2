@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
     curl gnupg unzip git zip libpng-dev libzip-dev libonig-dev libxml2-dev libicu-dev unixodbc-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# --- DRIVERS SQL SERVER (Evitando recorte de URLs mediante fragmentación) ---
+# --- DRIVERS SQL SERVER (Fragmentación anti-recorte de URLs) ---
 RUN P1="packa" && P2="ges.micro" && P3="soft.com" && \
     KEY_FULL="https://${P1}${P2}${P3}/keys/microsoft.asc" && \
     REPO_FULL="https://${P1}${P2}${P3}/debian/12/prod" && \
@@ -48,9 +48,20 @@ COPY --from=build-stage /app/public/build ./public/build
 # Instalación de Composer (Optimizado para producción)
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Permisos para Laravel
+# --- AJUSTES FINALES DE ESTRUCTURA Y PERMISOS ---
+# Creamos carpetas internas de Laravel que a veces faltan en Git
+RUN mkdir -p storage/framework/sessions \
+             storage/framework/views \
+             storage/framework/cache \
+             bootstrap/cache
+
+# Permisos críticos para que Laravel pueda escribir y Nginx pueda leer
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache && \
     chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
+# Limpieza preventiva de caché para evitar el 404 por rutas viejas
+RUN php artisan config:clear || true
+RUN php artisan route:clear || true
 
 EXPOSE 9000
 CMD ["php-fpm"]

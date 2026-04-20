@@ -19,7 +19,7 @@ services:
     container_name: simex-nginx
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
       # 1. Sincronizamos el código (Nginx necesita ver la carpeta public)
       - .:/var/www:ro
