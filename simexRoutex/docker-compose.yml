@@ -20,9 +20,9 @@ services:
       - "80:80"  # Nginx da la cara al mundo en el puerto 80
     volumes:
       # Solo mapeamos la configuración de Nginx
-      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
-      # Importante: Nginx necesita ver los archivos estáticos (public)
       - ./simexRoutex:/var/www:ro
+      - ./simexRoutex/docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      # Importante: Nginx necesita ver los archivos estáticos (public)
     networks:
       - simex-network
     depends_on:
