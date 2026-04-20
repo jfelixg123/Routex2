@@ -65,12 +65,12 @@ Route::get('/notis/buscar',             [NotificacionDestinatarioController::cla
 Route::get('/ofertas/historial', [OfertaController::class, 'historial'])
     ->middleware('auth:sanctum');
 
-Route::apiResource('ofertas',           OfertaController::class);
-
 Route::post('/ofertas/usuario', [OfertaController::class, 'store'])
     ->middleware('auth:sanctum');
 
 Route::get('/ofertas/{id}/tracking', [OfertaController::class, 'tracking']);
+
+Route::apiResource('ofertas',           OfertaController::class);
 
 Route::apiResource('paises',            PaissosController::class);
 Route::apiResource('trafico',             PasosController::class);

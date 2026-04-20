@@ -30,13 +30,6 @@ const ofertas = ref([]);
 const filtro = ref('todas');
 const estaCargando = ref();
 
-// onMounted(async () => {
-//     estaCargando.value = true;
-//     const response = await axios.get('/ofertas/historial');
-//     ofertas.value = response.data;
-//     estaCargando.value = false;
-// });
-
 const historial = async () => {
     estaCargando.value = true;
     const response = await axios.get('/ofertas/historial');

@@ -78,13 +78,7 @@ const props = defineProps({
 
 const ofertas = ref([]);
 const estaCargando = ref();
-const ofertaSeleccionada = ref(null)
-const vistaLocal = ref(props.mostrar)
 
-const verDetalleOferta = (oferta) => {
-    ofertaSeleccionada.value = oferta
-    vistaLocal.value = 'detalle-oferta'
-}
 
 const getOfertas = async () => {
     estaCargando.value = true;

@@ -196,25 +196,42 @@ class OfertaController extends Controller
 
     public function tracking($id)
 {
-    $oferta = Oferta::with(['portOrigen', 'portDesti'])->findOrFail($id);
+    $oferta = Oferta::with([
+        'portOrigen',
+        'portDesti',
+        'seguimientos.step'
+    ])->findOrFail($id);
+
+    $pasos = $oferta->seguimientos
+        ->sortBy('orden')
+        ->map(function ($s) {
+            return [
+                'nom' => $s->step->nom ?? '',
+                'esta_completado' => $s->esta_completado,
+                'fecha_completado' => $s->fecha_completado,
+                'documento_path' => $s->documento_path
+            ];
+        })
+        ->values();
 
     return response()->json([
         'origen' => [
-            'lat' => $oferta->portOrigen->lat,
-            'lng' => $oferta->portOrigen->lng,
-            'nombre' => $oferta->portOrigen->nom
+            'lat' => $oferta->portOrigen->lat ?? null,
+            'lng' => $oferta->portOrigen->lng ?? null,
+            'nombre' => $oferta->portOrigen->nom ?? 'Origen'
         ],
         'destino' => [
-            'lat' => $oferta->portDesti->lat,
-            'lng' => $oferta->portDesti->lng,
-            'nombre' => $oferta->portDesti->nom
+            'lat' => $oferta->portDesti->lat ?? null,
+            'lng' => $oferta->portDesti->lng ?? null,
+            'nombre' => $oferta->portDesti->nom ?? 'Destino'
         ],
 
-        // 🔥 posición actual simulada (luego será BD)
         'posicion_actual' => [
             'lat' => 25.0,
             'lng' => -140.0
-        ]
+        ],
+
+        'pasos' => $pasos
     ]);
 }
 }

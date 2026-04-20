@@ -7,6 +7,7 @@ use \Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TrackingSteps extends Model
 {
+    protected $table = 'tracking_steps';
     /**
      * Get all of the incoterms for the TrackingSteps
      *
