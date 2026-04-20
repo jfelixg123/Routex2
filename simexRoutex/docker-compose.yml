@@ -1,29 +1,21 @@
 services:
-  # Laravel (PHP-FPM)
   app:
     build:
       context: ./simexRoutex
       dockerfile: Dockerfile
     container_name: simex-app
     restart: unless-stopped
-    working_dir: /var/www
-    volumes:
-      # MAPEAMOS LA SUB-CARPETA DIRECTAMENTE
-      - ./simexRoutex:/var/www
     networks:
       - simex-network
 
-  # Nginx
   nginx:
     image: nginx:alpine
     container_name: simex-nginx
     restart: unless-stopped
     ports:
-      - "80:80" # Úsalo así si el panel de Dockploy apunta al 80
+      - "80:80"
     volumes:
-      # MAPEAMOS LA SUB-CARPETA DIRECTAMENTE
-      - ./simexRoutex:/var/www:ro
-      # Ruta al archivo de configuración
+      # SÓLO mapeamos el archivo de configuración, nada de código
       - ./simexRoutex/docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
       - simex-network
