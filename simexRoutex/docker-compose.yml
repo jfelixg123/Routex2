@@ -8,8 +8,8 @@ services:
     restart: unless-stopped
     working_dir: /var/www
     volumes:
+      # Sincronizamos la carpeta del código para que PHP vea el index.php
       - ./simexRoutex:/var/www
-    # No mapeamos el código local en producción para que use el del Dockerfile
     networks:
       - simex-network
 
@@ -19,12 +19,12 @@ services:
     container_name: simex-nginx
     restart: unless-stopped
     ports:
-      - "80:80"  # Nginx da la cara al mundo en el puerto 80
+      - "80:80"
     volumes:
-      # Solo mapeamos la configuración de Nginx
+      # 1. Sincronizamos el código (Nginx necesita ver la carpeta public)
       - ./simexRoutex:/var/www:ro
-      - ./simexRoutex/docker/nginx/conf.d:/etc/nginx/conf.d:ro
-      # Importante: Nginx necesita ver los archivos estáticos (public)
+      # 2. MAPEO CRÍTICO: Archivo de configuración específico
+      - ./simexRoutex/docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
       - simex-network
     depends_on:
