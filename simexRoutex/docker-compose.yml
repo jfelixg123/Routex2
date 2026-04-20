@@ -1,13 +1,13 @@
+version: "3.8"
+
 services:
   app:
     build:
-      context: ./simexRoutex
+      context: .
       dockerfile: Dockerfile
     container_name: simex-app
     restart: unless-stopped
     working_dir: /var/www
-    volumes:
-      - ./simexRoutex:/var/www # Sincroniza el código con PHP
     networks:
       - simex-network
 
@@ -16,11 +16,10 @@ services:
     container_name: simex-nginx
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
-      # ESTO ES LO QUE ARREGLA EL 404:
-      - ./simexRoutex:/var/www:ro # Nginx necesita ver la carpeta 'public' aquí
-      - ./simexRoutex/docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - .:/var/www:ro
+      - ./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
       - simex-network
     depends_on:
