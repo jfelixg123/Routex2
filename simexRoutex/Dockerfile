@@ -62,5 +62,5 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 ## 3. Definicion del ENTRYPOINT
 #ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 ## 4. El puerto y el comando final
-EXPOSE 9000
+EXPOSE 80
 CMD ["php-fpm"]
