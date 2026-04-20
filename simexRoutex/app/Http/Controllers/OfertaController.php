@@ -193,4 +193,28 @@ class OfertaController extends Controller
 
         return $response;
     }
+
+    public function tracking($id)
+{
+    $oferta = Oferta::with(['portOrigen', 'portDesti'])->findOrFail($id);
+
+    return response()->json([
+        'origen' => [
+            'lat' => $oferta->portOrigen->lat,
+            'lng' => $oferta->portOrigen->lng,
+            'nombre' => $oferta->portOrigen->nom
+        ],
+        'destino' => [
+            'lat' => $oferta->portDesti->lat,
+            'lng' => $oferta->portDesti->lng,
+            'nombre' => $oferta->portDesti->nom
+        ],
+
+        // 🔥 posición actual simulada (luego será BD)
+        'posicion_actual' => [
+            'lat' => 25.0,
+            'lng' => -140.0
+        ]
+    ]);
+}
 }

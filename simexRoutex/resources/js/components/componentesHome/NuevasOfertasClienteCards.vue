@@ -10,7 +10,7 @@
                     draggable="false" />
 
                 <span class="absolute top-2 right-2 bg-slate-800 text-white text-xs px-3 py-1 rounded-lg">
-                    {{ oferta.valor}} €
+                    {{ oferta.valor }} €
                 </span>
             </div>
 
@@ -32,8 +32,9 @@
                 </p>
 
                 <!-- BOTÓN -->
-                <button class="mt-4 w-full border border-orange-500 text-orange-500 rounded-lg py-2 hover:bg-orange-50">
-                    Accept Offer
+                <button @click="$emit('verDetalle', oferta)"
+                    class="mt-4 w-full border border-orange-500 text-orange-500 rounded-lg py-2 hover:bg-orange-50">
+                    Ver oferta
                 </button>
 
             </div>
@@ -58,7 +59,7 @@ const getRuta = (o) => {
 };
 
 const ofertasRecientes = computed(() =>
-  props.ofertas?.slice().sort((a, b) => new Date(b.data_creacio) - new Date(a.data_creacio)).slice(0, 3)
+    props.ofertas?.slice().sort((a, b) => new Date(b.data_creacio) - new Date(a.data_creacio)).slice(0, 3)
 );
 
 const getImagen = (tipo) => {

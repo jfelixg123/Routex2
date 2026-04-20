@@ -70,7 +70,7 @@ Route::apiResource('ofertas',           OfertaController::class);
 Route::post('/ofertas/usuario', [OfertaController::class, 'store'])
     ->middleware('auth:sanctum');
 
-
+Route::get('/ofertas/{id}/tracking', [OfertaController::class, 'tracking']);
 
 Route::apiResource('paises',            PaissosController::class);
 Route::apiResource('trafico',             PasosController::class);
