@@ -15,6 +15,7 @@ use App\Http\Controllers\PaissosController;
 use App\Http\Controllers\PasosController;
 use App\Http\Controllers\PortController;
 use App\Http\Controllers\RolController;
+use App\Http\Controllers\SparkController;
 use App\Http\Controllers\TipoController;
 use App\Http\Controllers\TipoIncotermController;
 use App\Http\Controllers\TipusCarregaController;
@@ -86,3 +87,5 @@ Route::get('/transportista/buscar',     [TransportistaController::class, 'buscar
 Route::apiResource('usuaris',           UsuariController::class);
 Route::get('/usuari/buscar',           [UsuariController::class, 'buscarClientes']);
 Route::get('/comercial/buscar',        [UsuariController::class, 'buscarComercial']);
+
+Route::post('/onu',                     [SparkController::class, 'buscar']);

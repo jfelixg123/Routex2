@@ -63,6 +63,27 @@
             </div>
         </div>
 
+
+        <div class="flex items-center justify-center p-4">
+            <button
+            @click="sendNotification"
+            :disabled="loading"
+            class="relative flex items-center justify-center px-8 py-3 font-bold text-white transition-all duration-200 bg-[#f97316] rounded-lg shadow-lg hover:bg-[#ea580c] active:transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed group"
+            >
+            <!-- Icono de carga -->
+            <svg v-if="loading" class="w-5 h-5 mr-3 animate-spin" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+
+            <!-- Icono de correo (opcional) -->
+            <svg v-else class="w-5 h-5 mr-2 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+
+            <span>{{ loading ? 'Enviando...' : 'Enviar Notificación' }}</span>
+            </button>
+        </div>
         <!-- BOTÓN ENVIAR -->
         <div class="mt-8 flex justify-end">
             <button @click="enviar" class="bg-slate-800 text-white px-10 py-3 rounded-2xl font-bold hover:bg-slate-700 transition shadow-lg shadow-slate-200">
@@ -178,6 +199,73 @@
         if (confirm("¿Eliminar esta notificación del historial y de la bandeja de los usuarios?")) {
             await axios.delete(`notificaciones/${id}`);
             cargarDatos();
+        }
+    };
+
+    const loading = ref(false);
+
+    const sendNotification = async () => {
+
+        if (!form.titulo || !form.mensaje) {
+            alert("⚠️ Por favor, escribe un título y un mensaje.");
+            return;
+        }
+        loading.value = true;
+
+        try {
+            let listaEmails = [];
+            let nombreDestinatario = "";
+
+            // 2. Lógica para determinar destinatarios
+            if (form.target_type === 'usuario') {
+                const user = usuarios.value.find(u => u.id === form.user_id);
+                if (user && user.correu) {
+                    listaEmails.push(user.correu);
+                    nombreDestinatario = `${user.nom} ${user.cognoms}`;
+                }
+            } else {
+                // Filtramos usuarios que pertenecen a la empresa seleccionada
+                const filtrados = usuarios.value.filter(u => u.empresa_id === form.company_id);
+                listaEmails = filtrados.map(u => u.correu).filter(e => !!e);
+
+                const comp = companies.value.find(c => c.id === form.company_id);
+                nombreDestinatario = comp ? comp.company_name : "Toda la empresa";
+            }
+
+            if (listaEmails.length === 0) {
+                throw new Error("No hay emails válidos para el destino seleccionado.");
+            }
+
+            // 3. Payload dinámico para n8n
+            const payload = {
+                to: listaEmails.join(', '), // n8n acepta correos separados por coma
+                from: "noreply@routex.com",
+                subject: form.titulo,
+                message: form.mensaje,
+                target_name: nombreDestinatario,
+                prioridad: tipos.value.find(t => t.id === form.tipo_id)?.nom || 'Info'
+            };
+
+            // 4. Envío al Webhook
+            await axios.post('http://localhost:5678/webhook/routex-email',
+                payload,
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+
+            // 5. Guardar también en tu base de datos local (opcional, reutilizando tu lógica)
+            await enviar();
+
+            alert(`✅ Notificación enviada a ${listaEmails.length} correo(s)`);
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('❌ Error: ' + (error.message || 'No se pudo conectar con el servidor de correos'));
+        } finally {
+            loading.value = false;
         }
     };
 

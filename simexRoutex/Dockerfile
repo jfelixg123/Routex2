@@ -20,6 +20,12 @@ RUN apt-get update && apt-get install -y \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libzip-dev \
+    unzip \
+    && docker-php-ext-install pdo_mysql gd zip
+
 # Instalar drivers SQL Server
 RUN mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /etc/apt/keyrings/microsoft.gpg \
