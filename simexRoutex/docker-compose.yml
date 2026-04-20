@@ -7,6 +7,8 @@ services:
     container_name: simex-app
     restart: unless-stopped
     working_dir: /var/www
+    volumes:
+      - ./simexRoutex:/var/www
     # No mapeamos el código local en producción para que use el del Dockerfile
     networks:
       - simex-network
