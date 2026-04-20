@@ -9,7 +9,7 @@ services:
     working_dir: /var/www
     volumes:
       # Sincronizamos la carpeta del código para que PHP vea el index.php
-      - ./simexRoutex:/var/www
+      - .:/var/www
     networks:
       - simex-network
 
@@ -22,7 +22,7 @@ services:
       - "80:80"
     volumes:
       # 1. Sincronizamos el código (Nginx necesita ver la carpeta public)
-      - ./simexRoutex:/var/www:ro
+      - .:/var/www:ro
       # 2. MAPEO CRÍTICO: Archivo de configuración específico
       - ./simexRoutex/docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
