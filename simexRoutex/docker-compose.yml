@@ -5,6 +5,10 @@ services:
       dockerfile: Dockerfile
     container_name: simex-app
     restart: unless-stopped
+    # FORZAMOS a que PHP trabaje donde está el artisan
+    working_dir: /var/www
+    volumes:
+      - ./simexRoutex:/var/www
     networks:
       - simex-network
 
@@ -15,7 +19,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      # SÓLO mapeamos el archivo de configuración, nada de código
+      - ./simexRoutex:/var/www:ro
       - ./simexRoutex/docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
       - simex-network
