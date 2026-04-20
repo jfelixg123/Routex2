@@ -54,13 +54,13 @@ COPY --from=build-stage /app/public/build ./public/build
 RUN composer install --no-dev --optimize-autoloader
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# 1. Script entry - no se si funcionara en el server
-COPY docker/app/entrypoint.sh /usr/local/bin/entrypoint.sh
-# 2. Le damos permisos de ejecución
-RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh && \
-    chmod +x /usr/local/bin/entrypoint.sh
-# 3. Definicion del ENTRYPOINT
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-# 4. El puerto y el comando final
+## 1. Script entry - no se si funcionara en el server
+#COPY docker/app/entrypoint.sh /usr/local/bin/entrypoint.sh
+## 2. Le damos permisos de ejecución
+#RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh && \
+#    chmod +x /usr/local/bin/entrypoint.sh
+## 3. Definicion del ENTRYPOINT
+#ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+## 4. El puerto y el comando final
 EXPOSE 9000
 CMD ["php-fpm"]
