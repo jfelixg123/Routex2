@@ -1,11 +1,9 @@
 FROM php:8.2-fpm
 
-RUN apt-get update && apt-get install -y \
-    nginx nodejs npm git curl zip unzip gnupg2 apt-transport-https \
-    libzip-dev libpng-dev libonig-dev libxml2-dev libicu-dev unixodbc-dev \
+RUN apt-get update && apt-get install -y nginx nodejs npm git curl zip unzip libzip-dev libpng-dev libonig-dev libxml2-dev libicu-dev unixodbc-dev \
     && curl https://microsoft.com > /etc/apt/sources.list.d/mssql-release.list \
-    && apt-get update -o Acquire::AllowInsecureRepositories=true \
-    && apt-get install -y --allow-unauthenticated msodbcsql18 \
+    && apt-get update -o Acquire::AllowInsecureRepositories=true -o Acquire::AllowDowngradeToInsecureRepositories=true \
+    && ACCEPT_EULA=Y apt-get install -y --allow-unauthenticated msodbcsql18 \
     && pecl install sqlsrv pdo_sqlsrv \
     && docker-php-ext-enable sqlsrv pdo_sqlsrv \
     && docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath gd intl
