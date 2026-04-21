@@ -196,11 +196,8 @@ class OfertaController extends Controller
 
     public function tracking($id)
 {
-    $oferta = Oferta::with([
-        'portOrigen',
-        'portDesti',
-        'seguimientos.step'
-    ])->findOrFail($id);
+    $oferta = Oferta::with(['portOrigen','portDesti','seguimientos.step'])
+        ->findOrFail($id);
 
     $pasos = $oferta->seguimientos
         ->sortBy('orden')
