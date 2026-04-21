@@ -20,6 +20,8 @@ RUN apt-get update && apt-get install -y \
         gd \
         intl
 
+RUN sed -i 's|listen = 9000|listen = /run/php/php8.2-fpm.sock|' /usr/local/etc/php-fpm.d/zz-docker.conf
+
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
