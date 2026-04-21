@@ -12,7 +12,6 @@
 
             <!-- VISTA: DASHBOARD -->
             <div v-if="mostrar === 'dashboard'">
-                <h2 class="text-2xl font-semibold mb-4">Welcome {{ user?.nom }}</h2>
 
                 <!-- Contenido específico por ROL -->
                 <div v-if="esOperador">
@@ -32,6 +31,15 @@
 
             <div v-if="mostrar === 'incoterms'" :key="mostrar">
                 <IncotermsComponent />
+            </div>
+
+             <!-- VISTA: Ver OFERTA -->
+            <div v-if="mostrar === 'ver-oferta'">
+                <NuevaOfertaComponent
+                    :ofertaAEditar="ofertaSeleccionada"
+                    @cambiarVista="$emit('cambiarVista', $event)"
+                    @actualizarPasoHeader="sincronizarPaso"
+                />
             </div>
 
             <!-- VISTA: NUEVA OFERTA -->

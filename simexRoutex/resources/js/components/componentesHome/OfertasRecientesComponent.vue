@@ -45,6 +45,7 @@
         </div>
 
 
+
         <!-- ESTADO -->
         <span
           class="px-3 py-1 text-[10px] rounded-full font-bold uppercase"

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white shadow-sm px-8 flex items-center justify-between border-b">
+  <div class="bg-white shadow-sm px-10 py-3 flex items-center justify-between border-b">
 
     <!-- Página Y MENÚ -->
     <div class="flex items-center gap-10">

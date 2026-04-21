@@ -1,13 +1,14 @@
 <template>
     <div class="p-8 bg-gray-50 min-h-screen">
+
     <!-- 1. Header de la Sección -->
     <div class="flex justify-between items-start mb-8">
       <div>
-        <h2 class="text-3xl font-bold text-slate-800">Incoterms Management</h2>
+        <h2 class="text-3xl font-bold text-slate-800">Incoterm</h2>
       </div>
       <div class="flex gap-3">
         <button @click="abrirNuevo" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition shadow-lg shadow-orange-200">
-          <span class="text-xl">+</span> Add New Incoterm
+          <span class="text-xl">+</span> Añadir Incoterm
         </button>
       </div>
     </div>
