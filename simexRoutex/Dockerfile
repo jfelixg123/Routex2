@@ -33,7 +33,7 @@ RUN npm install && npm run build
 
 RUN chmod -R 775 storage bootstrap/cache
 
-COPY docker/nginx.conf /etc/nginx/sites-available/default
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY docker/start.sh /start.sh
 RUN chmod +x /start.sh
 
