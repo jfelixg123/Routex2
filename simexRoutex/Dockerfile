@@ -18,9 +18,13 @@ RUN npm install && npm run build
 
 RUN chmod -R 775 storage bootstrap/cache
 
-COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/nginx.conf /etc/nginx/sites-available/default
+RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
 COPY docker/start.sh /start.sh
 RUN chmod +x /start.sh
+
+RUN chown -R www-data:www-data /var/www
 
 EXPOSE 80
 CMD ["/start.sh"]
