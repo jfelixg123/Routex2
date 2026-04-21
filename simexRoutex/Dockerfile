@@ -6,12 +6,13 @@ RUN apt-get update && apt-get install -y nginx nodejs npm git curl zip unzip lib
     && echo "deb [arch=amd64] $REPO bullseye main" > /etc/apt/sources.list.d/mssql-release.list \
     && apt-get update -o Acquire::AllowInsecureRepositories=true \
     && ACCEPT_EULA=Y apt-get install -y --allow-unauthenticated msodbcsql18 \
-    && pecl install sqlsrv pdo_sqlsrv \
+    && pecl install sqlsrv-5.11.1 pdo_sqlsrv-5.11.1 \
     && docker-php-ext-enable sqlsrv pdo_sqlsrv \
     && docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath gd intl
 
 
 RUN sed -i 's|listen = .*|listen = 127.0.0.1:9000|' /usr/local/etc/php-fpm.d/www.conf
+
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
