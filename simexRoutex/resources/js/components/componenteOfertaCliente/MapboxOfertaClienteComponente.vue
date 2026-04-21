@@ -16,28 +16,29 @@ onMounted(() => {
     const actual = { lat: 25.0, lng: -140.0 } // barco
 
     const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [origen.lng, origen.lat],
-        zoom: 3
+        container: 'map', // ID del div
+        style: 'mapbox://styles/mapbox/streets-v11', // El "look" del mapa
+        center: [origen.lng, origen.lat], // Donde empieza el mapa
+        zoom: 3 // Nivel de acercamiento
     })
 
     // ORIGEN
-    new mapboxgl.Marker({ color: 'green' })
-        .setLngLat([origen.lng, origen.lat])
+    new mapboxgl.Marker({ color: 'green' }) // Crea un pin visual
+        .setLngLat([origen.lng, origen.lat]) // Le dice en qué coordenada ponerlo
         .addTo(map)
 
-    // DESTINO
-    new mapboxgl.Marker({ color: 'red' })
-        .setLngLat([destino.lng, destino.lat])
-        .addTo(map)
+    // DESTINO: 
+    new mapboxgl.Marker({ color: 'red' }) // Crea un pin visual
+        .setLngLat([destino.lng, destino.lat]) // Le dice en qué coordenada ponerlo
+        .addTo(map) // Lo imprime en el mapa
 
     // POSICIÓN ACTUAL
-    const barco = new mapboxgl.Marker({ color: 'orange' })
-        .setLngLat([actual.lng, actual.lat])
-        .addTo(map)
+    const barco = new mapboxgl.Marker({ color: 'orange' }) // Crea un pin visual
+        .setLngLat([actual.lng, actual.lat]) // Le dice en qué coordenada ponerlo
+        .addTo(map) // Lo imprime en el mapa
 
     // RUTA
+    // Cuando el mapa termine de cargar, dibuja la ruta entre origen, actual y destino
     map.on('load', () => {
         map.addSource('ruta', {
             type: 'geojson',
@@ -53,7 +54,7 @@ onMounted(() => {
                 }
             }
         })
-
+    // Agrega una capa visual para mostrar la ruta
         map.addLayer({
             id: 'ruta',
             type: 'line',
