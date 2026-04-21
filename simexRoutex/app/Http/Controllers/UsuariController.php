@@ -168,33 +168,26 @@ class UsuariController extends Controller
 
         // Validación
         $request->validate([
-            'current_password' => 'required',
-            'new_password' => 'required|min:6|confirmed'
+            'current_password' => ['required', 'current_password'],
+            'new_password' => ['required', 'min:6', 'confirmed']
         ]);
 
-        // Comprobar contraseña actual
-        if (!Hash::check($request->current_password, $usuari->contrasenya)) {
-            return response()->json([
-                'error' => 'Contraseña actual incorrecta'
-            ], 400);
-        }
-
-        // Asignación manual (igual que tu estilo)
-        $usuari->contrasenya = bcrypt($request->new_password);
+        // Asignación de la nueva contraseña
+        $usuari->contrasenya = Hash::make($request->new_password);
 
         try {
             $usuari->save();
-
-            return response()->json([
+            $response = response()->json([
                 'message' => 'Contraseña actualizada correctamente'
             ], 200);
-
         } catch (QueryException $e) {
-
-            return response()->json([
-                'error' => $e->getMessage()
+            $missatge = Utilitat::errorMessage($e);
+            $response = response()->json([
+                'error' => $missatge
             ], 400);
         }
+
+        return $response;
     }
 
     /**
