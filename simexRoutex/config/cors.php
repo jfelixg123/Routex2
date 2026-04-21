@@ -19,7 +19,10 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => [
+        'http://routex-routex-app-e2t7ux-2890a1-51-83-192-177.traefik.me',
+        'https://josepguiudev.tech',
+    ], //original [*]
 
     'allowed_headers' => ['*'],
 
@@ -27,6 +30,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true, // Cambia a true si usas Sanctum/Cookies original a false
 
 ];
