@@ -15,7 +15,7 @@
             <ComunicacionesComponent v-if="vistaActual === 'comunicaciones'"></ComunicacionesComponent>
             <SeguimientoController v-if="vistaActual === 'seguimiento'"></SeguimientoController>
             <PerfilUsuarioComponent v-if="vistaActual === 'perfil'" :user="user" @actualizarUser="user = $event"/>
-            <HistorialOfertasComponent v-if="vistaActual === 'historico'" />
+            <HistorialOfertasComponent v-if="vistaActual === 'historico'"/>
         </div>
         <ChatBotComponent />
     </div>
@@ -51,11 +51,15 @@ const actualizarVista = (nuevaVista) => {
     }
 };
 
-const ofertaSeleccionada = ref(null);
+const ofertaSeleccionada = ref(
+    JSON.parse(localStorage.getItem('ofertaSeleccionada'))
+);
 
 const abrirDetalle = (oferta) => {
     ofertaSeleccionada.value = oferta; // Guardamos los datos de la oferta clicada
     vistaActual.value = 'ver-oferta'; // Cambiamos la vista
+    localStorage.setItem('ultimaVista', 'ver-oferta');
+    localStorage.setItem('ofertaSeleccionada', JSON.stringify(oferta));
 };
 
 </script>

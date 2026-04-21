@@ -10,7 +10,7 @@
         {{ fecha }}
       </span>
     </div>
-
+    <spinner-component v-if="estaCargando"/>
     <!-- LISTA -->
     <div class="space-y-4 max-h-[430px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300">
 
@@ -63,14 +63,20 @@
     import { ref, onMounted } from 'vue';
     import axios from 'axios';
 
+    import SpinnerComponent from '../utiles/SpinnerComponent.vue';
+
     const ofertas = ref([]);
+    const estaCargando = ref();
+
 
     const fecha = new Date().toLocaleDateString();
 
     const obtenerOfertas = async () => {
+        estaCargando.value = true;
     try {
         const res = await axios.get('/ofertas');
         ofertas.value = res.data;
+        estaCargando.value = false;
         console.log("Ofertas cargadas:", ofertas.value);
     } catch (error) {
         console.error("Error cargando ofertas:", error);

@@ -15,7 +15,6 @@ use App\Http\Controllers\PaissosController;
 use App\Http\Controllers\PasosController;
 use App\Http\Controllers\PortController;
 use App\Http\Controllers\RolController;
-use App\Http\Controllers\SparkController;
 use App\Http\Controllers\TipoController;
 use App\Http\Controllers\TipoIncotermController;
 use App\Http\Controllers\TipusCarregaController;
@@ -62,7 +61,17 @@ Route::apiResource('notificaciones',    NotificacionController::class);
 Route::apiResource('notificaciones-destinatarios', NotificacionDestinatarioController::class);
 Route::get('/notis/buscar',             [NotificacionDestinatarioController::class, 'mostrarPorUsuario']);
 
+
+Route::get('/ofertas/historial', [OfertaController::class, 'historial'])
+    ->middleware('auth:sanctum');
+
+Route::post('/ofertas/usuario', [OfertaController::class, 'store'])
+    ->middleware('auth:sanctum');
+
+Route::get('/ofertas/{id}/tracking', [OfertaController::class, 'tracking']);
+
 Route::apiResource('ofertas',           OfertaController::class);
+
 Route::apiResource('paises',            PaissosController::class);
 Route::apiResource('trafico',             PasosController::class);
 Route::get('trafico/{id}/pasos',        [PasosController::class, 'getPasos']);
@@ -87,5 +96,3 @@ Route::get('/transportista/buscar',     [TransportistaController::class, 'buscar
 Route::apiResource('usuaris',           UsuariController::class);
 Route::get('/usuari/buscar',           [UsuariController::class, 'buscarClientes']);
 Route::get('/comercial/buscar',        [UsuariController::class, 'buscarComercial']);
-
-Route::post('/onu',                     [SparkController::class, 'buscar']);

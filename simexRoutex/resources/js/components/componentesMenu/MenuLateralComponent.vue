@@ -58,13 +58,6 @@
                 </li>
 
                 <li>
-                    <a href="#" @click.prevent="$emit('cambiarVista', 'ofertas')"
-                        class="flex items-center gap-2 p-2 rounded text-gray-400 hover:bg-gray-700">
-                        💼 Ofertas
-                    </a>
-                </li>
-
-                <li>
                     <a href="#" @click.prevent="$emit('cambiarVista', 'historico')"
                         class="flex items-center gap-2 p-2 rounded text-gray-400 hover:bg-gray-700">
                         📜 Histórico
