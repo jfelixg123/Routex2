@@ -3,8 +3,8 @@ FROM php:8.2-fpm
 RUN apt-get update && apt-get install -y \
     nginx nodejs npm git curl zip unzip gnupg2 apt-transport-https \
     libzip-dev libpng-dev libonig-dev libxml2-dev libicu-dev unixodbc-dev \
-    && curl https://microsoft.com | apt-key add - \
-    && curl https://microsoft.com > /etc/apt/sources.list.d/mssql-release.list \
+    && curl https://microsoft.com | gpg --dearmor -o /usr/share/keyrings/microsoft-archive-keyring.gpg \
+    && echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://microsoft.com bullseye main" > /etc/apt/sources.list.d/mssql-release.list \
     && apt-get update \
     && ACCEPT_EULA=Y apt-get install -y msodbcsql18 \
     && pecl install sqlsrv pdo_sqlsrv \
