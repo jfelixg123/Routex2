@@ -2,7 +2,7 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
     <OfertasCard
       titulo="Ofertas Activas"
-      :valor="totalOfertas"
+      :valor="estats.total"
       icono="🏷️"
       bgIcono="bg-orange-50 text-orange-600"
       :tendencia="5.2"
@@ -10,21 +10,21 @@
     />
 
     <OfertasCard
-      titulo="Envíos Pendientes"
-      valor="12"
-      icono="📦"
-      bgIcono="bg-blue-50 text-blue-600"
-      :tendencia="-2.1"
-      subtitulo="promedio 1.2h"
+      titulo="Ofertas finalizadas"
+      :valor="estats.finalizadas"
+      icono="✅"
+      bgIcono="bg-green-50 text-green-600"
+      :tendencia="2.1"
+      subtitulo="Total completadas"
     />
 
     <OfertasCard
-      titulo="Tasa de Cierre"
-      valor="84%"
-      icono="📈"
-      bgIcono="bg-green-50 text-green-600"
+      titulo="Ofertas pendientes"
+      :valor="estats.pendientes"
+      icono="⏳"
+      bgIcono="bg-orange-50 text-orange-600"
       :tendencia="1.2"
-      subtitulo="objetivo: 90%"
+      subtitulo="Requieren atención"
     />
   </div>
 </template>
@@ -34,19 +34,14 @@
     import axios from 'axios';
     import OfertasCard from './OfertasCard.vue';
 
-    const totalOfertas = ref(0);
-
-    const cargarDatos = async () => {
-        try {
-            const res = await axios.get('/ofertas');
-            // Si tu API devuelve la colección de recursos:
-            totalOfertas.value = res.data.length;
-        } catch (e) {
-            console.error("Error al conectar con la API", e);
+    const props = defineProps({
+        estats: {
+            type: Object,
+            required: true,
+            default: () => ({ pendientes: 0, finalizadas: 0, total: 0 })
         }
-    };
+    });
 
-    onMounted(cargarDatos);
 </script>
 
 <style scoped>

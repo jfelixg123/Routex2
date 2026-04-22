@@ -178,4 +178,16 @@ class OfertaController extends Controller
 
         return $response;
     }
+
+    public function getEstatsOfertesCount()
+    {
+        // Realizamos ambas cuentas en una sola consulta o consultas rápidas
+        $estats = [
+            'pendientes' => Oferta::where('estat_oferta_id', 2)->count(),
+            'finalizadas' => Oferta::where('estat_oferta_id', 3)->count(),
+            'total' => Oferta::count()
+        ];
+
+        return response()->json($estats);
+    }
 }

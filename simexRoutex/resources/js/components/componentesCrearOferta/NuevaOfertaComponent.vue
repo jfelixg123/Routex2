@@ -43,7 +43,7 @@
     import NuevaOfertaTerceraComponent from './NuevaOfertaTerceraComponent.vue';
 
     // Definimos los eventos que este componente puede enviar al AppWrapper
-    const emit = defineEmits(['cambiarVista', 'cambiarPaso', 'actualizarPasoHeader']);
+    const emit = defineEmits(['cambiarVista', 'cambiarPaso', 'actualizarPasoHeader', 'refresh']);
 
     const props = defineProps(['ofertaAEditar']);
 
@@ -272,6 +272,8 @@
                     alert("¡Oferta guardada correctamente!");
                 }
             }
+
+            emit('refresh');
         } catch (error) {
             console.error("ERROR COMPLETO:", error);
             if (error.response) {

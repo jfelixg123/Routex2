@@ -63,6 +63,8 @@ Route::apiResource('notificaciones-destinatarios', NotificacionDestinatarioContr
 Route::get('/notis/buscar',             [NotificacionDestinatarioController::class, 'mostrarPorUsuario']);
 
 Route::apiResource('ofertas',           OfertaController::class);
+Route::get('count/oferta',              [OfertaController::class, 'getEstatsOfertesCount']);
+
 Route::apiResource('paises',            PaissosController::class);
 Route::apiResource('trafico',             PasosController::class);
 Route::get('trafico/{id}/pasos',        [PasosController::class, 'getPasos']);

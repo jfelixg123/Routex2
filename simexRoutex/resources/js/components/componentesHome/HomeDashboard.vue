@@ -8,6 +8,7 @@
             />
         </div>
 
+
         <div class="flex-1 p-6 bg-gray-100">
 
             <!-- VISTA: DASHBOARD -->
@@ -16,7 +17,7 @@
                 <!-- Contenido específico por ROL -->
                 <div v-if="esOperador">
                     <h2 class="text-2xl font-semibold mb-4">Ofertas Activas</h2>
-                    <OfertasActivasComponent />
+                    <OfertasActivasComponent :estats="estats"/>
                 </div>
 
                 <div v-else>
@@ -47,6 +48,7 @@
                 <NuevaOfertaComponent
                     @cambiarVista="$emit('cambiarVista', $event)"
                     @actualizarPasoHeader="sincronizarPaso"
+                    @refresh="fetchStats"
                 />
             </div>
 
@@ -110,8 +112,24 @@ const sincronizarPaso = (nuevoPaso) => {
     pasoActualHijo.value = nombres[nuevoPaso];
 };
 
+const estats = ref({
+    pendientes: 0,
+    finalizadas: 0,
+    total: 0
+});
+
+const fetchStats = async () => {
+    try {
+        const response = await axios.get('/count/oferta');
+        estats.value = response.data;
+    } catch (error) {
+        console.error("Error cargando estadísticas:", error);
+    }
+};
+
 onMounted(() => {
     getOfertas();
+    fetchStats();
 });
 </script>
 

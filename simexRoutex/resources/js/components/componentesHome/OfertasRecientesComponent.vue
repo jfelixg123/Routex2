@@ -13,49 +13,47 @@
 
     <!-- LISTA -->
     <div class="space-y-4 max-h-[430px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300">
-
-      <div
-        v-for="oferta in ofertas"
-        :key="oferta.id"
-        @click="$emit('verDetalle', oferta)"
-        class="cursor-pointer hover:bg-orange-50 transition flex justify-between items-center bg-slate-50 p-4 rounded-xl border border-transparent hover:border-orange-200 hover:bg-white transition-all group"
-      >
-        <!-- INFO -->
-        <div class="flex items-center gap-4">
-          <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
-            {{
-            {
-                1: '🚢',
-                2: '✈️',
-                3: '🚚',
-                4: '📦💨',
-                5: '🚂'
-            }[Number(oferta.tipus_transport_id)] || '❓'}}
-          </div>
-
-          <div>
-            <p class="font-bold text-slate-800 text-sm">
-              <!-- Lógica para mostrar Puerto o Aeropuerto según disponibilidad -->
-              {{ getRuta(oferta) }}
-            </p>
-            <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest">
-              {{ oferta.concepto || 'OFR-000-00' }}
-            </p>
-          </div>
-        </div>
-
-
-
-        <!-- ESTADO -->
-        <span
-          class="px-3 py-1 text-[10px] rounded-full font-bold uppercase"
-          :class="getEstadoClass(oferta.estats_ofertes?.estat)"
+        <div
+            v-for="oferta in ofertas"
+            :key="oferta.id"
+            @click="$emit('verDetalle', oferta)"
+            class="cursor-pointer bg-slate-50 rounded-xl border border-transparent hover:border-orange-200 hover:bg-white transition-all group overflow-hidden flex flex-col"
         >
-          {{ oferta.estats_ofertes?.estat || 'Pendiente' }}
-        </span>
-      </div>
+            <div class="h-32 w-full overflow-hidden">
+                <img
+                    :src="getImagen(oferta.tipus_transport_id)"
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+            </div>
 
-    </div>
+            <!-- INFO INFERIOR -->
+            <div class="p-4 flex justify-between items-center border-t border-gray-100">
+            <div class="flex items-center gap-3">
+                <!-- El circulito con emoji lo podemos mantener pequeño o quitarlo si ya tienes la imagen -->
+                <div class="text-lg">
+                {{ { 1: '🚢', 2: '✈️', 3: '🚚', 4: '📦', 5: '🚂' }[Number(oferta.tipus_transport_id)] }}
+                </div>
+
+                <div>
+                <p class="font-bold text-slate-800 text-sm">
+                    {{ getRuta(oferta) }}
+                </p>
+                <p class="text-[10px] font-medium text-gray-400 uppercase tracking-widest">
+                    {{ oferta.concepto || 'OFR-000-00' }}
+                </p>
+                </div>
+            </div>
+
+            <!-- ESTADO -->
+            <span
+                class="px-3 py-1 text-[10px] rounded-full font-bold uppercase"
+                :class="getEstadoClass(oferta.estats_ofertes?.estat)"
+            >
+                {{ oferta.estats_ofertes?.estat || 'Pendiente' }}
+            </span>
+            </div>
+        </div>
+        </div>
 
   </div>
 </template>
@@ -92,6 +90,18 @@
         'Pendent': 'bg-yellow-100 text-yellow-600'
     };
     return clases[estat] || 'bg-gray-100 text-gray-500';
+    };
+
+    const getImagen = (tipo) => {
+        const iconos = {
+            1: 'icons/barco.jpg',
+            2: 'icons/avion.jpg',
+            3: 'icons/camion.jpeg',
+            4: 'icons/paquete.jpg',
+            5: 'icons/tren.jpeg'
+        };
+
+        return iconos[Number(tipo)] || '/icons/default.png';
     };
 
     onMounted(obtenerOfertas);
