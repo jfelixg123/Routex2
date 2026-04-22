@@ -1,5 +1,6 @@
 import './bootstrap';
 import AppWrapper from './components/AppWrapper.vue';
+import 'mapbox-gl/dist/mapbox-gl.css'
 
 import HomeDashboard from './components/componentesHome/HomeDashboard.vue';
 import MenuLateralComponent from './components/componentesMenu/MenuLateralComponent.vue';

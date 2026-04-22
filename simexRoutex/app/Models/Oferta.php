@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use \Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Oferta extends Model
 {
@@ -122,5 +123,10 @@ class Oferta extends Model
     {
         // Usamos Usuari::class y la columna agent_comercial_id
         return $this->belongsTo(Usuari::class, 'agent_comercial_id');
+    }
+
+    public function seguimientos(): HasMany
+    {
+        return $this->hasMany(OfertaSeguimiento::class, 'oferta_id');
     }
 }

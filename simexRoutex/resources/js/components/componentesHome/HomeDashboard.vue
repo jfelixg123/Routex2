@@ -1,11 +1,7 @@
 <template>
-     <div class="flex-1 flex flex-col">
+    <div class="flex-1 flex flex-col">
         <div class="bg-gray-100">
-            <CabeceraComponent
-                :vistaActual="mostrar"
-                :pasoFormulario="pasoActualHijo"
-                :user="user"
-            />
+            <CabeceraComponent :vistaActual="mostrar" :pasoFormulario="pasoActualHijo" :user="user" />
         </div>
 
         <div class="flex-1 p-6 bg-gray-100">
@@ -22,8 +18,9 @@
 
                 <div v-else>
                     <h2 class="text-2xl font-semibold mb-4">Nuevas Ofertas</h2>
-                    <NuevasOfertasClienteCards :ofertas="ofertas" />
+                    <NuevasOfertasClienteCards :ofertas="ofertas" @verDetalle="$emit('verDetalle', $event)" />
                 </div>
+                <spinner-component v-if="estaCargando" />
 
                 <div class="pt-6 space-y-6">
                     <OfertasRecientesComponent @verDetalle="$emit('verDetalle', $event)" />
@@ -36,15 +33,17 @@
 
             <!-- VISTA: NUEVA OFERTA -->
             <div v-if="mostrar === 'nueva-oferta'">
-                <NuevaOfertaComponent
-                    @cambiarVista="$emit('cambiarVista', $event)"
-                    @actualizarPasoHeader="sincronizarPaso"
-                />
+                <NuevaOfertaComponent @cambiarVista="$emit('cambiarVista', $event)"
+                    @actualizarPasoHeader="sincronizarPaso" />
+            </div>
+
+            <div v-if="mostrar === 'ver-oferta'">
+                <DetalleOfertaComponent :oferta="ofertaSeleccionada" @cambiarVista="$emit('cambiarVista', $event)" />
             </div>
 
             <!-- VISTA: NUEVA PETICIÓN -->
             <div v-if="mostrar === 'nueva-peticion'">
-                <NuevaPeticionComponente @cambiarVista="$emit('cambiarVista', $event)" />
+                <NuevaPeticionComponente :user="user" @cambiarVista="$emit('cambiarVista', $event)" />
             </div>
 
         </div>
@@ -59,10 +58,12 @@ import OfertasActivasComponent from './OfertasActivasComponent.vue';
 import CabeceraComponent from '../componentesCabecera/CabeceraComponent.vue';
 import OfertasRecientesComponent from './OfertasRecientesComponent.vue';
 import IncotermsComponent from '../componentesIncoterms/IncotermsComponent.vue';
+import SpinnerComponent from '../utiles/SpinnerComponent.vue';
 
 import NuevaOfertaComponent from '../componentesCrearOferta/NuevaOfertaComponent.vue';
 import NuevasOfertasClienteCards from './NuevasOfertasClienteCards.vue';
 import NuevaPeticionComponente from '../componenteCrearPeticion/NuevaPeticionComponente.vue';
+import DetalleOfertaComponent from '../componenteOfertaCliente/OfertaClienteComponente.vue';
 const emit = defineEmits(['cambiarVista', 'verDetalle', 'actualizarPasoHeader'])
 
 const props = defineProps({
@@ -76,12 +77,16 @@ const props = defineProps({
 });
 
 const ofertas = ref([]);
+const estaCargando = ref();
+
 
 const getOfertas = async () => {
+    estaCargando.value = true;
     try {
         const res = await axios.get('/ofertas');
 
         ofertas.value = res.data;
+        estaCargando.value = false;
 
         console.log('OFERTAS GUARDADAS:', ofertas.value);
     } catch (error) {
