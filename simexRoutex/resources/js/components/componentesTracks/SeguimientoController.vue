@@ -17,7 +17,7 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-50">
-          <tr v-for="o in ofertas" :key="o.id" class="hover:bg-orange-50/30 transition-colors">
+          <tr v-for="o in ofertasFiltradas" :key="o.id" class="hover:bg-orange-50/30 transition-colors">
             <td class="px-6 py-4 font-bold text-slate-700">#{{ o.id }}</td>
             <td class="px-6 py-4 text-sm">{{ o.usuari?.nom }}</td>
             <td class="px-6 py-4 text-xs text-gray-500">
@@ -37,7 +37,7 @@
     </div>
 
     <!-- PANEL LATERAL DE PASOS -->
-    <div v-if="ofertaSeleccionada" class="w-96 bg-white rounded-3xl shadow-2xl border border-orange-100 p-6 animate-in slide-in-from-right duration-300">
+    <div v-if="ofertaSeleccionada" class="w-120 bg-white rounded-3xl shadow-2xl border border-orange-100 p-6 animate-in slide-in-from-right duration-300">
       <div class="flex justify-between items-center mb-8">
         <h3 class="font-bold text-slate-800">Seguimiento #{{ ofertaSeleccionada.id }}</h3>
         <button @click="ofertaSeleccionada = null" class="text-gray-400 text-2xl">&times;</button>
@@ -94,10 +94,35 @@
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, computed } from 'vue';
     import axios from 'axios';
 
+    const props = defineProps({
+        filtro: {
+            type: String,
+            default: ''
+        }
+    });
+
     const ofertas = ref([]);
+
+    const ofertasFiltradas = computed(() => {
+        if (!props.filtro) return ofertas.value;
+
+        const f = props.filtro.toLowerCase();
+        return ofertas.value.filter(o => {
+            const id = String(o.id);
+            const cliente = (o.usuari?.nom || '').toLowerCase();
+            const origen = (o.port_origen?.nom || '').toLowerCase();
+            const destino = (o.port_desti?.nom || '').toLowerCase();
+
+            return id.includes(f) ||
+                   cliente.includes(f) ||
+                   origen.includes(f) ||
+                   destino.includes(f);
+        });
+    });
+
     const ofertaSeleccionada = ref(null);
     const pasos = ref([]);
 

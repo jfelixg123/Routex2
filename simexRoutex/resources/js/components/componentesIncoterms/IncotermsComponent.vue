@@ -1,5 +1,5 @@
 <template>
-    <div class="p-8 bg-gray-50 min-h-screen">
+    <div class="p-8">
 
     <!-- 1. Header de la Sección -->
     <div class="flex justify-between items-start mb-8">
@@ -23,12 +23,6 @@
             {{ tab }}
           </button>
         </div>
-        <div class="flex items-center gap-4">
-          <div class="relative">
-             <input type="text" placeholder="Filter records..." class="pl-10 pr-4 py-2 bg-gray-50 border-none rounded-lg text-sm focus:ring-2 focus:ring-orange-400 outline-none w-64">
-             <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
-          </div>
-        </div>
       </div>
 
       <!-- 3. Tabla de Incoterms -->
@@ -42,7 +36,7 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-50">
-          <tr v-for="inco in incoterms" :key="inco.id" class="hover:bg-gray-50/80 transition-colors group">
+          <tr v-for="inco in incotermsFiltrados" :key="inco.id" class="hover:bg-gray-50/80 transition-colors group">
             <td class="px-6 py-5 font-bold text-slate-800 text-lg">{{ inco.tipos_incoterm?.codi }}</td>
             <td class="px-6 py-5">
               <p class="font-bold text-slate-700 text-sm">{{ inco.tipos_incoterm?.nom }}</p>
@@ -102,11 +96,32 @@
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, computed } from 'vue';
     import axios from 'axios';
     import ModalIncotermComponent from './ModalIncotermComponent.vue';
 
     const incoterms = ref([]);
+
+    const props = defineProps({
+        filtro: {
+            type: String,
+            default: ''
+        }
+    });
+
+    const incotermsFiltrados = computed(() => {
+        if (!props.filtro) return incoterms.value;
+
+        const f = props.filtro.toLowerCase();
+        return incoterms.value.filter(inco => {
+            // Buscamos por Código (EXW, FOB...) o por Nombre
+            const codigo = (inco.tipos_incoterm?.codi || '').toLowerCase();
+            const nombre = (inco.tipos_incoterm?.nom || '').toLowerCase();
+            return codigo.includes(f) || nombre.includes(f);
+        });
+    });
+
+
     const mostrarModal = ref(false);
 
     const incotermAEditar = ref(null);

@@ -5,17 +5,24 @@
 
         <!-- 2. Contenido Principal: Le pasamos la vista actual como Prop -->
         <div class="flex-1 flex flex-col">
-            <HomeDashboard
-                v-if="vistaActual === 'dashboard' || vistaActual === 'nueva-oferta' || vistaActual === 'ver-oferta' || vistaActual === 'nueva-peticion'"
-                :mostrar="vistaActual" :key="dashboardKey" @cambiarVista="actualizarVista"
-                :ofertaSeleccionada="ofertaSeleccionada" @verDetalle="abrirDetalle" :user="user" />
+            <CabeceraComponent
+                :vistaActual="vistaActual"
+                :user="user"
+                @update:search="searchQuery = $event"
+            />
+            <div class="flex-1 p-6 bg-gray-100 overflow-y-auto">
+                <HomeDashboard
+                    v-if="vistaActual === 'dashboard' || vistaActual === 'nueva-oferta' || vistaActual === 'ver-oferta' || vistaActual === 'nueva-peticion'"
+                    :mostrar="vistaActual" :key="dashboardKey" @cambiarVista="actualizarVista"
+                    :ofertaSeleccionada="ofertaSeleccionada" @verDetalle="abrirDetalle" :user="user" :filtro="searchQuery" />
 
-            <IncotermsComponent v-if="vistaActual === 'incoterms'"></IncotermsComponent>
-            <UsuariosComponent v-if="vistaActual === 'usuaris'"></UsuariosComponent>
-            <ComunicacionesComponent v-if="vistaActual === 'comunicaciones'"></ComunicacionesComponent>
-            <SeguimientoController v-if="vistaActual === 'seguimiento'"></SeguimientoController>
-            <PerfilUsuarioComponent v-if="vistaActual === 'perfil'" :user="user" @actualizarUser="user = $event"/>
-            <HistorialOfertasComponent v-if="vistaActual === 'historico'" />
+                <IncotermsComponent v-if="vistaActual === 'incoterms'" :filtro="searchQuery" ></IncotermsComponent>
+                <UsuariosComponent v-if="vistaActual === 'usuaris'" :filtro="searchQuery"></UsuariosComponent>
+                <ComunicacionesComponent v-if="vistaActual === 'comunicaciones'"></ComunicacionesComponent>
+                <SeguimientoController v-if="vistaActual === 'seguimiento'" :filtro="searchQuery"></SeguimientoController>
+                <PerfilUsuarioComponent v-if="vistaActual === 'perfil'" :user="user" @actualizarUser="user = $event"/>
+                <HistorialOfertasComponent v-if="vistaActual === 'historico'" />
+            </div>
         </div>
         <ChatBotComponent />
     </div>
@@ -32,6 +39,7 @@ import SeguimientoController from './componentesTracks/SeguimientoController.vue
 import PerfilUsuarioComponent from './usuariosComponent/PerfilUsuarioComponent.vue';
 import HistorialOfertasComponent from './componentesHome/HistorialOfertas.vue';
 import ChatBotComponent from './componentesChatBot/ChatBotComponent.vue';
+import CabeceraComponent from './componentesCabecera/CabeceraComponent.vue';
 
 
 
@@ -57,6 +65,8 @@ const abrirDetalle = (oferta) => {
     ofertaSeleccionada.value = oferta; // Guardamos los datos de la oferta clicada
     vistaActual.value = 'ver-oferta'; // Cambiamos la vista
 };
+
+const searchQuery = ref('');
 
 </script>
 

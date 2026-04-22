@@ -14,7 +14,7 @@
     <!-- LISTA -->
     <div class="space-y-4 max-h-[430px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300">
         <div
-            v-for="oferta in ofertas"
+            v-for="oferta in ofertasFiltradas"
             :key="oferta.id"
             @click="$emit('verDetalle', oferta)"
             class="cursor-pointer bg-slate-50 rounded-xl border border-transparent hover:border-orange-200 hover:bg-white transition-all group overflow-hidden flex flex-col"
@@ -59,10 +59,24 @@
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, computed  } from 'vue';
     import axios from 'axios';
 
+    const props = defineProps({
+        filtro: String
+    });
+
     const ofertas = ref([]);
+
+    const ofertasFiltradas = computed(() => {
+        if (!props.filtro) return ofertas.value;
+        const f = props.filtro.toLowerCase();
+        return ofertas.value.filter(o => {
+            const ruta = getRuta(o).toLowerCase();
+            const concepto = (o.concepto || '').toLowerCase();
+            return ruta.includes(f) || concepto.includes(f);
+        });
+    });
 
     const fecha = new Date().toLocaleDateString();
 

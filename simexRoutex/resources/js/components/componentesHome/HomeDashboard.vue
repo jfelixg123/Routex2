@@ -1,15 +1,8 @@
 <template>
-     <div class="flex-1 flex flex-col">
-        <div class="bg-gray-100">
-            <CabeceraComponent
-                :vistaActual="mostrar"
-                :pasoFormulario="pasoActualHijo"
-                :user="user"
-            />
-        </div>
+     <div class="min-h-screen flex flex-col bg-gray-100">
 
 
-        <div class="flex-1 p-6 bg-gray-100">
+        <div class="flex-grow p-6">
 
             <!-- VISTA: DASHBOARD -->
             <div v-if="mostrar === 'dashboard'">
@@ -26,7 +19,7 @@
                 </div>
 
                 <div class="pt-6 space-y-6">
-                    <OfertasRecientesComponent @verDetalle="$emit('verDetalle', $event)" />
+                    <OfertasRecientesComponent :filtro="filtro" @verDetalle="$emit('verDetalle', $event)" />
                 </div>
             </div>
 
@@ -82,7 +75,8 @@ const props = defineProps({
         default: 'dashboard', // Por defecto muestra el panel
 
     },
-    ofertaSeleccionada: Object
+    ofertaSeleccionada: Object,
+    filtro: String,
 });
 
 const ofertas = ref([]);

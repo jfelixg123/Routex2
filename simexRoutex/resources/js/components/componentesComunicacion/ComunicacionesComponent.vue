@@ -64,7 +64,7 @@
         </div>
 
 
-        <div class="flex items-center justify-center p-4">
+        <div class="mt-8 flex justify-end items-center gap-4">
             <button
             @click="sendNotification"
             :disabled="loading"
@@ -83,14 +83,17 @@
 
             <span>{{ loading ? 'Enviando...' : 'Enviar Notificación' }}</span>
             </button>
-        </div>
-        <!-- BOTÓN ENVIAR -->
-        <div class="mt-8 flex justify-end">
+
+            <!-- BOTÓN ENVIAR -->
+
             <button @click="enviar" class="bg-slate-800 text-white px-10 py-3 rounded-2xl font-bold hover:bg-slate-700 transition shadow-lg shadow-slate-200">
-            Enviar Notificación
+            Enviar
             </button>
+
         </div>
-        </div>
+
+
+    </div>
 
         <!-- 2. HISTORIAL DE ENVÍOS (Parte inferior) -->
         <div>

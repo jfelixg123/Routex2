@@ -28,20 +28,6 @@
           </div>
         </div>
 
-        <!-- BLOQUE 2: OPERATIVA -->
-        <div class="flex flex-col gap-1">
-          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Paso de Seguimiento Inicial (Responsabilidad)</label>
-          <div class="relative">
-            <select v-model="nuevoInco.tracking_steps_id" class="w-full border border-gray-200 rounded-xl p-3 outline-none focus:ring-2 focus:ring-orange-400 bg-gray-50 appearance-none">
-              <option value="">Selecciona un paso...</option>
-              <option v-for="p in pasosMaestros" :key="p.id" :value="p.id">
-                {{ p.nom }} (Orden: {{ p.ordre }})
-              </option>
-            </select>
-            <span class="absolute right-3 top-3.5 text-gray-400 pointer-events-none">▼</span>
-          </div>
-        </div>
-
         <!-- NUEVO: CONFIGURAR HOJA DE RUTA COMPLETA -->
         <div class="mt-6 border-t pt-4">
             <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">Configurar Hoja de Ruta (Varios pasos)</label>
@@ -64,7 +50,7 @@
           Cancelar
         </button>
         <button @click="guardar"
-                :disabled="!nuevoInco.codi || !nuevoInco.tracking_steps_id"
+                :disabled="!nuevoInco.codi || nuevoInco.pasosSeleccionados.length === 0"
                 class="flex-1 px-4 py-3 bg-orange-500 text-white font-bold rounded-2xl hover:bg-orange-600 transition shadow-lg shadow-orange-200 disabled:opacity-50 disabled:shadow-none">
           {{ nuevoInco.id ? 'Actualizar' : 'Guardar' }} Incoterm
         </button>
@@ -126,12 +112,23 @@
     };
 
     const guardar = async () => {
+        if (!nuevoInco.codi || nuevoInco.pasosSeleccionados.length === 0) {
+            alert("Por favor, introduce un código y selecciona al menos un paso de la hoja de ruta.");
+            return;
+        }
         try {
+            nuevoInco.tracking_steps_id = nuevoInco.pasosSeleccionados[0];
+
             let res;
+            // 3. Preparamos los datos para enviar (clonamos para no ensuciar el reactive)
+            const datosAEnviar = { ...nuevoInco };
+
             if (nuevoInco.id) {
-                res = await axios.put(`incoterms/${nuevoInco.id}`, nuevoInco);
+                // EDITAR
+                res = await axios.put(`incoterms/${nuevoInco.id}`, datosAEnviar);
             } else {
-                res = await axios.post('incoterms', nuevoInco);
+                // CREAR NUEVO
+                res = await axios.post('incoterms', datosAEnviar);
             }
 
             if (res.status === 201 || res.status === 200) {

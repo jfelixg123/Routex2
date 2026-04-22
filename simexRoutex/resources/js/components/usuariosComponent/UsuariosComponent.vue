@@ -47,7 +47,7 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-50">
-            <tr v-for="user in usuariosFiltrados" :key="user.id" class="hover:bg-gray-50/80 transition-colors group">
+            <tr v-for="user in usuariosFiltradosBuscador" :key="user.id" class="hover:bg-gray-50/80 transition-colors group">
                 <td class="px-6 py-4 flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
                         <!-- Validación de existencia de nombre -->
@@ -114,7 +114,44 @@
     import ModalUsuarioComponent from './ModalUsuarioComponent.vue';
     import ConfiguracionEmpresasComponent from '../componentesEmpresas/ConfiguracionEmpresasComponent.vue';
 
+    const props = defineProps({
+        filtro: {
+            type: String,
+            default: ''
+        }
+    });
+
     const usuarios = ref([]);
+
+    const usuariosFiltradosBuscador = computed(() => {
+        if (!usuarios.value) return [];
+
+        // Primero: Filtrar por Categoría (Tabs)
+        let lista = usuarios.value;
+        if (filtroActual.value !== 'Todos los usuarios') {
+            const rolesMap = {
+                'Administradores': 4,
+                'Empresas': 3,
+                'Comerciales': 2,
+                'Operadores Logísticos': 1
+            };
+            const idBuscado = rolesMap[filtroActual.value];
+            lista = lista.filter(user => Number(user.rol_id) === idBuscado);
+        }
+
+        // Segundo: Filtrar por texto del buscador (Nombre o Email)
+        if (props.filtro) {
+            const f = props.filtro.toLowerCase();
+            lista = lista.filter(user => {
+                const nombre = (user.nom || '').toLowerCase();
+                const correo = (user.correu || '').toLowerCase();
+                return nombre.includes(f) || correo.includes(f);
+            });
+        }
+
+        return lista;
+    });
+
     const filtroActual = ref('Todos los usuarios');
 
     const stats = ref([
@@ -125,7 +162,6 @@
 
     const cargarUsuarios = async () => {
         try {
-            // En tu controlador de Laravel recuerda cargar el 'rol' con .with()
             const res = await axios.get('usuaris');
             usuarios.value = res.data;
             console.log("Primer usuario:", res.data[0]);

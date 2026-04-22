@@ -6,7 +6,7 @@
       <!-- Logo -->
       <div class="flex items-center gap-2 h-8">
             <div v-if="vistaActual2" class="bg-orange-500 w-8 h-8 flex items-center justify-center rounded-lg font-bold text-white">
-                     {{ String(vistaActual2).charAt(0) }}
+                     {{ String(vistaActual2).charAt(0) || 'R' }}
             </div>
                 <span class="text-xl font-bold">
                 <template v-if="vistaActual2 === 'RouteX'">
@@ -43,11 +43,12 @@
 
     <!-- DERECHA: PERFIL -->
     <div class="flex items-center gap-3">
-      <div v-if="vistaActual === 'dashboard'" class="relative">
+      <div v-if="vistaActual === 'dashboard' || vistaActual === 'incoterms' || vistaActual === 'usuaris' || vistaActual === 'seguimiento'" class="relative">
         <input
           type="text"
           placeholder="Buscar operaciones..."
           class="pl-10 pr-4 py-2 bg-gray-100 rounded-lg border-none focus:ring-2 focus:ring-orange-400 w-64 outline-none text-sm"
+          @input="$emit('update:search', $event.target.value)"
         />
         <span class="absolute left-3 top-2 text-gray-400">🔍</span>
       </div>
@@ -63,15 +64,14 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-    const props =defineProps({
+    import { computed } from 'vue';
+
+    const props = defineProps({
         user: Object,
-        vistaActual: {
-            type: String,
-            default: 'nueva-oferta'
-        },
+        vistaActual: String,
         pasoFormulario: [String, Number]
     });
+
     const menuItems = [
         { id: 'ofertas', nombre: 'Ofertas' },
         { id: 'rutas', nombre: 'Rutas y cargas' },
@@ -79,16 +79,18 @@ import { computed } from 'vue';
     ];
 
     const vistaActual2 = computed(() => {
+        const v = props.vistaActual ? String(props.vistaActual).toLowerCase() : '';
         const titulos = {
             'dashboard': 'Dashboard',
             'incoterms': 'Incoterms',
-            'comunicaciones': 'Comunicaciones',
-            'seguimiento': 'Seguimiento',
             'ofertas': 'Nueva Oferta',
-            'nueva-peticion': 'Petición',
-            'usuaris': 'Usuarios'
+            'nueva-oferta': 'Nueva Oferta',
+            'ver-oferta': 'Ver Oferta',
+            'usuaris' : 'Usuaris',
+            'comunicaciones' : 'Comunicaciones',
+            'seguimiento' : 'Seguimiento',
+            'perfil' : 'Perfil',
         };
-
-        return titulos[props.vistaActual] || 'RouteX';
+        return titulos[v] || 'RouteX';
     });
 </script>
