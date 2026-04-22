@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Clases\Utilitat;
+use App\Classes\Utilitat;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TrackingStepsResource;
 use App\Models\TrackingSteps;

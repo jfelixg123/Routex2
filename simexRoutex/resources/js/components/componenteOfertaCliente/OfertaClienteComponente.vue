@@ -52,6 +52,7 @@
         </div>
 
         <!-- TIMELINE -->
+        <!-- TIMELINE -->
         <div class="mt-6 bg-white p-4 rounded-xl shadow">
             <h2 class="font-semibold mb-4">📍 Seguimiento</h2>
 
@@ -59,25 +60,26 @@
             <SpinnerComponent v-if="estaCargando" />
 
             <!-- DATOS -->
-            <div v-else-if="tracking" class="space-y-4">
+            <div v-else-if="tracking?.seguimientos?.length" class="space-y-4">
 
-                <div v-for="(p, index) in tracking.pasos" :key="index" class="flex items-start gap-3">
+                <div v-for="(seg, index) in tracking.seguimientos" :key="index" class="flex items-start gap-3">
 
                     <!-- punto -->
-                    <div :class="p.esta_completado == 1 ? 'bg-green-500' : 'bg-gray-300'"
-                        class="w-3 h-3 rounded-full mt-2"></div>
+                    <div :class="seg.esta_completado == 1 ? 'bg-green-500' : 'bg-gray-300'"
+                        class="w-3 h-3 rounded-full mt-2">
+                    </div>
 
                     <!-- texto -->
                     <div>
-                        <p :class="p.esta_completado ? 'font-semibold' : 'text-gray-400'">
-                            {{ p.nom }}
+                        <p :class="seg.esta_completado ? 'font-semibold' : 'text-gray-400'">
+                            {{ seg.step?.nom || 'Paso sin nombre' }}
                         </p>
 
-                        <p v-if="p.fecha_completado" class="text-xs text-gray-400">
-                            {{ formatearFecha(p.fecha_completado) }}
+                        <p v-if="seg.fecha_completado" class="text-xs text-gray-400">
+                            {{ formatearFecha(seg.fecha_completado) }}
                         </p>
 
-                        <a v-if="p.documento_path" :href="'http://localhost:8080/storage/' + p.documento_path"
+                        <a v-if="seg.documento_path" :href="'http://localhost:8080/storage/' + seg.documento_path"
                             target="_blank" class="text-xs text-blue-500">
                             📎 Ver documento
                         </a>
