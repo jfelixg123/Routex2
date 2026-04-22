@@ -1,35 +1,45 @@
 <template>
-  <div id="superset-container" style="height: 100%; width: 100%;"></div>/>
+    <!-- Asegúrate de que el id coincida con el mountPoint -->
+    <div id="superset-container" class="superset-frame"></div>
 </template>
 
+<script setup>
+import { onMounted } from 'vue';
+import { embedDashboard } from "@superset-ui/embedded-sdk";
+import axios from 'axios';
+
+onMounted(() => {
+    embedDashboard({
+        id: "8212dbaa-b341-4f72-8580-edadb6088d92", // El UUID que pusiste en el controlador
+        supersetDomain: "http://localhost:8088",      // La URL externa de tu Superset
+        mountPoint: document.getElementById("superset-container"),
+        fetchGuestToken: async () => {
+            // Llamada a tu controlador de Laravel
+            const response = await axios.get('/superset/token');
+            return response.data.token;
+        },
+        dashboardUiConfig: {
+            hideTitle: true,
+            filters: { expanded: false },
+            urlParams: {
+                standalone: "true"
+            }
+        },
+    });
+});
+</script>
+
 <style scoped>
-#superset-container {
-  height: 800px;
+.superset-frame {
+    background: white;
+    width: 100%;
+    height: 800px;
+}
+
+/* Importante: Superset genera un iframe, asegúrate de que ocupe el 100% */
+:deep(iframe) {
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 </style>
-
-<script setup>
-import  {  embedDashboard  }  from  "@superset-ui/embedded-sdk" ;
-
-embedDashboard ( {
-  id : "abc123" ,  // dado por la interfaz de usuario de incrustación de Superset
-  supersetDomain : "https://superset.example.com" ,
-  mountPoint : document . getElementById ( "my-superset-container" ) ,  // cualquier elemento html que pueda contener un iframe
-  fetchGuestToken : ( )  =>  fetchGuestTokenFromBackend ( ) ,
-  dashboardUiConfig : {  // configuración de la interfaz de usuario del panel: hideTitle, hideTab, hideChartControls, filters.visible, filters.expanded (opcional), urlParams (opcional)
-      hideTitle : true ,
-      filters : {
-          expanded : true ,
-      } ,
-      urlParams : {
-          foo : 'value1' ,
-          bar : 'value2' ,
-          // ...
-      }
-  } ,
-    // atributos adicionales opcionales de la zona de pruebas del iframe
-  iframeSandboxExtras : [ 'allow-top-navigation' ,  'allow-popups-to-escape-sandbox' ] ,
-  // configuración opcional para aplicar una referrerPolicy particular
-  referrerPolicy : "same-origin"
-} ) ;
-</script>

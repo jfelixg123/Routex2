@@ -15,6 +15,7 @@
         <!-- LISTA -->
         <div class="space-y-4">
             <OfertaHistorialCard v-for="oferta in ofertasFiltradas" :key="oferta.id" :oferta="oferta" />
+            <SupersetComponent />
         </div>
 
     </div>
@@ -25,6 +26,7 @@ import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import OfertaHistorialCard from './OfertaHistorialCard.vue';
 import SpinnerComponent from '../utiles/SpinnerComponent.vue';
+import SupersetComponent from '../superset/SupersetComponent.vue';
 
 const ofertas = ref([]);
 const filtro = ref('todas');

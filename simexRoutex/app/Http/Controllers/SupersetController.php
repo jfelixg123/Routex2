@@ -47,6 +47,7 @@ class SupersetController extends Controller
                 [
                     "type" => "dashboard",
                     "id"   => "8212dbaa-b341-4f72-8580-edadb6088d92" // No el número corto
+                    
                 ]
             ],
             "rls"  => [],
