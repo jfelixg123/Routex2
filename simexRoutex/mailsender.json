@@ -1,0 +1,70 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "fromEmail": "jguius2021@cepnet.net",
+        "toEmail": "={{ $json.chatInput }}",
+        "subject": "Notificaciones de Routex",
+        "emailFormat": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "183e814a-d10f-42e6-8e89-eca7c00c5b7a",
+      "name": "Send an Email",
+      "webhookId": "dd0b7d39-ec1d-4b46-a744-bc9a6995ce8e",
+      "credentials": {
+        "smtp": {
+          "id": "yoDYF7ONYCt9WkDk",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3059b712-415a-4f9f-97bb-f844048c0830",
+      "name": "When chat message received",
+      "webhookId": "9f386678-b593-4de5-9a74-77ea3e80a47a"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "When chat message received": [
+      {
+        "action": "sendMessage",
+        "sessionId": "3706e3a5cea94dfbaeb4bc7fcd724b6b",
+        "chatInput": "hola",
+        "chatInputMessage": ""
+      }
+    ]
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8b1adf282fbb667f467a1f7363f7defa8499451f20c8f492219c6110ce8f2f03"
+  }
+}
