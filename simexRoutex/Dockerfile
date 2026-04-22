@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y nginx nodejs npm git curl zip unzip lib
 # php por defecto escucha en socket, otra dirección. Forzamos para que nginx sepa a donde dirigirse para procesar los archivos de php
 RUN sed -i 's|listen = .*|listen = 127.0.0.1:9000|' /usr/local/etc/php-fpm.d/www.conf
 
+
 # copiamos el composer para que pueda gestiona las librerias de php
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
