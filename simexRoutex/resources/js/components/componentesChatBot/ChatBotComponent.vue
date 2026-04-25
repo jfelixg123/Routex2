@@ -76,13 +76,14 @@
         try {
             const user = ref(JSON.parse(localStorage.getItem('user')))
             const response = await axios.post('http://localhost:5678/webhook/ba85909a-9bae-4ee9-b8dc-0bd6e099146f/chat', {
-                sessionId: user.id,
+                sessionId: 1,
                 chatInput: text
             });
 
             messages.value.push({ role: 'bot', text: response.data.output });
         } catch (error) {
             messages.value.push({ role: 'bot', text: 'Lo siento, hay un problema de conexión con mi cerebro artificial.' });
+            messages.value.push({ role: 'bot', text: error });
         } finally {
             isLoading.value = false;
             scrollToBottom();

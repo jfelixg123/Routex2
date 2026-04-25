@@ -97,8 +97,10 @@
             nuevoInco.nom = i.tipos_incoterm?.nom || '';
             nuevoInco.tracking_steps_id = i.tracking_steps_id;
             nuevoInco.tipus_inconterm_id = i.tipus_inconterm_id;
-            // Si ya tiene pasos asociados en la intermedia, deberías cargarlos aquí
-            // nuevoInco.pasosSeleccionados = i.pasos_asociados.map(p => p.tracking_step_id);
+            if (i.pasos_asociados && Array.isArray(i.pasos_asociados)) {
+                // USAMOS Number() PARA QUE COINCIDA CON LOS IDs DE pasosMaestros
+                nuevoInco.pasosSeleccionados = i.pasos_asociados.map(p => Number(p.tracking_step_id));
+            }
         }
     });
 
@@ -117,6 +119,8 @@
             return;
         }
         try {
+            console.log("Enviando estos pasos:", nuevoInco.pasosSeleccionados);
+
             nuevoInco.tracking_steps_id = nuevoInco.pasosSeleccionados[0];
 
             let res;

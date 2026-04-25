@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Oferta;
 use App\Models\OfertaSeguimiento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PasosController extends Controller
 {
@@ -75,5 +76,41 @@ class PasosController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function subirDocumento(Request $request, $id) // El nombre $id debe coincidir con {id} en la ruta
+    {
+        $seguimiento = OfertaSeguimiento::find($id);
+
+        if (!$seguimiento) {
+            return response()->json(['error' => 'No se encuentra el seguimiento con ID ' . $id], 404);
+        }
+
+        if ($request->hasFile('documento')) {
+            $file = $request->file('documento');
+            // Tu lógica para guardar el archivo...
+            $path = $file->store('documentos_seguimiento', 'public');
+
+            $seguimiento->documento_path = $path;
+            $seguimiento->save();
+
+            return response()->json(['message' => 'Subido correctamente', 'path' => $path]);
+        }
+
+        return response()->json(['error' => 'No se ha enviado ningún archivo'], 400);
+    }
+    public function borrarDocumento($id) {
+        $paso = OfertaSeguimiento::find($id);
+
+        if ($paso && $paso->documento_path) {
+            Storage::disk('public')->delete($paso->documento_path);
+
+            $paso->documento_path = null;
+            $paso->save();
+
+            return response()->json(['message' => 'Documento eliminado'], 200);
+        }
+
+        return response()->json(['error' => 'No hay documento'], 404);
     }
 }

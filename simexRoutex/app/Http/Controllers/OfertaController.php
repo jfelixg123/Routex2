@@ -137,9 +137,25 @@ class OfertaController extends Controller
                 $oferta->valor = $request->valor;
                 $oferta->comentarios_internos = $request->comentarios_internos;
                 $oferta->comentarios_imprimir = $request->comentarios_imprimir;
+                $oferta->incoterm_id = $request->incoterm_id;
 
                 try{
                     $oferta->save();
+                    OfertaSeguimiento::where('oferta_id', $oferta->id)->delete();
+
+                    $incoterm = Incoterm::with('pasosAsociados')->find($oferta->incoterm_id);
+
+                    if ($incoterm && $incoterm->pasosAsociados) {
+                        foreach ($incoterm->pasosAsociados as $item) {
+                            $seguimiento = new OfertaSeguimiento();
+                            $seguimiento->oferta_id = $oferta->id;
+                            $seguimiento->tracking_step_id = $item->tracking_step_id;
+                            $seguimiento->orden = $item->orden;
+                            $seguimiento->esta_completado = 0;
+                            $seguimiento->save();
+                        }
+                    }
+
                     $response = (new OfertaResource($oferta))
                     ->response()
                     ->setStatusCode(201);

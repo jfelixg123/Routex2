@@ -69,6 +69,8 @@ Route::apiResource('paises',            PaissosController::class);
 Route::apiResource('trafico',             PasosController::class);
 Route::get('trafico/{id}/pasos',        [PasosController::class, 'getPasos']);
 Route::post('trafico/check/{id}',       [PasosController::class, 'checkPaso']);
+Route::post('trafico/subir-doc/{id}',   [PasosController::class, 'subirDocumento']);
+Route::delete('trafico/borrar-doc/{id}', [PasosController::class, 'borrarDocumento']);
 
 Route::apiResource('ports',             PortController::class);
 Route::get('/port/buscar',              [PortController::class, 'buscarPuertos']);

@@ -18,7 +18,7 @@ class IncotermController extends Controller
      */
     public function index()
     {
-        $incoterm = Incoterm::with(['trackingSteps', 'tiposIncoterm', 'ofertas'])->get();
+        $incoterm = Incoterm::with(['trackingSteps', 'tiposIncoterm', 'ofertas', 'pasosAsociados'])->get();
         return IncotermsResource::collection($incoterm);
     }
 
@@ -91,6 +91,20 @@ class IncotermController extends Controller
                     }
                     $incoterm->tracking_steps_id = $request->tracking_steps_id;
                     $incoterm->save();
+
+                      if ($request->has('pasosSeleccionados')) {
+                        // 1. Borramos los pasos antiguos para este incoterm
+                        IncotermPaso::where('incoterm_id', $incoterm->id)->delete();
+
+                        // 2. Insertamos los nuevos
+                        foreach ($request->pasosSeleccionados as $key => $stepId) {
+                            $intermedia = new IncotermPaso();
+                            $intermedia->incoterm_id = $incoterm->id;
+                            $intermedia->tracking_step_id = $stepId;
+                            $intermedia->orden = $key + 1;
+                            $intermedia->save();
+                        }
+                    }
 
                     $response = (new IncotermsResource($incoterm))
                     ->response()

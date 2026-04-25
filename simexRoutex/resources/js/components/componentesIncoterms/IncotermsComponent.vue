@@ -1,8 +1,8 @@
 <template>
-    <div class="p-8">
+    <div class="p-8 flex flex-col gap-6 h-[calc(100vh-120px)] overflow-hidden">
 
     <!-- 1. Header de la Sección -->
-    <div class="flex justify-between items-start mb-8">
+    <div class="flex justify-between items-start flex-shrink-0">
       <div>
         <h2 class="text-3xl font-bold text-slate-800">Incoterm</h2>
       </div>
@@ -14,76 +14,74 @@
     </div>
 
     <!-- 2. Filtros y Tabs -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-      <div class="flex justify-between items-center p-4 border-b border-gray-50">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden flex-1">
+      <div class="flex justify-between items-center p-4 border-b border-gray-50 flex-shrink-0">
         <div class="flex gap-6">
-          <button v-for="tab in ['Active Terms']" :key="tab"
+          <button v-for="tab in ['Incoterms Activos']" :key="tab"
                   class="pb-2 text-sm font-bold transition-colors"
-                  :class="tab === 'Active Terms' ? 'text-orange-500 border-b-2 border-orange-500' : 'text-gray-400 hover:text-gray-600'">
+                  :class="tab === 'Incoterms Activos' ? 'text-orange-500 border-b-2 border-orange-500' : 'text-gray-400 hover:text-gray-600'">
             {{ tab }}
           </button>
         </div>
       </div>
 
       <!-- 3. Tabla de Incoterms -->
-      <table class="w-full text-left border-collapse">
-        <thead class="bg-gray-50/50 text-[10px] uppercase tracking-widest text-gray-400 font-bold">
-          <tr>
-            <th class="px-6 py-4">Code</th>
-            <th class="px-6 py-4">Description / Name</th>
-            <th class="px-6 py-4 text-center">Transport Mode</th>
-            <th class="px-6 py-4 text-right">Actions</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-50">
-          <tr v-for="inco in incotermsFiltrados" :key="inco.id" class="hover:bg-gray-50/80 transition-colors group">
-            <td class="px-6 py-5 font-bold text-slate-800 text-lg">{{ inco.tipos_incoterm?.codi }}</td>
-            <td class="px-6 py-5">
-              <p class="font-bold text-slate-700 text-sm">{{ inco.tipos_incoterm?.nom }}</p>
-              <p class="text-xs text-gray-400 mt-1">Seller makes goods available at their premises</p>
-            </td>
-            <td class="px-6 py-5 text-center">
-              <span class="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-full text-[10px] font-bold text-slate-600 uppercase">
-                🚢 Sea/Waterway
-              </span>
-            </td>
-            <td class="px-6 py-5 text-right relative">
-                <!-- Botón de tres puntos -->
-                <button
-                    @click="toggleMenu(inco.id)"
-                    class="text-gray-400 hover:text-orange-500 transition-colors p-1"
-                >
-                    <svg xmlns="http://w3.org" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-                    </svg>
-                </button>
-
-                <!-- El Menú Desplegable (solo se ve si coincide el ID) -->
-                <div v-if="menuAbierto === inco.id"
-                    class="absolute right-10 top-12 w-40 bg-white border border-gray-100 rounded-xl shadow-xl z-20 overflow-hidden py-1 animate-in fade-in slide-in-from-top-2 duration-200">
-
-                    <button @click="abrirEditar(inco)"
-                            class="w-full text-left px-4 py-2 text-sm text-slate-600 hover:bg-orange-50 hover:text-orange-600 flex items-center gap-2 font-bold">
-                    <span>✏️</span> Edit Term
+       <div class="flex-1 overflow-y-auto custom-scroll">
+        <table class="w-full text-left border-collapse">
+            <thead class="bg-gray-50/50 text-[10px] uppercase tracking-widest text-gray-400 font-bold">
+            <tr>
+                <th class="px-6 py-4">Código</th>
+                <th class="px-6 py-4">Descripción / Nombre</th>
+                <th class="px-6 py-4 text-center">Modo de transporte</th>
+                <th class="px-6 py-4 text-right">Acciones</th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50">
+            <tr v-for="inco in incotermsFiltrados" :key="inco.id" class="hover:bg-gray-50/80 transition-colors group">
+                <td class="px-6 py-5 font-bold text-slate-800 text-lg">{{ inco.tipos_incoterm?.codi }}</td>
+                <td class="px-6 py-5">
+                <p class="font-bold text-slate-700 text-sm">{{ inco.tipos_incoterm?.nom }}</p>
+                <p class="text-xs text-gray-400 mt-1">ID: #{{ inco.tipos_incoterm?.id  }}</p>
+                </td>
+                <td class="px-6 py-5 text-center">
+                    <span :class="[
+                        'inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase',
+                        esMultimodal(inco.tipus_inconterm_id) ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'
+                        ]">
+                        {{ esMultimodal(inco.tipus_inconterm_id) ? '🌍 Multimodal' : '🚢 Marítimo' }}
+                    </span>
+                </td>
+                <td class="px-6 py-5 text-right relative">
+                    <!-- Botón de tres puntos -->
+                    <button
+                        @click="toggleMenu(inco.id)"
+                        class="text-gray-400 hover:text-orange-500 transition-colors p-1"
+                    >
+                        <svg xmlns="http://w3.org" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                        </svg>
                     </button>
 
-                    <button @click="eliminarIncoterm(inco.id)"
-                            class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 flex items-center gap-2 font-bold">
-                    <span>🗑️</span> Delete
-                    </button>
-                </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+                    <!-- El Menú Desplegable (solo se ve si coincide el ID) -->
+                    <div v-if="menuAbierto === inco.id"
+                        class="absolute right-10 top-12 w-40 bg-white border border-gray-100 rounded-xl shadow-xl z-20 overflow-hidden py-1 animate-in fade-in slide-in-from-top-2 duration-200">
 
-    <!-- 4. (Resumen inferior) -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
-        <div v-for="stat in stats" :key="stat.label" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ stat.label }}</p>
-            <p class="text-2xl font-bold text-slate-800 mt-1">{{ stat.value }}</p>
-        </div>
+                        <button @click="abrirEditar(inco)"
+                                class="w-full text-left px-4 py-2 text-sm text-slate-600 hover:bg-orange-50 hover:text-orange-600 flex items-center gap-2 font-bold">
+                        <span>✏️</span> Edit Term
+                        </button>
+
+                        <button @click="eliminarIncoterm(inco.id)"
+                                class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 flex items-center gap-2 font-bold">
+                        <span>🗑️</span> Delete
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+      </div>
+
     </div>
   </div>
 
@@ -127,13 +125,6 @@
     const incotermAEditar = ref(null);
 
     const menuAbierto = ref(null);
-
-    const stats = ref([
-        { label: 'Total Terms', value: '11' },
-        { label: 'Last Update', value: 'Oct 24' },
-        { label: 'Version', value: '2020' },
-        { label: 'Consistency', value: '100%' }
-    ]);
 
     const cargarIncoterms = async () => {
     try {
@@ -179,6 +170,14 @@
         incotermAEditar.value = inco; // Guardamos el objeto que clicamos
         mostrarModal.value = true;    // Abrimos el modal
         menuAbierto.value = null;     // Cerramos el menú de los tres puntos
+    };
+
+    const esMultimodal = (id) => {
+        // Forzamos a número por si viene como string
+        const idNum = Number(id);
+        const idsMultimodales = [14, 15, 1015, 1016, 1017, 1018, 1022];
+
+        return idsMultimodales.includes(idNum);
     };
 
     onMounted(cargarIncoterms);
