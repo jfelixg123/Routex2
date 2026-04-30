@@ -41,9 +41,11 @@ const historial = async () => {
 
 onMounted(historial);
 
+
+// Función para filtrar las ofertas
 const ofertasFiltradas = computed(() => {
     if (filtro.value === 'todas') return ofertas.value;
 
-    return ofertas.value.filter(o => o.estats_ofertes?.estat === filtro.value);
+    return ofertas.value.filter(o => o.estats_ofertes?.estat === filtro.value); //Recorre un array y se queda con los elementos que cumplen esa condicion
 });
 </script>

@@ -94,7 +94,7 @@ const getOfertas = async () => {
     }
 };
 
-const esOperador = computed(() => Number(props.user?.rol_id) === 1);
+const esOperador = computed(() => props.user?.rol_id == 1);
 
 const pasoActualHijo = ref(1);
 

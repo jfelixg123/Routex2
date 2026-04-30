@@ -52,7 +52,7 @@
         </div>
 
         <!-- TIMELINE -->
-        <!-- TIMELINE -->
+         
         <div class="mt-6 bg-white p-4 rounded-xl shadow">
             <h2 class="font-semibold mb-4">📍 Seguimiento</h2>
 
@@ -132,6 +132,6 @@ onMounted(async () => {
 })
 
 const formatearFecha = (fecha) => {
-    return new Date(fecha).toLocaleString()
+    return new Date(fecha).toLocaleString() //Convierte el valor que recibes en un objeto Date y lo convierte a una cadena de texto
 }
 </script>

@@ -59,20 +59,32 @@ const getRuta = (o) => {
 };
 
 const ofertasRecientes = computed(() =>
-    // props.ofertas?.slice().sort((a, b) => new Date(b.data_creacio) - new Date(a.data_creacio)).slice(0, 3)
-    props.ofertas?.slice().sort().slice(0, 3)
+    props.ofertas?.slice().sort((a, b) => new Date(b.data_creacio) - new Date(a.data_creacio)).slice(0, 3)
+    // props.ofertas?.slice().sort().slice(0, 3)
 );
 
-const getImagen = (tipo) => {
-    const iconos = {
-        1: 'icons/barco.jpg',
-        2: 'icons/avion.jpg',
-        3: 'icons/camion.jpeg',
-        4: 'icons/paquete.jpg',
-        5: 'icons/tren.jpeg'
-    };
+// const getImagen = (tipo) => {
+//     const iconos = {
+//         1: 'icons/barco.jpg',
+//         2: 'icons/avion.jpg',
+//         3: 'icons/camion.jpeg',
+//         4: 'icons/paquete.jpg',
+//         5: 'icons/tren.jpeg'
+//     };
 
-    return iconos[Number(tipo)] || '/icons/default.png';
+//     return iconos[Number(tipo)] || '/icons/default.png';
+// };
+
+const iconos = {
+    1: 'icons/barco.jpg',
+    2: 'icons/avion.jpg',
+    3: 'icons/camion.jpeg',
+    4: 'icons/paquete.jpg',
+    5: 'icons/tren.jpeg'
+};
+
+const getImagen = (tipo) => {
+    return iconos[Number(tipo)] ?? '/icons/default.png'; 
 };
 
 </script>

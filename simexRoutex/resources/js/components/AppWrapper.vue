@@ -35,7 +35,7 @@ import ChatBotComponent from './componentesChatBot/ChatBotComponent.vue';
 
 
 
-const user = ref(JSON.parse(localStorage.getItem('user')));
+const user = ref(JSON.parse(localStorage.getItem('user'))); // Coge el usuario guardado en el navegador, conviértelo a objeto y hazlo reactivo
 
 // Estado que controla qué se ve en pantalla
 const vistaActual = ref(localStorage.getItem('ultimaVista') || 'dashboard');
