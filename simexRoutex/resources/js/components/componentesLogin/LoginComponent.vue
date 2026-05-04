@@ -48,34 +48,31 @@
     </div>
 </template>
 
-<script>
-import axios from 'axios';
+<script setup>
+import { ref } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
 
-export default {
-    data() {
-        return {
-            email: '',
-            password: '',
-            error: null
-        }
-    },
-    methods: {
-        async login() {
-            try {
-                const res = await axios.post('/login', {
-                    correu: this.email,
-                    contrasenya: this.password
-                });
+const email = ref('')
+const password = ref('')
+const error = ref(null)
 
-                localStorage.setItem('token', res.data.token);
-                localStorage.setItem('user', JSON.stringify(res.data.usuari))
+const router = useRouter()
 
-                this.$router.push('/dashboard');
+const login = async () => {
+    try {
+        const res = await axios.post('/login', {
+            correu: email.value,
+            contrasenya: password.value
+        })
 
-            } catch (err) {
-                this.error = err.response?.data?.error || 'Error al iniciar sesión';
-            }
-        }
+        localStorage.setItem('token', res.data.token)
+        localStorage.setItem('user', JSON.stringify(res.data.usuari))
+
+        router.push('/dashboard')
+
+    } catch (err) {
+        error.value = err.response?.data?.error || 'Error al iniciar sesión'
     }
 }
 </script>
